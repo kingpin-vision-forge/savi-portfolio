@@ -9,15 +9,6 @@ export default function LoadingScreen({ onComplete }: { onComplete: () => void }
   const [shouldRender, setShouldRender] = useState(true);
 
   useEffect(() => {
-    const hasLoaded = sessionStorage.getItem('savi-loaded');
-    
-    if (hasLoaded) {
-      // Already loaded before - skip loading screen entirely
-      setShouldRender(false);
-      onComplete();
-      return;
-    }
-
     const duration = 4000;
     const interval = 40;
     const increment = 100 / (duration / interval);
@@ -27,7 +18,6 @@ export default function LoadingScreen({ onComplete }: { onComplete: () => void }
         const next = prev + increment;
         if (next >= 100) {
           clearInterval(timer);
-          sessionStorage.setItem('savi-loaded', 'true');
           setTimeout(() => {
             setIsVisible(false);
             setTimeout(onComplete, 500);
