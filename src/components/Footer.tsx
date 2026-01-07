@@ -1,7 +1,26 @@
+'use client';
+
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { Droplets, Facebook, Instagram, Twitter, Linkedin, MapPin, ArrowRight, ShoppingBag, Shield, FileText, Cookie } from 'lucide-react';
 
 export default function Footer() {
+  const pathname = usePathname();
+  const isHomePage = pathname === '/';
+
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    // If on home page, scroll to section
+    if (isHomePage) {
+      e.preventDefault();
+      const sectionId = href.slice(1);
+      const element = document.getElementById(sectionId);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+    // If on another page, let Link handle navigation to home page with hash
+  };
+
   return (
     <footer className="w-full border-t border-white/5 bg-[#121212] pt-16 pb-8">
       <div className="px-6 md:px-20 mx-auto max-w-[1400px]">
@@ -9,10 +28,10 @@ export default function Footer() {
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-10 mb-16">
           {/* Brand Column */}
           <div className="col-span-2 md:col-span-1 lg:col-span-2">
-            <div className="flex items-center gap-2 mb-4">
+            <Link href="/" className="flex items-center gap-2 mb-4">
               <Droplets className="size-8 text-[#00C853]" />
               <span className="text-white font-bold text-2xl tracking-tight">SAVI</span>
-            </div>
+            </Link>
             <p className="text-gray-500 text-sm leading-relaxed mb-6 max-w-xs">
               Premium packaged water delivering pristine molecular hydration with unmatched logistical precision.
             </p>
@@ -38,13 +57,14 @@ export default function Footer() {
             <ul className="space-y-3">
               {['Home', 'About', 'Quality', 'Gallery', 'Contact'].map((item) => (
                 <li key={item}>
-                  <a 
-                    href={`#${item.toLowerCase()}`} 
+                  <Link 
+                    href={isHomePage ? `#${item.toLowerCase()}` : `/#${item.toLowerCase()}`}
+                    onClick={(e) => handleNavClick(e, `#${item.toLowerCase()}`)}
                     className="text-gray-400 hover:text-white text-sm transition-colors duration-300 flex items-center gap-2 group"
                   >
                     <span className="w-0 group-hover:w-2 h-px bg-[#00C853] transition-all duration-300" />
                     {item}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
