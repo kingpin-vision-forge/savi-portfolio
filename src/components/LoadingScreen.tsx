@@ -1,33 +1,25 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { Droplets, ShieldCheck } from 'lucide-react';
 
 export default function LoadingScreen({ onComplete }: { onComplete: () => void }) {
   const [progress, setProgress] = useState(0);
-  const [phase, setPhase] = useState<'loading' | 'fading' | 'done'>('loading');
-  const hasRunRef = useRef(false);
+  const [isVisible, setIsVisible] = useState(true);
+  const [shouldRender, setShouldRender] = useState(true);
 
   useEffect(() => {
-    // Prevent double execution in React Strict Mode
-    if (hasRunRef.current) return;
-    hasRunRef.current = true;
-
     const hasLoaded = sessionStorage.getItem('savi-loaded');
     
     if (hasLoaded) {
-      // Skip loading but still show a brief fade
-      setProgress(100);
-      setPhase('fading');
-      const timer = setTimeout(() => {
-        setPhase('done');
-        onComplete();
-      }, 300);
-      return () => clearTimeout(timer);
+      // Already loaded before - skip loading screen entirely
+      setShouldRender(false);
+      onComplete();
+      return;
     }
 
-    const duration = 3500;
-    const interval = 35;
+    const duration = 4000;
+    const interval = 40;
     const increment = 100 / (duration / interval);
 
     const timer = setInterval(() => {
@@ -36,11 +28,10 @@ export default function LoadingScreen({ onComplete }: { onComplete: () => void }
         if (next >= 100) {
           clearInterval(timer);
           sessionStorage.setItem('savi-loaded', 'true');
-          setPhase('fading');
           setTimeout(() => {
-            setPhase('done');
-            onComplete();
-          }, 600);
+            setIsVisible(false);
+            setTimeout(onComplete, 500);
+          }, 300);
           return 100;
         }
         return next;
@@ -50,126 +41,120 @@ export default function LoadingScreen({ onComplete }: { onComplete: () => void }
     return () => clearInterval(timer);
   }, [onComplete]);
 
-  // Don't render anything once done
-  if (phase === 'done') {
+  // Don't render if already loaded
+  if (!shouldRender) {
     return null;
   }
 
+  if (!isVisible && progress >= 100) {
+    return (
+      <div className="fixed inset-0 z-50 bg-[#030303] opacity-0 animate-fade-out pointer-events-none" />
+    );
+  }
+
   return (
-    <div 
-      className={`fixed inset-0 z-[100] flex flex-col items-center justify-center overflow-hidden transition-opacity duration-500 ease-out ${
-        phase === 'fading' ? 'opacity-0 pointer-events-none' : 'opacity-100'
-      }`}
-      style={{ backgroundColor: '#030303' }}
-    >
-      {/* Dark gradient background */}
+    <div className={`fixed inset-0 z-50 flex flex-col items-center justify-center overflow-hidden bg-[#030303] refraction-bg transition-opacity duration-500 ${progress >= 100 ? 'opacity-0' : 'opacity-100'}`}>
+      {/* Background blur effect */}
       <div className="absolute inset-0 z-0">
         <div 
-          className="absolute inset-0 opacity-30"
+          className="w-full h-full bg-cover bg-center opacity-20 mix-blend-color-dodge pointer-events-none grayscale contrast-125 animate-pulse-slow" 
           style={{
-            background: 'radial-gradient(ellipse at 50% 30%, rgba(30,30,30,0.8) 0%, transparent 60%)',
+            backgroundImage: "url('https://lh3.googleusercontent.com/aida-public/AB6AXuDigz1DezpsP3YUlb4M-iuUULTdIQEYx2C-6ekHELG-nRTkMZMlN6r9AjLPRpsWfxtj-sdMgGD9Nw2Wjt9hejPWToTrMRMqVxV7Pm60lkRX-R9LV05823PztT-PqR8FR1hdOh2LGjb-SxYXcRqM-F5-qwXXD6xL_HCKuNSf0nfrDL5UWwSVUBwMaKoUFEuJn_sEvGMTlTGud5EAbRkRh_JXlVI387ZnSkes9sGBeRayTbr_tIfdt-LFHY92eYx3HGcslWBZIyF_duXc')",
+            filter: 'blur(80px)',
+            transform: `scale(${1 + progress * 0.003})`
           }}
         />
-        <div 
-          className="absolute inset-0 opacity-20"
-          style={{
-            background: 'radial-gradient(ellipse at 30% 70%, rgba(20,20,20,0.6) 0%, transparent 50%)',
-          }}
-        />
+        <div className="absolute inset-0 bg-black/60" />
       </div>
-
-      {/* Subtle noise texture overlay */}
-      <div 
-        className="absolute inset-0 z-[1] opacity-[0.03] pointer-events-none"
-        style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
-        }}
-      />
 
       {/* Main content */}
       <div className="relative z-10 flex flex-col items-center justify-center w-full max-w-2xl px-6">
-        {/* Logo section with subtle rings */}
-        <div className="relative mb-16 flex items-center justify-center">
+        {/* Logo section with rings */}
+        <div className="group relative mb-16 flex items-center justify-center">
           <div 
-            className="absolute h-64 w-64 rounded-full border border-white/[0.03]"
-            style={{ transform: `scale(${1 + progress * 0.002})` }}
+            className="absolute h-72 w-72 rounded-full border border-white/5 opacity-30 animate-pulse-slow"
+            style={{ transform: `scale(${1.1 + progress * 0.002})` }}
           />
           <div 
-            className="absolute h-80 w-80 rounded-full border border-white/[0.02]"
-            style={{ transform: `scale(${1.05 + progress * 0.001})` }}
+            className="absolute h-96 w-96 rounded-full border border-white/5 opacity-20"
+            style={{ transform: `scale(${1.05 + progress * 0.001})`, animationDelay: '1s' }}
           />
           
-          {/* Central icon container */}
-          <div className="relative h-40 w-40 flex items-center justify-center rounded-full bg-gradient-to-b from-white/[0.04] to-transparent border border-white/[0.06] shadow-2xl shadow-black/50">
-            <Droplets 
-              className="text-white/80 drop-shadow-lg"
-              style={{ 
-                width: `${60 + progress * 0.2}px`, 
-                height: `${60 + progress * 0.2}px`,
-                transition: 'all 0.3s ease-out'
-              }}
+          {/* Water ripple image with icon overlay */}
+          <div className="relative h-56 w-56 overflow-hidden rounded-full shadow-2xl shadow-black/50 ring-1 ring-white/10">
+            <div className="absolute inset-0 z-10 bg-gradient-to-b from-black/10 to-black/60 mix-blend-overlay" />
+            <img 
+              alt="Macro close-up of a pure water ripple" 
+              className="h-full w-full object-cover opacity-80 transition-transform duration-[4s] ease-in-out grayscale brightness-110 contrast-125"
+              style={{ transform: `scale(${1.1 - progress * 0.001})` }}
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuCcQeX0EFkUkCzM3LwTAMOAIQgSPYkZ8o1-v93QaMW6rzdcwHdg9adjGWHlxOT-teI_7wlszgA23EMlzyn6QJQTJ0H_5fdRF5IbuItPdqBX_s58rbJ4XSYvQtIvOYiD_SMaR_2IW6BV3pQuAcotX3sFK5S26dgqTw0pA7VdG31FpkT1QwSzzCj54oQ17Ry_xvmH2-Hf5KB58KHvV2bAVq7XnDxfeHZxj7Ly-JX8RMjo61BoqZ2FBYUGikeGPv_8NSYuHzF4Jul7AEkn"
             />
+            <div className="absolute inset-0 z-20 flex items-center justify-center bg-black/10 backdrop-blur-[1px]">
+              <Droplets 
+                className="text-white drop-shadow-lg opacity-90 transition-transform duration-300"
+                style={{ width: `${80 + progress * 0.3}px`, height: `${80 + progress * 0.3}px` }}
+              />
+            </div>
           </div>
         </div>
 
         {/* Brand name */}
-        <div className="flex flex-col items-center gap-4 text-center">
+        <div className="flex flex-col items-center gap-3 text-center">
           <h1 
-            className="text-white tracking-[0.35em] text-3xl md:text-4xl font-semibold uppercase"
-            style={{ 
-              letterSpacing: `${0.35 + progress * 0.001}em`,
-              textShadow: '0 0 40px rgba(255,255,255,0.1)'
-            }}
+            className="text-white tracking-[0.4em] text-4xl md:text-5xl font-bold uppercase leading-tight text-glow transition-all duration-300"
+            style={{ letterSpacing: `${0.4 + progress * 0.002}em` }}
           >
             SAVI
           </h1>
-          <div className="flex items-center justify-center gap-4 opacity-60">
+          <div className="mt-2 flex items-center justify-center gap-4 opacity-80">
             <span 
-              className="h-px bg-gradient-to-r from-transparent to-white/30 transition-all duration-500"
-              style={{ width: `${20 + progress * 0.3}px` }}
+              className="h-px bg-gradient-to-r from-transparent to-[#00C853]/50 transition-all duration-300"
+              style={{ width: `${8 + progress * 0.2}px` }}
             />
-            <p className="text-neutral-500 text-[10px] font-medium uppercase tracking-[0.25em]">
+            <p className="text-neutral-400 text-xs font-medium uppercase tracking-[0.3em]">
               Pure • Untouched
             </p>
             <span 
-              className="h-px bg-gradient-to-l from-transparent to-white/30 transition-all duration-500"
-              style={{ width: `${20 + progress * 0.3}px` }}
+              className="h-px bg-gradient-to-l from-transparent to-[#00C853]/50 transition-all duration-300"
+              style={{ width: `${8 + progress * 0.2}px` }}
             />
           </div>
         </div>
 
         {/* Progress section */}
-        <div className="mt-20 flex w-full max-w-xs flex-col gap-4">
+        <div className="mt-20 flex w-full max-w-xs flex-col gap-5">
           <div className="flex items-center justify-between px-1">
-            <p className="text-neutral-600 text-[9px] font-medium uppercase tracking-widest">
-              Loading
+            <p className="text-neutral-500 text-[10px] font-semibold uppercase tracking-widest">
+              Hydrating
             </p>
-            <p className="text-neutral-400 text-[9px] font-semibold tracking-wider font-mono">
+            <p className="text-white text-[10px] font-bold tracking-widest font-mono">
               {Math.round(progress)}%
             </p>
           </div>
           
-          {/* Progress bar - subtle white/gray */}
-          <div className="relative h-[1px] w-full overflow-hidden bg-white/[0.08] rounded-full">
+          {/* Progress bar */}
+          <div className="relative h-[2px] w-full overflow-hidden bg-neutral-800 rounded-full">
             <div 
-              className="absolute left-0 top-0 h-full bg-gradient-to-r from-white/40 to-white/60 rounded-full transition-all duration-75 ease-linear"
+              className="absolute left-0 top-0 h-full bg-gradient-to-r from-green-600 to-green-400 shadow-[0_0_20px_rgba(0,200,83,0.6)] rounded-full transition-all duration-100 ease-out"
               style={{ width: `${progress}%` }}
-            />
+            >
+              <div className="absolute inset-0 w-full animate-shimmer bg-gradient-to-r from-transparent via-white/30 to-transparent opacity-50" />
+            </div>
           </div>
           
           <div className="text-center">
-            <p className="text-neutral-600 text-[9px] font-medium tracking-wide">
-              {progress < 25 ? 'Initializing...' : progress < 50 ? 'Loading resources...' : progress < 80 ? 'Preparing experience...' : 'Almost ready...'}
+            <p className="text-neutral-600 text-[10px] font-medium tracking-wide uppercase">
+              {progress < 30 ? 'Initializing...' : progress < 60 ? 'Loading Assets...' : progress < 90 ? 'Preparing Experience...' : 'Almost Ready...'}
             </p>
           </div>
         </div>
       </div>
 
-      {/* Secure badge */}
+      {/* Secure connection badge */}
       <div className="absolute bottom-8 left-0 w-full text-center z-20">
-        <div className="inline-flex items-center gap-2.5 rounded-full border border-white/[0.06] bg-white/[0.02] px-4 py-1.5 backdrop-blur-sm">
-          <ShieldCheck className="size-3.5 text-white/40" />
-          <span className="text-[9px] font-medium uppercase tracking-widest text-neutral-500">
+        <div className="inline-flex items-center gap-3 rounded-full border border-white/5 bg-white/5 px-4 py-1.5 backdrop-blur-md">
+          <ShieldCheck className="size-4 text-[#00C853]" />
+          <span className="text-[10px] font-semibold uppercase tracking-widest text-neutral-400">
             Secure Connection
           </span>
         </div>
