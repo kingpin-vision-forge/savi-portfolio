@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import dynamic from 'next/dynamic';
 import LoadingScreen from '@/components/LoadingScreen';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -11,6 +12,11 @@ import {
   MapPin, Beaker, Leaf, Star, Sparkles, Zap, Play,
   Download, Clock, Building, Truck
 } from 'lucide-react';
+
+// Dynamic import for LiquidEther to avoid SSR issues with Three.js
+const LiquidEther = dynamic(() => import('@/components/LiquidEther'), { ssr: false });
+import MagicBentoCard from '@/components/MagicBentoCard';
+import AnimateOnScroll, { AnimatedCounter, StaggerContainer } from '@/components/AnimateOnScroll';
 
 function Section({ id, children, className = '' }: { id: string; children: React.ReactNode; className?: string }) {
   return (
@@ -44,67 +50,93 @@ export default function Home() {
   return (
     <div className={`relative flex flex-col min-h-screen w-full transition-opacity duration-700 ${showContent ? 'opacity-100' : 'opacity-0'}`}>
       {/* Background effects */}
-      <div className="fixed top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
-        <div className="absolute top-[-20%] left-[-10%] w-[70%] h-[70%] bg-[#2d2d2d] opacity-30 blur-[150px] rounded-full" />
-        <div className="absolute bottom-[10%] right-[-10%] w-[50%] h-[50%] bg-white opacity-5 blur-[120px] rounded-full" />
-        <div className="absolute top-[30%] left-[20%] w-[30%] h-[30%] bg-[#00C853] opacity-10 blur-[180px] rounded-full" />
+      <div className="fixed top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none bg-[#0a0a0a]">
+        <div className="absolute top-[-20%] left-[-10%] w-[70%] h-[70%] bg-[#1a1a1a] opacity-40 blur-[150px] rounded-full" />
+        <div className="absolute bottom-[10%] right-[-10%] w-[50%] h-[50%] bg-[#111] opacity-30 blur-[120px] rounded-full" />
       </div>
 
       <Header />
 
       <main className="flex-1">
         {/* ==================== HOME SECTION ==================== */}
-        <Section id="home" className="min-h-screen flex items-center pt-24 lg:pt-0">
-          <div className="px-6 md:px-10 lg:px-20 py-10 flex flex-1 items-center justify-center w-full">
+        <Section id="home" className="min-h-screen flex items-center pt-24 lg:pt-0 relative">
+          {/* Liquid Ether Background */}
+          <div className="absolute inset-0 z-0">
+            <LiquidEther 
+              colors={['#77bb41', '#4f7a28', '#96d35f']}
+              mouseForce={40}
+              cursorSize={45}
+              viscous={20}
+              iterationsViscous={49}
+              iterationsPoisson={17}
+              isBounce={true}
+              autoSpeed={0.05}
+              autoIntensity={1.1}
+              className="pointer-events-auto"
+            />
+            {/* Overlay gradient for text readability */}
+            <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0a]/80 via-[#0a0a0a]/40 to-[#0a0a0a]/95 pointer-events-none" />
+          </div>
+          <div className="px-6 md:px-10 lg:px-20 py-10 flex flex-1 items-center justify-center w-full relative z-10">
             <div className="w-full max-w-[1400px] grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
               {/* Left content */}
               <div className="flex flex-col gap-10 lg:pr-10 z-10 order-2 lg:order-1">
                 <div className="flex flex-col gap-6 text-left">
-                  <div className="inline-flex items-center gap-2 self-start rounded-3xl bg-[#2d2d2d] border border-white/10 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-white/90 backdrop-blur-sm shadow-md">
-                    <Sparkles className="size-3 text-[#00C853]" />
-                    Clinical Grade Hydration
-                  </div>
-                  <h1 className="text-white text-6xl sm:text-7xl lg:text-[5.5rem] font-extrabold leading-[0.95] tracking-tight text-glow">
-                    Hydration<br />Refined.
-                  </h1>
-                  <p className="text-gray-400 text-lg md:text-xl font-medium leading-relaxed max-w-lg mt-2">
-                    SAVI delivers pristine molecular hydration with unmatched logistical precision. A darker, deeper commitment to purity.
-                  </p>
-                </div>
-                <div className="flex flex-wrap gap-5 mt-2">
-                  <Link 
-                    href="/marketplace"
-                    className="group relative flex h-14 min-w-[180px] items-center justify-center overflow-hidden rounded-3xl bg-[#2d2d2d] border border-white/10 hover:border-[#00C853] text-white text-base font-bold shadow-lg hover:shadow-[#00C853]/25 transition-all duration-300 hover:-translate-y-1"
-                  >
-                    <span className="relative z-10 flex items-center gap-2 text-white group-hover:text-[#00C853] transition-colors">
-                      Order Water 
-                      <ArrowRight className="size-4 group-hover:translate-x-1 transition-transform" />
-                    </span>
-                  </Link>
-                  <Link 
-                    href="/marketplace#bulk"
-                    className="group flex h-14 min-w-[180px] items-center justify-center rounded-3xl border border-white/10 bg-transparent px-8 text-white/80 hover:text-[#00C853] backdrop-blur-md text-base font-bold hover:bg-[#2d2d2d] hover:border-[#00C853]/50 transition-all duration-300"
-                  >
-                    Bulk Supply
-                  </Link>
-                </div>
-                <div className="flex items-center gap-6 mt-8 pt-8 border-t border-white/10">
-                  <div className="flex -space-x-4">
-                    {[1, 2, 3].map((i) => (
-                      <div key={i} className="size-12 rounded-full border-2 border-[#1a1a1a] bg-[#2d2d2d] overflow-hidden flex items-center justify-center">
-                        <Users className="size-5 text-white/30" />
-                      </div>
-                    ))}
-                    <div className="size-12 flex items-center justify-center rounded-full border-2 border-[#1a1a1a] bg-[#2d2d2d] text-white text-xs font-bold">+2k</div>
-                  </div>
-                  <div className="flex flex-col">
-                    <div className="flex items-center gap-1 mb-1">
-                      <CheckCircle2 className="size-4 text-[#00C853]" />
-                      <span className="text-xs font-bold uppercase tracking-wider text-gray-400">Trust Score 99%</span>
+                  <AnimateOnScroll animation="fadeUp" delay={0.1}>
+                    <div className="inline-flex items-center gap-2 self-start rounded-3xl bg-[#2d2d2d] border border-white/10 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-white/90 backdrop-blur-sm shadow-md">
+                      <Sparkles className="size-3 text-[#00C853]" />
+                      Clinical Grade Hydration
                     </div>
-                    <div className="text-sm font-semibold text-white">Trusted by global enterprises</div>
-                  </div>
+                  </AnimateOnScroll>
+                  <AnimateOnScroll animation="fadeUp" delay={0.25}>
+                    <h1 className="text-white text-6xl sm:text-7xl lg:text-[5.5rem] font-extrabold leading-[0.95] tracking-tight text-glow">
+                      Hydration<br />Refined.
+                    </h1>
+                  </AnimateOnScroll>
+                  <AnimateOnScroll animation="fadeUp" delay={0.4}>
+                    <p className="text-gray-400 text-lg md:text-xl font-medium leading-relaxed max-w-lg mt-2">
+                      SAVI delivers pristine molecular hydration with unmatched logistical precision. A darker, deeper commitment to purity.
+                    </p>
+                  </AnimateOnScroll>
                 </div>
+                <AnimateOnScroll animation="fadeUp" delay={0.55}>
+                  <div className="flex flex-wrap gap-5 mt-2">
+                    <Link 
+                      href="/marketplace"
+                      className="group relative flex h-14 min-w-[180px] items-center justify-center overflow-hidden rounded-3xl bg-[#2d2d2d] border border-white/10 hover:border-[#00C853] text-white text-base font-bold shadow-lg hover:shadow-[#00C853]/25 transition-all duration-300 hover:-translate-y-1"
+                    >
+                      <span className="relative z-10 flex items-center gap-2 text-white group-hover:text-[#00C853] transition-colors">
+                        Order Water 
+                        <ArrowRight className="size-4 group-hover:translate-x-1 transition-transform" />
+                      </span>
+                    </Link>
+                    <Link 
+                      href="/marketplace#bulk"
+                      className="group flex h-14 min-w-[180px] items-center justify-center rounded-3xl border border-white/10 bg-transparent px-8 text-white/80 hover:text-[#00C853] backdrop-blur-md text-base font-bold hover:bg-[#2d2d2d] hover:border-[#00C853]/50 transition-all duration-300"
+                    >
+                      Bulk Supply
+                    </Link>
+                  </div>
+                </AnimateOnScroll>
+                <AnimateOnScroll animation="fadeUp" delay={0.7}>
+                  <div className="flex items-center gap-6 mt-8 pt-8 border-t border-white/10">
+                    <div className="flex -space-x-4">
+                      {[1, 2, 3].map((i) => (
+                        <div key={i} className="size-12 rounded-full border-2 border-[#1a1a1a] bg-[#2d2d2d] overflow-hidden flex items-center justify-center">
+                          <Users className="size-5 text-white/30" />
+                        </div>
+                      ))}
+                      <div className="size-12 flex items-center justify-center rounded-full border-2 border-[#1a1a1a] bg-[#2d2d2d] text-white text-xs font-bold">+2k</div>
+                    </div>
+                    <div className="flex flex-col">
+                      <div className="flex items-center gap-1 mb-1">
+                        <CheckCircle2 className="size-4 text-[#00C853]" />
+                        <span className="text-xs font-bold uppercase tracking-wider text-gray-400">Trust Score 99%</span>
+                      </div>
+                      <div className="text-sm font-semibold text-white">Trusted by global enterprises</div>
+                    </div>
+                  </div>
+                </AnimateOnScroll>
               </div>
               {/* Right - Bottle */}
               <div className="relative h-[60vh] lg:h-[85vh] w-full flex items-center justify-center order-1 lg:order-2">
@@ -182,29 +214,35 @@ export default function Home() {
           </div>
 
           {/* Stats Bar */}
-          <div className="w-full max-w-[1280px] px-6 md:px-10 mx-auto -mt-8 mb-24">
-            <div className="bg-[#222222] border border-white/10 rounded-3xl p-8 shadow-[0_20px_50px_rgba(0,0,0,0.5)] grid grid-cols-2 md:grid-cols-4 gap-8 divide-x divide-white/5">
-              {[
-                { value: '99.9%', label: 'Purity Level', icon: Sparkles },
-                { value: '50+', label: 'Natural Springs', icon: Droplets },
-                { value: '0', label: 'Carbon Footprint', icon: Leaf },
-                { value: '2M+', label: 'Happy Hydrators', icon: Users },
-              ].map((stat, i) => (
-                <div key={i} className="flex flex-col items-center text-center p-4 group">
-                  <stat.icon className="size-6 text-[#00C853] mb-3 group-hover:scale-110 transition-transform" />
-                  <span className="text-4xl font-light text-white mb-2 group-hover:text-[#00C853] transition-colors duration-500">{stat.value}</span>
-                  <span className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em]">{stat.label}</span>
-                </div>
-              ))}
+          <AnimateOnScroll animation="fadeUp" delay={0.3}>
+            <div className="w-full max-w-[1280px] px-6 md:px-10 mx-auto -mt-8 mb-24">
+              <div className="bg-[#222222] border border-white/10 rounded-3xl p-8 shadow-[0_20px_50px_rgba(0,0,0,0.5)] grid grid-cols-2 md:grid-cols-4 gap-8 divide-x divide-white/5">
+                {[
+                  { value: 99.9, suffix: '%', label: 'Purity Level', icon: Sparkles },
+                  { value: 50, suffix: '+', label: 'Natural Springs', icon: Droplets },
+                  { value: 0, suffix: '', label: 'Carbon Footprint', icon: Leaf },
+                  { value: 2, suffix: 'M+', label: 'Happy Hydrators', icon: Users },
+                ].map((stat, i) => (
+                  <div key={i} className="flex flex-col items-center text-center p-4 group">
+                    <stat.icon className="size-6 text-[#00C853] mb-3 group-hover:scale-110 transition-transform" />
+                    <span className="text-4xl font-light text-white mb-2 group-hover:text-[#00C853] transition-colors duration-500">
+                      <AnimatedCounter end={stat.value} suffix={stat.suffix} duration={2} />
+                    </span>
+                    <span className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em]">{stat.label}</span>
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
+          </AnimateOnScroll>
 
           {/* Timeline Section */}
           <div className="w-full max-w-[1024px] px-6 mx-auto mb-24">
-            <div className="text-center mb-16">
-              <span className="text-[#00C853] text-xs font-bold uppercase tracking-[0.2em] mb-3 block">History</span>
-              <h3 className="text-4xl md:text-5xl font-light text-white tracking-tight">The Flow of Time</h3>
-            </div>
+            <AnimateOnScroll animation="fadeUp">
+              <div className="text-center mb-16">
+                <span className="text-[#00C853] text-xs font-bold uppercase tracking-[0.2em] mb-3 block">History</span>
+                <h3 className="text-4xl md:text-5xl font-light text-white tracking-tight">The Flow of Time</h3>
+              </div>
+            </AnimateOnScroll>
 
             <div className="space-y-6 w-full">
               {[
@@ -213,20 +251,22 @@ export default function Home() {
                 { year: '2019', title: 'Expansion', icon: Globe, desc: 'From local springs to global tables. SAVI launched in 15 new countries, bringing luxury hydration to discerning customers worldwide.' },
                 { year: '2023', title: 'Recognition', icon: Award, desc: 'Recognized globally for our "Zero-Waste" initiative. We achieved 100% recycled packaging across our entire product line.' },
               ].map((item, i) => (
-                <div key={i} className="flex gap-6 items-start group">
-                  <div className="size-14 rounded-full bg-[#222222] border border-white/10 shadow-lg flex items-center justify-center group-hover:border-[#00C853] group-hover:bg-[#00C853]/5 transition-all duration-300 shrink-0">
-                    <item.icon className="size-6 text-white group-hover:text-[#00C853] transition-colors" />
-                  </div>
-                  <div className="flex flex-col flex-1">
-                    <div className="bg-[#2a2a2a] p-8 rounded-3xl hover:shadow-2xl transition-all duration-500 border border-white/5 hover:border-white/20">
-                      <div className="flex justify-between items-start mb-4 border-b border-white/10 pb-4">
-                        <h4 className="text-2xl font-light text-white">{item.title}</h4>
-                        <span className="text-white font-bold text-lg opacity-30">{item.year}</span>
+                <AnimateOnScroll key={i} animation="fadeLeft" delay={i * 0.2}>
+                  <div className="flex gap-6 items-start group">
+                    <div className="size-14 rounded-full bg-[#222222] border border-white/10 shadow-lg flex items-center justify-center group-hover:border-[#00C853] group-hover:bg-[#00C853]/5 transition-all duration-300 shrink-0">
+                      <item.icon className="size-6 text-white group-hover:text-[#00C853] transition-colors" />
+                    </div>
+                    <div className="flex flex-col flex-1">
+                      <div className="bg-[#2a2a2a] p-8 rounded-3xl hover:shadow-2xl transition-all duration-500 border border-white/5 hover:border-white/20">
+                        <div className="flex justify-between items-start mb-4 border-b border-white/10 pb-4">
+                          <h4 className="text-2xl font-light text-white">{item.title}</h4>
+                          <span className="text-white font-bold text-lg opacity-30">{item.year}</span>
+                        </div>
+                        <p className="text-gray-400 font-light leading-relaxed">{item.desc}</p>
                       </div>
-                      <p className="text-gray-400 font-light leading-relaxed">{item.desc}</p>
                     </div>
                   </div>
-                </div>
+                </AnimateOnScroll>
               ))}
             </div>
           </div>
@@ -255,16 +295,22 @@ export default function Home() {
         <Section id="quality" className="py-24 lg:py-32 bg-[#121212] relative">
           <div className="max-w-[1400px] mx-auto px-6 md:px-10 lg:px-20">
             <div className="flex flex-col items-center text-center mb-20">
-              <div className="inline-flex items-center gap-2 rounded-3xl bg-[#2d2d2d] border border-white/10 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-white/90 backdrop-blur-sm shadow-md mb-8">
-                <Shield className="size-3 text-[#00C853]" />
-                Verification & Compliance
-              </div>
-              <h2 className="text-white text-5xl md:text-7xl font-extrabold tracking-tight mb-8 text-glow leading-none">
-                Uncompromising<br /><span className="text-gray-500">Purity Standards.</span>
-              </h2>
-              <p className="text-gray-400 text-lg md:text-xl font-medium leading-relaxed max-w-2xl mx-auto">
-                SAVI exceeds industry benchmarks through rigorous independent testing. Our 12-stage filtration and mineralization process is validated by world-class certification bodies.
-              </p>
+              <AnimateOnScroll animation="fadeUp" delay={0.1}>
+                <div className="inline-flex items-center gap-2 rounded-3xl bg-[#2d2d2d] border border-white/10 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-white/90 backdrop-blur-sm shadow-md mb-8">
+                  <Shield className="size-3 text-[#00C853]" />
+                  Verification & Compliance
+                </div>
+              </AnimateOnScroll>
+              <AnimateOnScroll animation="fadeUp" delay={0.25}>
+                <h2 className="text-white text-5xl md:text-7xl font-extrabold tracking-tight mb-8 text-glow leading-none">
+                  Uncompromising<br /><span className="text-gray-500">Purity Standards.</span>
+                </h2>
+              </AnimateOnScroll>
+              <AnimateOnScroll animation="fadeUp" delay={0.4}>
+                <p className="text-gray-400 text-lg md:text-xl font-medium leading-relaxed max-w-2xl mx-auto">
+                  SAVI exceeds industry benchmarks through rigorous independent testing. Our 12-stage filtration and mineralization process is validated by world-class certification bodies.
+                </p>
+              </AnimateOnScroll>
             </div>
 
             {/* Live Analysis Panel */}
@@ -386,31 +432,41 @@ export default function Home() {
         <Section id="gallery" className="py-24 lg:py-32 bg-[#1a1a1a] relative">
           <div className="w-full max-w-[1024px] px-6 mx-auto text-center mb-16">
             <div className="flex flex-col gap-6 items-center">
-              <span className="text-[#00C853] text-[10px] font-bold tracking-[0.3em] uppercase opacity-90">Our Portfolio</span>
-              <h2 className="text-white text-5xl md:text-6xl lg:text-7xl font-light tracking-tighter leading-[1.1]">
-                Curating Excellence <br />
-                <span className="font-medium bg-clip-text text-transparent bg-gradient-to-r from-white via-gray-300 to-gray-500 italic">in Hydration</span>
-              </h2>
-              <div className="h-px w-20 bg-gradient-to-r from-transparent via-gray-600 to-transparent my-4" />
-              <p className="text-gray-400 text-lg md:text-xl font-light max-w-2xl leading-relaxed">
-                Moments of purity, trust, and scale captured from our journey around the globe. Witness the fluid elegance of SAVI in action.
-              </p>
+              <AnimateOnScroll animation="fadeUp" delay={0.1}>
+                <span className="text-[#00C853] text-[10px] font-bold tracking-[0.3em] uppercase opacity-90">Our Portfolio</span>
+              </AnimateOnScroll>
+              <AnimateOnScroll animation="fadeUp" delay={0.25}>
+                <h2 className="text-white text-5xl md:text-6xl lg:text-7xl font-light tracking-tighter leading-[1.1]">
+                  Curating Excellence <br />
+                  <span className="font-medium bg-clip-text text-transparent bg-gradient-to-r from-white via-gray-300 to-gray-500 italic">in Hydration</span>
+                </h2>
+              </AnimateOnScroll>
+              <AnimateOnScroll animation="scaleUp" delay={0.4}>
+                <div className="h-px w-20 bg-gradient-to-r from-transparent via-gray-600 to-transparent my-4" />
+              </AnimateOnScroll>
+              <AnimateOnScroll animation="fadeUp" delay={0.5}>
+                <p className="text-gray-400 text-lg md:text-xl font-light max-w-2xl leading-relaxed">
+                  Moments of purity, trust, and scale captured from our journey around the globe. Witness the fluid elegance of SAVI in action.
+                </p>
+              </AnimateOnScroll>
             </div>
           </div>
 
           {/* Filter Buttons */}
-          <div className="flex justify-center px-4 py-6 mb-8">
-            <div className="flex gap-1 p-1.5 glass-panel rounded-full overflow-x-auto scroll-hide max-w-full">
-              {['All', 'Corporate', 'Private', 'Logistics'].map((filter, i) => (
-                <button 
-                  key={filter}
-                  className={`flex h-10 items-center px-6 rounded-full text-xs font-bold uppercase tracking-wider transition-all ${i === 0 ? 'bg-white text-black shadow-lg' : 'hover:bg-white/5 text-gray-400 hover:text-white'}`}
-                >
-                  {filter}
-                </button>
-              ))}
+          <AnimateOnScroll animation="fadeUp" delay={0.6}>
+            <div className="flex justify-center px-4 py-6 mb-8">
+              <div className="flex gap-1 p-1.5 glass-panel rounded-full overflow-x-auto scroll-hide max-w-full">
+                {['All', 'Corporate', 'Private', 'Logistics'].map((filter, i) => (
+                  <button 
+                    key={filter}
+                    className={`flex h-10 items-center px-6 rounded-full text-xs font-bold uppercase tracking-wider transition-all ${i === 0 ? 'bg-white text-black shadow-lg' : 'hover:bg-white/5 text-gray-400 hover:text-white'}`}
+                  >
+                    {filter}
+                  </button>
+                ))}
+              </div>
             </div>
-          </div>
+          </AnimateOnScroll>
 
           <div className="max-w-[1440px] mx-auto px-4 md:px-8">
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4" style={{ gridAutoRows: '280px' }}>
@@ -422,20 +478,41 @@ export default function Home() {
                 { title: 'Global Fleet', loc: 'Logistics', span: 'md:col-span-2', icon: Truck },
                 { title: 'Corporate HQ', loc: 'Tokyo', span: '', icon: Building },
               ].map((item, i) => (
-                <div key={i} className={`group relative bg-[#242424] overflow-hidden cursor-pointer border border-white/5 rounded-3xl shadow-xl ${item.span}`}>
-                  <div className="absolute inset-0 bg-[#00C853]/5 opacity-0 group-hover:opacity-100 transition-opacity z-5" />
-                  <div className="absolute flex items-center justify-center inset-0">
-                    <item.icon className="size-20 text-white/5 group-hover:text-[#00C853]/20 group-hover:scale-110 transition-all duration-500" />
-                  </div>
-                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent opacity-80" />
-                  <div className="absolute bottom-0 left-0 right-0 p-6 z-20">
-                    <div className="flex items-center gap-2 mb-2">
-                      <span className="w-2 h-2 rounded-full bg-[#00C853] shadow-[0_0_10px_rgba(0,200,83,0.8)]" />
-                      <span className="text-white/90 text-[10px] font-bold tracking-[0.2em] uppercase">{item.loc}</span>
+                <MagicBentoCard
+                  key={i}
+                  className={`bg-[#1a1a1a] cursor-pointer border border-white/5 rounded-3xl ${item.span}`}
+                  spotlightColor="rgba(0, 200, 83, 0.12)"
+                  borderColor="rgba(0, 200, 83, 0.4)"
+                >
+                  <div 
+                    className="relative h-full w-full overflow-hidden rounded-3xl"
+                    style={{ 
+                      animation: `fadeSlideUp 0.6s ease-out ${i * 0.1}s both`,
+                    }}
+                  >
+                    {/* Animated background icon */}
+                    <div className="absolute flex items-center justify-center inset-0 transition-all duration-700">
+                      <item.icon className="size-24 text-white/[0.03] hover:text-[#00C853]/10 transition-all duration-700 hover:scale-125 hover:rotate-12" />
                     </div>
-                    <h3 className="text-white text-2xl font-light tracking-wide">{item.title}</h3>
+                    
+                    {/* Shimmer effect on hover */}
+                    <div className="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-500">
+                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full hover:translate-x-full transition-transform duration-1000" />
+                    </div>
+                    
+                    {/* Gradient overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
+                    
+                    {/* Content */}
+                    <div className="absolute bottom-0 left-0 right-0 p-6 z-20">
+                      <div className="flex items-center gap-2 mb-3">
+                        <span className="w-2 h-2 rounded-full bg-[#00C853] shadow-[0_0_10px_rgba(0,200,83,0.8)] animate-pulse" />
+                        <span className="text-white/80 text-[10px] font-bold tracking-[0.2em] uppercase">{item.loc}</span>
+                      </div>
+                      <h3 className="text-white text-2xl font-light tracking-wide">{item.title}</h3>
+                    </div>
                   </div>
-                </div>
+                </MagicBentoCard>
               ))}
             </div>
           </div>
@@ -446,21 +523,28 @@ export default function Home() {
           <div className="max-w-[1400px] mx-auto px-6 md:px-10 lg:px-20">
             {/* Header */}
             <div className="mb-16 max-w-3xl">
-              <div className="inline-flex items-center gap-2 rounded-3xl bg-[#2d2d2d] border border-white/10 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-white/90 backdrop-blur-sm shadow-md mb-6">
-                <MessageCircle className="size-3 text-[#00C853]" />
-                Concierge Support
-              </div>
-              <h2 className="text-white text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight mb-6">
-                Refine Your <br /> <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-500">Experience.</span>
-              </h2>
-              <p className="text-gray-400 text-lg md:text-xl font-medium leading-relaxed max-w-2xl">
-                Whether you require bulk enterprise supply, partnership opportunities, or personal hydration refinement, our dedicated team is ready to assist with precision.
-              </p>
+              <AnimateOnScroll animation="fadeUp" delay={0.1}>
+                <div className="inline-flex items-center gap-2 rounded-3xl bg-[#2d2d2d] border border-white/10 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-white/90 backdrop-blur-sm shadow-md mb-6">
+                  <MessageCircle className="size-3 text-[#00C853]" />
+                  Concierge Support
+                </div>
+              </AnimateOnScroll>
+              <AnimateOnScroll animation="fadeUp" delay={0.25}>
+                <h2 className="text-white text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight mb-6">
+                  Refine Your <br /> <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-500">Experience.</span>
+                </h2>
+              </AnimateOnScroll>
+              <AnimateOnScroll animation="fadeUp" delay={0.4}>
+                <p className="text-gray-400 text-lg md:text-xl font-medium leading-relaxed max-w-2xl">
+                  Whether you require bulk enterprise supply, partnership opportunities, or personal hydration refinement, our dedicated team is ready to assist with precision.
+                </p>
+              </AnimateOnScroll>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
               {/* Contact Form */}
-              <div className="lg:col-span-7 bg-[#2d2d2d]/20 backdrop-blur-xl border border-white/10 rounded-[2rem] p-8 md:p-10 shadow-2xl">
+              <AnimateOnScroll animation="fadeRight" delay={0.5} className="lg:col-span-7">
+                <div className="bg-[#2d2d2d]/20 backdrop-blur-xl border border-white/10 rounded-[2rem] p-8 md:p-10 shadow-2xl">
                 <h3 className="text-2xl font-bold text-white mb-8">Send a Message</h3>
                 <form className="space-y-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -498,9 +582,10 @@ export default function Home() {
                   </button>
                 </form>
               </div>
+              </AnimateOnScroll>
 
               {/* Contact Info */}
-              <div className="lg:col-span-5 flex flex-col gap-6">
+              <AnimateOnScroll animation="fadeLeft" delay={0.65} className="lg:col-span-5 flex flex-col gap-6">
                 {/* Quick actions */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <button className="bg-white hover:bg-[#f5f5f5] text-[#222222] rounded-3xl p-6 flex flex-col items-center justify-center gap-2 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 group border border-transparent hover:border-[#00C853]">
@@ -547,7 +632,7 @@ export default function Home() {
                     Live Location
                   </div>
                 </div>
-              </div>
+              </AnimateOnScroll>
             </div>
           </div>
         </Section>

@@ -92,6 +92,24 @@ html {
   animation: pulseSlow 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
+/* Fade slide up animation for staggered gallery entrance */
+@keyframes fadeSlideUp {
+  0% { 
+    opacity: 0; 
+    transform: translateY(30px); 
+  }
+  100% { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
+}
+
+/* Spotlight card glow */
+@keyframes spotlightPulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
 /* Product card effects */
 .product-card {
   background: #ffffff;
