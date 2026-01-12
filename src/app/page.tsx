@@ -159,7 +159,7 @@ export default function Home() {
                       <Shield className="size-5 text-[#00C853]" />
                       <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400">Certified</span>
                     </div>
-                    <p className="text-sm font-bold text-white leading-tight">ISO 22000 Filtration Standard</p>
+                    <p className="text-sm font-bold text-white leading-tight">BIS License (ISI) Certified</p>
                   </div>
                   <div className="absolute bottom-[25%] left-[-5%] lg:-left-[10%] p-5 bg-[#1a1a1a]/80 backdrop-blur-xl rounded-3xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.8)] border border-white/10 animate-float z-30 min-w-[140px]" style={{ animationDelay: '2s' }}>
                     <div className="flex items-center gap-2 mb-1">
@@ -191,7 +191,7 @@ export default function Home() {
               <div className="glass-panel p-10 md:p-16 rounded-3xl max-w-4xl backdrop-blur-xl border border-white/10 shadow-2xl">
                 <span className="inline-flex items-center gap-2 py-1.5 px-4 border border-white/20 rounded-full text-white text-[10px] font-bold uppercase tracking-[0.3em] mb-8 bg-white/5 backdrop-blur-sm">
                   <Clock className="size-3" />
-                  Established 2010
+                  Established 2004
                 </span>
                 <h2 className="text-5xl md:text-7xl font-light tracking-tighter text-white mb-8 drop-shadow-2xl">
                   Purity in <span className="font-medium italic bg-clip-text text-transparent bg-gradient-to-r from-white via-gray-300 to-gray-500">Slate</span>
@@ -246,10 +246,10 @@ export default function Home() {
 
             <div className="space-y-6 w-full">
               {[
-                { year: '2010', title: 'Founding', icon: Droplets, desc: 'SAVI was born from a singular vision: to bottle the pristine essence of the untouched Alps. We started with a small spring and a big dream.' },
-                { year: '2015', title: 'Refinement', icon: Factory, desc: 'Innovation meets nature. We opened our state-of-the-art facility, ensuring that our bottling process preserves 100% of the water\'s natural mineral content.' },
-                { year: '2019', title: 'Expansion', icon: Globe, desc: 'From local springs to global tables. SAVI launched in 15 new countries, bringing luxury hydration to discerning customers worldwide.' },
-                { year: '2023', title: 'Recognition', icon: Award, desc: 'Recognized globally for our "Zero-Waste" initiative. We achieved 100% recycled packaging across our entire product line.' },
+                { year: '2004', title: 'Founding', icon: Droplets, desc: 'SAVI Packaged Drinking Water was established on 13th January 2004 by Somanath S Jevoor and Prashant S Jevoor as a Partnership Firm, starting with one sales outlet at Solapur Road, Vijayapura.' },
+                { year: '2010', title: 'Growth', icon: Factory, desc: 'Expanded operations with state-of-the-art manufacturing facility at Jevoor Empire, Athani Road. In-House Physical/Chemical Lab and Microbiological Lab established.' },
+                { year: '2018', title: 'Expansion', icon: Globe, desc: 'Grew to five outlets in Vijayapura City. Established distribution points across Vijayapura, Gulburga, Bagalkote, Hubballi, Gadag, and expanded to Maharashtra (Solapur & Pune).' },
+                { year: '2024', title: 'Recognition', icon: Award, desc: 'Achieved BIS License, FSSAI, ISO Certification, MSME Registration, and ZED Certification. Became the First ZED Gold Company of the District.' },
               ].map((item, i) => (
                 <AnimateOnScroll key={i} animation="fadeLeft" delay={i * 0.2}>
                   <div className="flex gap-6 items-start group">
@@ -276,10 +276,12 @@ export default function Home() {
             <div className="max-w-[1280px] mx-auto px-6 md:px-10">
               <div className="flex flex-wrap justify-center items-center gap-16 md:gap-28 opacity-60 hover:opacity-100 transition-opacity duration-500">
                 {[
-                  { icon: Shield, label: 'ISO 9001' },
-                  { icon: Droplets, label: 'Pure Source' },
-                  { icon: Leaf, label: '100% Recycled' },
-                  { icon: Beaker, label: 'Lab Tested' },
+                  { icon: Shield, label: 'BIS License' },
+                  { icon: Droplets, label: 'FSSAI' },
+                  { icon: Star, label: 'ISO Certified' },
+                  { icon: Factory, label: 'MSME' },
+                  { icon: Award, label: 'ZED Gold' },
+                  { icon: Beaker, label: 'In-House Labs' },
                 ].map((item, i) => (
                   <div key={i} className="flex flex-col items-center gap-3 group">
                     <item.icon className="size-10 text-white group-hover:text-[#00C853] transition-colors" />
@@ -378,10 +380,13 @@ export default function Home() {
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {[
-                  { icon: Shield, title: 'ISO 22000', desc: 'International standard for food safety management confirming our rigorous control systems.' },
-                  { icon: Droplets, title: 'NSF International', desc: 'Certified for health effects and filtration performance against NSF/ANSI standards.' },
-                  { icon: Leaf, title: 'BPA Free', desc: 'Our bottles are crafted from premium grade, 100% recyclable, BPA-free materials.' },
-                  { icon: Star, title: 'FDA Compliant', desc: 'Fully compliant with all FDA regulations for bottled water processing and quality.' },
+                  { icon: Shield, title: 'BIS License (ISI)', desc: 'ISI Certification from Central Government Authority ensuring highest quality standards for packaged drinking water.' },
+                  { icon: Droplets, title: 'FSSAI', desc: 'Food Safety and Standards Authority of India certification from State Government Authority.' },
+                  { icon: Star, title: 'ISO Certified', desc: 'International Organization for Standardization certification confirming our rigorous quality management systems.' },
+                  { icon: Factory, title: 'MSME Registered', desc: 'Registered under Micro, Small and Medium Enterprises promoting quality manufacturing standards.' },
+                  { icon: Award, title: 'ZED Certified', desc: 'Zero Defect Zero Effect certification with Bronze & Silver achieved, Gold certification under process.' },
+                  { icon: Beaker, title: 'First ZED Gold', desc: 'Proud to be the First ZED Gold Company of the District, setting benchmarks in quality excellence.' },
+                  { icon: FlaskConical, title: 'In-House Labs', desc: 'State-of-the-art Physical/Chemical Lab and Microbiological Lab for continuous quality testing and assurance.' },
                 ].map((cert, i) => (
                   <div key={i} className="bg-[#2d2d2d] p-8 rounded-3xl border border-white/5 card-hover-effect group h-full flex flex-col">
                     <div className="size-14 rounded-2xl bg-[#222] border border-white/10 flex items-center justify-center mb-6 shadow-lg shadow-black/50 group-hover:border-[#00C853]/30 transition-colors">
@@ -593,33 +598,48 @@ export default function Home() {
                       <MessageCircle className="size-6 text-[#00C853] group-hover:text-white transition-colors" />
                     </div>
                     <span className="font-bold text-lg text-[#222222]">WhatsApp</span>
-                    <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider group-hover:text-[#00C853] transition-colors">Instant Chat</span>
+                    <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider group-hover:text-[#00C853] transition-colors">9036522355</span>
                   </button>
                   <button className="bg-white hover:bg-[#f5f5f5] text-[#222222] rounded-3xl p-6 flex flex-col items-center justify-center gap-2 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 group border border-transparent hover:border-[#00C853]">
                     <div className="size-12 rounded-full bg-[#00C853]/10 flex items-center justify-center mb-1 group-hover:bg-[#00C853] transition-colors duration-300">
                       <Phone className="size-6 text-[#00C853] group-hover:text-white transition-colors" />
                     </div>
                     <span className="font-bold text-lg text-[#222222]">Call Us</span>
-                    <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider group-hover:text-[#00C853] transition-colors">24/7 Priority</span>
+                    <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider group-hover:text-[#00C853] transition-colors">9:00 AM - 7:00 PM</span>
                   </button>
+                </div>
+
+                {/* Factory info */}
+                <div className="bg-[#2d2d2d]/20 backdrop-blur-xl border border-white/10 rounded-[2rem] p-8 mb-4">
+                  <h4 className="text-white font-bold text-lg mb-6 flex items-center gap-2">
+                    <Factory className="size-5 text-[#00C853]" />
+                    Factory
+                  </h4>
+                  <div className="space-y-4">
+                    <p className="text-gray-300 leading-relaxed text-sm">
+                      JEVOOR EMPIRE<br />
+                      SY NO 739/2B, Opp Hotel Town Palace<br />
+                      Athani Road, Vijayapura - 586102
+                    </p>
+                  </div>
                 </div>
 
                 {/* Office info */}
                 <div className="bg-[#2d2d2d]/20 backdrop-blur-xl border border-white/10 rounded-[2rem] p-8">
                   <h4 className="text-white font-bold text-lg mb-6 flex items-center gap-2">
                     <MapPin className="size-5 text-[#00C853]" />
-                    Global Headquarters
+                    Office
                   </h4>
                   <div className="space-y-4">
                     <p className="text-gray-300 leading-relaxed text-sm">
-                      SAVI Water Group<br />
-                      100 Platinum Drive, Suite 500<br />
-                      Slate District, NY 10001
+                      Opp Govt I.T.I College<br />
+                      Chalukya Nagar, Solapur Road<br />
+                      Vijayapura - 586103
                     </p>
                     <div className="h-px w-full bg-white/10 my-4" />
                     <div className="flex items-center gap-3 text-gray-300">
                       <MessageCircle className="size-4 text-[#00C853]" />
-                      <span className="font-medium hover:text-white transition-colors cursor-pointer text-sm">concierge@savi-water.com</span>
+                      <span className="font-medium hover:text-white transition-colors cursor-pointer text-sm">JEVOOREMPIRE@GMAIL.COM</span>
                     </div>
                   </div>
                 </div>

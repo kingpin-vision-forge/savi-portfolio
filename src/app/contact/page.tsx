@@ -82,33 +82,61 @@ export default function ContactPage() {
                     <span className="text-3xl">💬</span>
                   </div>
                   <span className="font-bold text-lg text-[#222222]">WhatsApp</span>
-                  <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider group-hover:text-[#00C853] transition-colors">Instant Chat</span>
+                  <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider group-hover:text-[#00C853] transition-colors">9036522355 / 7760161401</span>
                 </button>
                 <button className="bg-white hover:bg-[#f5f5f5] text-[#222222] rounded-3xl p-6 flex flex-col items-center justify-center gap-2 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 group border border-transparent hover:border-[#00C853]">
                   <div className="size-12 rounded-full bg-[#00C853]/10 flex items-center justify-center mb-1 group-hover:bg-[#00C853] group-hover:text-white transition-colors duration-300 text-[#00C853]">
                     <span className="text-3xl">📞</span>
                   </div>
                   <span className="font-bold text-lg text-[#222222]">Call Us</span>
-                  <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider group-hover:text-[#00C853] transition-colors">24/7 Priority</span>
+                  <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider group-hover:text-[#00C853] transition-colors">9:00 AM - 7:00 PM</span>
                 </button>
               </div>
 
-              {/* Office info */}
+              {/* Factory Location */}
               <div className="bg-[#2d2d2d]/20 backdrop-blur-xl border border-white/10 rounded-[2rem] p-8">
                 <h4 className="text-white font-bold text-lg mb-6 flex items-center gap-2">
-                  <span className="text-[#00C853]">📍</span>
-                  Global Headquarters
+                  <span className="text-[#00C853]">🏭</span>
+                  Factory
                 </h4>
                 <div className="space-y-4">
                   <p className="text-gray-300 leading-relaxed text-sm">
-                    SAVI Water Group<br />
-                    100 Platinum Drive, Suite 500<br />
-                    Slate District, NY 10001
+                    JEVOOR EMPIRE<br />
+                    SY NO 739/2B, Opp Hotel Town Palace<br />
+                    Athani Road, Vijayapura - 586102
+                  </p>
+                </div>
+              </div>
+
+              {/* Office Location */}
+              <div className="bg-[#2d2d2d]/20 backdrop-blur-xl border border-white/10 rounded-[2rem] p-8">
+                <h4 className="text-white font-bold text-lg mb-6 flex items-center gap-2">
+                  <span className="text-[#00C853]">📍</span>
+                  Office
+                </h4>
+                <div className="space-y-4">
+                  <p className="text-gray-300 leading-relaxed text-sm">
+                    Opp Govt I.T.I College<br />
+                    Chalukya Nagar, Solapur Road<br />
+                    Vijayapura - 586103
                   </p>
                   <div className="h-px w-full bg-white/10 my-4" />
-                  <div className="flex items-center gap-3 text-gray-300">
+                  <div className="flex items-center gap-3 text-gray-300 mb-2">
                     <span className="text-[#00C853] text-sm">✉️</span>
-                    <span className="font-medium hover:text-white transition-colors cursor-pointer text-sm">concierge@savi-water.com</span>
+                    <span className="font-medium hover:text-white transition-colors cursor-pointer text-sm">JEVOOREMPIRE@GMAIL.COM</span>
+                  </div>
+                  <div className="flex items-center gap-3 text-gray-300 mb-2">
+                    <span className="text-[#00C853] text-sm">📞</span>
+                    <span className="font-medium text-sm">9845820401, 9880721401, 9448179701</span>
+                  </div>
+                  <div className="flex items-center gap-3 text-gray-300 mb-2">
+                    <span className="text-[#00C853] text-sm">📞</span>
+                    <span className="font-medium text-sm">08352265951, 08352261401</span>
+                  </div>
+                  <div className="h-px w-full bg-white/10 my-4" />
+                  <div className="flex items-center gap-3 text-gray-300">
+                    <span className="text-[#00C853] text-sm">🕐</span>
+                    <span className="font-medium text-sm">9:00 AM - 7:00 PM (Order Booking & Office Hours)</span>
                   </div>
                 </div>
               </div>

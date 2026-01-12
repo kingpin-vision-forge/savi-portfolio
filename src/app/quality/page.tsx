@@ -115,10 +115,13 @@ export default function QualityPage() {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {[
-                { icon: '🛡️', title: 'ISO 22000', desc: 'International standard for food safety management confirming our rigorous control systems.' },
-                { icon: '💧', title: 'NSF International', desc: 'Certified for health effects and filtration performance against NSF/ANSI standards.' },
-                { icon: '♻️', title: 'BPA Free', desc: 'Our bottles are crafted from premium grade, 100% recyclable, BPA-free materials.' },
-                { icon: '⭐', title: 'FDA Compliant', desc: 'Fully compliant with all FDA regulations for bottled water processing and quality.' },
+                { icon: '🏛️', title: 'BIS License (ISI)', desc: 'ISI Certification from Central Government Authority ensuring highest quality standards for packaged drinking water.' },
+                { icon: '🍽️', title: 'FSSAI', desc: 'Food Safety and Standards Authority of India certification from State Government Authority.' },
+                { icon: '🛡️', title: 'ISO Certified', desc: 'International Organization for Standardization certification confirming our rigorous quality management systems.' },
+                { icon: '🏭', title: 'MSME Registered', desc: 'Registered under Micro, Small and Medium Enterprises promoting quality manufacturing standards.' },
+                { icon: '🥇', title: 'ZED Certified', desc: 'Zero Defect Zero Effect certification with Bronze & Silver achieved, Gold certification under process.' },
+                { icon: '🏆', title: 'First ZED Gold', desc: 'Proud to be the First ZED Gold Company of the District, setting benchmarks in quality excellence.' },
+                { icon: '🔬', title: 'In-House Labs', desc: 'State-of-the-art Physical/Chemical Lab and Microbiological Lab for continuous quality testing and assurance.' },
               ].map((cert, i) => (
                 <div key={i} className="bg-[#2d2d2d] p-8 rounded-3xl border border-white/5 card-hover-effect group h-full flex flex-col">
                   <div className="size-14 rounded-2xl bg-[#222] border border-white/10 flex items-center justify-center mb-6 shadow-lg shadow-black/50 group-hover:border-[#00C853]/30 transition-colors">

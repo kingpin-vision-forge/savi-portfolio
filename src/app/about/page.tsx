@@ -22,7 +22,7 @@ export default function AboutPage() {
           <div className="relative z-10 w-full max-w-[1280px] px-4 md:px-10 flex flex-col items-center text-center">
             <div className="glass-panel p-10 md:p-16 rounded-3xl max-w-4xl backdrop-blur-xl border border-white/10 shadow-2xl">
               <span className="inline-block py-1.5 px-4 border border-white/20 rounded-full text-white text-[10px] font-bold uppercase tracking-[0.3em] mb-8 bg-white/5 backdrop-blur-sm">
-                Established 2010
+                Established 2004
               </span>
               <h1 className="text-5xl md:text-7xl lg:text-8xl font-light tracking-tighter text-white mb-8 drop-shadow-2xl">
                 Purity in <span className="font-medium italic bg-clip-text text-transparent bg-gradient-to-r from-white via-gray-300 to-gray-500">Slate</span>
@@ -74,10 +74,10 @@ export default function AboutPage() {
 
           <div className="space-y-8 w-full">
             {[
-              { year: '2010', title: 'Founding', icon: '💧', desc: 'SAVI was born from a singular vision: to bottle the pristine essence of the untouched Alps. We started with a small spring and a big dream.' },
-              { year: '2015', title: 'Refinement', icon: '🏭', desc: 'Innovation meets nature. We opened our state-of-the-art facility, ensuring that our bottling process preserves 100% of the water\'s natural mineral content.' },
-              { year: '2019', title: 'Expansion', icon: '🌍', desc: 'From local springs to global tables. SAVI launched in 15 new countries, bringing luxury hydration to discerning customers worldwide.' },
-              { year: '2023', title: 'Recognition', icon: '🏆', desc: 'Recognized globally for our "Zero-Waste" initiative. We achieved 100% recycled packaging across our entire product line.' },
+              { year: '2004', title: 'Founding', icon: '💧', desc: 'SAVI Packaged Drinking Water was established on 13th January 2004 by Somanath S Jevoor and Prashant S Jevoor as a Partnership Firm, starting with one sales outlet at Solapur Road, Vijayapura.' },
+              { year: '2010', title: 'Growth', icon: '🏭', desc: 'Expanded operations with state-of-the-art manufacturing facility at Jevoor Empire, Athani Road. In-House Physical/Chemical Lab and Microbiological Lab established for quality assurance.' },
+              { year: '2018', title: 'Expansion', icon: '🌍', desc: 'Grew to five outlets in Vijayapura City. Established distribution points across all talukas of Vijayapura, Gulburga, Bagalkote, Hubballi, Gadag, and expanded to Maharashtra (Solapur & Pune).' },
+              { year: '2024', title: 'Recognition', icon: '🏆', desc: 'Achieved BIS License, FSSAI, ISO Certification, MSME Registration, and ZED Certification. Became the First ZED Gold Company of the District.' },
             ].map((item, i) => (
               <div key={i} className="flex gap-6 items-start group">
                 <div className="size-14 rounded-full bg-[#222222] border border-white/10 shadow-lg flex items-center justify-center text-white group-hover:border-[#00C853] group-hover:text-[#00C853] group-hover:bg-[#00C853]/5 transition-all duration-300 shrink-0">
@@ -101,7 +101,7 @@ export default function AboutPage() {
         <section className="w-full py-20 border-t border-white/5 bg-[#1a1a1a]">
           <div className="max-w-[1280px] mx-auto px-4 md:px-10">
             <div className="flex flex-wrap justify-center items-center gap-16 md:gap-28 opacity-60 hover:opacity-100 transition-opacity duration-500">
-              {['🛡️ ISO 9001', '💧 Pure Source', '♻️ 100% Recycled', '⚗️ Lab Tested'].map((item, i) => (
+              {['🏛️ BIS License', '🍽️ FSSAI', '🛡️ ISO Certified', '🏭 MSME', '🥇 ZED Gold', '🔬 In-House Labs'].map((item, i) => (
                 <div key={i} className="flex flex-col items-center gap-3 group">
                   <span className="text-4xl text-white group-hover:text-[#00C853] transition-colors font-light">{item.split(' ')[0]}</span>
                   <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400">{item.split(' ').slice(1).join(' ')}</span>

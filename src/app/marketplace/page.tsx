@@ -6,14 +6,13 @@ import { useCart } from '@/context/CartContext';
 import { ShoppingCart, Plus, Minus, Package, Truck, Building, Check, Droplets } from 'lucide-react';
 
 const products = [
-  { id: 'savi-500ml', name: 'SAVI Pure', size: '500ml', price: 30, pack: 'Single Bottle' },
-  { id: 'savi-1l', name: 'SAVI Pure', size: '1 Litre', price: 50, pack: 'Single Bottle' },
-  { id: 'savi-2l', name: 'SAVI Pure', size: '2 Litre', price: 80, pack: 'Single Bottle' },
-  { id: 'savi-500ml-12', name: 'SAVI Pure', size: '500ml × 12', price: 320, pack: 'Case of 12' },
-  { id: 'savi-1l-6', name: 'SAVI Pure', size: '1L × 6', price: 280, pack: 'Case of 6' },
-  { id: 'savi-5l', name: 'SAVI Premium', size: '5 Litre Jar', price: 120, pack: 'Reusable Jar' },
-  { id: 'savi-20l', name: 'SAVI Premium', size: '20 Litre Dispenser', price: 200, pack: 'With Refill' },
-  { id: 'savi-alkaline', name: 'SAVI Alkaline+', size: '1 Litre', price: 75, pack: 'Premium pH 8.5' },
+  { id: 'savi-200ml-case', name: 'SAVI 200ML', size: '200ml × 48', price: 0, pack: 'Case (48 Bottles)', image: '/250ml.png' },
+  { id: 'savi-250ml-case', name: 'SAVI 250ML', size: '250ml × 36', price: 0, pack: 'Case (36 Bottles)', image: '/250ml.png' },
+  { id: 'savi-300ml-case', name: 'SAVI 300ML', size: '300ml × 30', price: 0, pack: 'Case (30 Bottles)', image: '/250ml-2.png' },
+  { id: 'savi-500ml-case', name: 'SAVI 500ML', size: '500ml × 24', price: 0, pack: 'Case (24 Bottles)', image: '/500ml.png' },
+  { id: 'savi-1000ml-case', name: 'SAVI 1000ML', size: '1000ml × 12', price: 0, pack: 'Case (12 Bottles)', image: '/1lrwhite.png' },
+  { id: 'savi-2000ml-case', name: 'SAVI 2000ML', size: '2000ml × 6', price: 0, pack: 'Case (6 Bottles)', image: '/1lrblack.png' },
+  { id: 'savi-20ltr-can', name: 'SAVI 20LTR', size: '20 Litre', price: 0, pack: 'Can', image: '/WhatsApp_Image_2025-12-27_at_15.43.08-removebg-preview.png' },
 ];
 
 export default function MarketplacePage() {
@@ -50,8 +49,12 @@ export default function MarketplacePage() {
                 return (
                   <div key={product.id} className="bg-[#2d2d2d] rounded-3xl p-6 border border-white/5 hover:border-[#00C853]/20 transition-all group">
                     {/* Product Image */}
-                    <div className="aspect-square rounded-2xl bg-[#222] mb-6 flex items-center justify-center relative overflow-hidden">
-                      <Droplets className="size-20 text-white/10 group-hover:text-[#00C853]/20 transition-colors" />
+                    <div className="aspect-square rounded-2xl bg-gradient-to-b from-[#2a2a2a] to-[#1a1a1a] mb-6 flex items-center justify-center relative overflow-hidden p-4">
+                      <img 
+                        src={product.image} 
+                        alt={product.name}
+                        className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-500"
+                      />
                       <div className="absolute top-3 right-3 bg-[#00C853]/10 text-[#00C853] text-[10px] font-bold px-2 py-1 rounded-full">
                         {product.pack}
                       </div>
