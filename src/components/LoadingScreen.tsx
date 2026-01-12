@@ -1,13 +1,28 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Droplets, ShieldCheck } from 'lucide-react';
+import { ShieldCheck } from 'lucide-react';
 
-export default function LoadingScreen({ onComplete }: { onComplete: () => void }) {
+// Bottle images that cycle in the center
+const BOTTLES = [
+  { src: '/250ml.png', label: '250ml' },
+  { src: '/500ml.png', label: '500ml' },
+  { src: '/1lrblack.png', label: '1L' },
+  { src: '/3d-bottle-hero.png', label: 'Premium' },
+];
+
+interface LoadingScreenProps {
+  onComplete: () => void;
+  onTransitionStart?: () => void;
+}
+
+export default function LoadingScreen({ onComplete, onTransitionStart }: LoadingScreenProps) {
   const [progress, setProgress] = useState(0);
   const [isVisible, setIsVisible] = useState(true);
   const [shouldRender, setShouldRender] = useState(true);
+  const [currentBottleIndex, setCurrentBottleIndex] = useState(0);
 
+  // Progress timer
   useEffect(() => {
     const duration = 4000;
     const interval = 40;
@@ -19,6 +34,7 @@ export default function LoadingScreen({ onComplete }: { onComplete: () => void }
         if (next >= 100) {
           clearInterval(timer);
           setTimeout(() => {
+            onTransitionStart?.();
             setIsVisible(false);
             setTimeout(onComplete, 500);
           }, 300);
@@ -29,7 +45,16 @@ export default function LoadingScreen({ onComplete }: { onComplete: () => void }
     }, interval);
 
     return () => clearInterval(timer);
-  }, [onComplete]);
+  }, [onComplete, onTransitionStart]);
+
+  // Cycle through bottles
+  useEffect(() => {
+    const bottleInterval = setInterval(() => {
+      setCurrentBottleIndex((prev) => (prev + 1) % BOTTLES.length);
+    }, 800); // Change bottle every 800ms
+
+    return () => clearInterval(bottleInterval);
+  }, []);
 
   // Don't render if already loaded
   if (!shouldRender) {
@@ -41,6 +66,8 @@ export default function LoadingScreen({ onComplete }: { onComplete: () => void }
       <div className="fixed inset-0 z-50 bg-[#030303] opacity-0 animate-fade-out pointer-events-none" />
     );
   }
+
+  const currentBottle = BOTTLES[currentBottleIndex];
 
   return (
     <div className={`fixed inset-0 z-50 flex flex-col items-center justify-center overflow-hidden bg-[#030303] refraction-bg transition-opacity duration-500 ${progress >= 100 ? 'opacity-0' : 'opacity-100'}`}>
@@ -70,32 +97,43 @@ export default function LoadingScreen({ onComplete }: { onComplete: () => void }
             style={{ transform: `scale(${1.05 + progress * 0.001})`, animationDelay: '1s' }}
           />
           
-          {/* Water ripple image with icon overlay */}
-          <div className="relative h-56 w-56 overflow-hidden rounded-full shadow-2xl shadow-black/50 ring-1 ring-white/10">
-            <div className="absolute inset-0 z-10 bg-gradient-to-b from-black/10 to-black/60 mix-blend-overlay" />
-            <img 
-              alt="Macro close-up of a pure water ripple" 
-              className="h-full w-full object-cover opacity-80 transition-transform duration-[4s] ease-in-out grayscale brightness-110 contrast-125"
-              style={{ transform: `scale(${1.1 - progress * 0.001})` }}
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuCcQeX0EFkUkCzM3LwTAMOAIQgSPYkZ8o1-v93QaMW6rzdcwHdg9adjGWHlxOT-teI_7wlszgA23EMlzyn6QJQTJ0H_5fdRF5IbuItPdqBX_s58rbJ4XSYvQtIvOYiD_SMaR_2IW6BV3pQuAcotX3sFK5S26dgqTw0pA7VdG31FpkT1QwSzzCj54oQ17Ry_xvmH2-Hf5KB58KHvV2bAVq7XnDxfeHZxj7Ly-JX8RMjo61BoqZ2FBYUGikeGPv_8NSYuHzF4Jul7AEkn"
-            />
-            <div className="absolute inset-0 z-20 flex items-center justify-center bg-black/10 backdrop-blur-[1px]">
-              <Droplets 
-                className="text-white drop-shadow-lg opacity-90 transition-transform duration-300"
-                style={{ width: `${80 + progress * 0.3}px`, height: `${80 + progress * 0.3}px` }}
-              />
+          {/* Cycling bottle images */}
+          <div className="relative h-56 w-56 flex items-center justify-center">
+            {/* Soft glow behind bottle */}
+            <div className="absolute inset-0 bg-gradient-to-t from-[#00C853]/10 to-transparent blur-2xl opacity-50" />
+            
+            {/* Bottle image with crossfade animation */}
+            <div className="relative h-full w-full flex items-center justify-center">
+              {BOTTLES.map((bottle, index) => (
+                <img
+                  key={bottle.src}
+                  src={bottle.src}
+                  alt={`SAVI ${bottle.label} water bottle`}
+                  className={`absolute h-44 w-auto object-contain drop-shadow-[0_20px_40px_rgba(0,0,0,0.6)] transition-all duration-500 ${
+                    index === currentBottleIndex 
+                      ? 'opacity-100 scale-100' 
+                      : 'opacity-0 scale-90'
+                  }`}
+                />
+              ))}
+            </div>
+            
+            {/* Bottle label */}
+            <div className="absolute -bottom-2 left-1/2 -translate-x-1/2">
+              <span className="text-[10px] font-bold uppercase tracking-widest text-[#00C853] transition-opacity duration-300">
+                {currentBottle.label}
+              </span>
             </div>
           </div>
         </div>
 
-        {/* Brand name */}
+        {/* Brand logo */}
         <div className="flex flex-col items-center gap-3 text-center">
-          <h1 
-            className="text-white tracking-[0.4em] text-4xl md:text-5xl font-bold uppercase leading-tight text-glow transition-all duration-300"
-            style={{ letterSpacing: `${0.4 + progress * 0.002}em` }}
-          >
-            SAVI
-          </h1>
+          <img 
+            src="/logo-white.jpeg"
+            alt="SAVI"
+            className="h-16 md:h-20 w-auto object-contain transition-all duration-300"
+          />
           <div className="mt-2 flex items-center justify-center gap-4 opacity-80">
             <span 
               className="h-px bg-gradient-to-r from-transparent to-[#00C853]/50 transition-all duration-300"

@@ -81,10 +81,11 @@ export default function Header() {
           href="/"
           className="flex items-center gap-3 group"
         >
-          <div className="flex size-10 items-center justify-center rounded-3xl bg-white/10 border border-white/20 text-white shadow-[0_0_15px_-3px_rgba(255,255,255,0.1)] group-hover:border-[#00C853] transition-colors duration-300">
-            <Droplets className="size-5 text-[#00C853]" />
-          </div>
-          <h2 className="text-white text-xl font-bold tracking-tight group-hover:text-[#00C853] transition-colors duration-300">SAVI</h2>
+          <img 
+            src="/logo-white.jpeg"
+            alt="SAVI"
+            className="h-10 w-auto object-contain group-hover:opacity-80 transition-opacity duration-300"
+          />
         </Link>
 
         {/* Desktop Navigation */}

@@ -14,6 +14,10 @@ export const metadata: Metadata = {
   title: "SAVI - Premium Packaged Water",
   description: "SAVI delivers pristine molecular hydration with unmatched logistical precision. A darker, deeper commitment to purity.",
   keywords: ["packaged water", "premium water", "SAVI", "hydration", "pure water"],
+  icons: {
+    icon: "/logo-black.jpeg",
+    apple: "/logo-black.jpeg",
+  },
 };
 
 export default function RootLayout({

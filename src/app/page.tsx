@@ -29,22 +29,37 @@ function Section({ id, children, className = '' }: { id: string; children: React
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
   const [showContent, setShowContent] = useState(false);
+  const [heroReady, setHeroReady] = useState(false);
 
   useEffect(() => {
     const hasLoaded = sessionStorage.getItem('savi-loaded');
     if (hasLoaded) {
       setIsLoading(false);
       setShowContent(true);
+      setHeroReady(true);
     }
   }, []);
 
   const handleLoadingComplete = () => {
+    sessionStorage.setItem('savi-loaded', 'true');
     setIsLoading(false);
-    setTimeout(() => setShowContent(true), 100);
+    setTimeout(() => {
+      setShowContent(true);
+      setTimeout(() => setHeroReady(true), 100);
+    }, 100);
+  };
+
+  const handleTransitionStart = () => {
+    // Prepare for hero bottle animation
   };
 
   if (isLoading) {
-    return <LoadingScreen onComplete={handleLoadingComplete} />;
+    return (
+      <LoadingScreen 
+        onComplete={handleLoadingComplete} 
+        onTransitionStart={handleTransitionStart}
+      />
+    );
   }
 
   return (
@@ -138,30 +153,52 @@ export default function Home() {
                   </div>
                 </AnimateOnScroll>
               </div>
-              {/* Right - Bottle */}
+              {/* Right - Hero Bottle */}
               <div className="relative h-[60vh] lg:h-[85vh] w-full flex items-center justify-center order-1 lg:order-2">
+                {/* Background glow */}
                 <div className="absolute w-[60%] aspect-square rounded-full bg-gradient-to-b from-white/5 to-transparent opacity-20 blur-[100px] animate-pulse" />
-                <div className="relative w-full h-full max-w-[500px] flex items-center justify-center animate-float">
-                  <div className="relative w-[50%] h-[70%] rounded-[4rem] bg-gradient-to-br from-white/10 to-transparent backdrop-blur-2xl border border-white/20 shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden z-20 group cursor-pointer transition-transform duration-700 hover:scale-[1.02]">
-                    <div className="absolute bottom-0 left-0 right-0 h-[85%] bg-gradient-to-t from-[#121212] via-[#1a1a1a]/80 to-transparent opacity-90" />
-                    <div className="absolute top-0 right-0 w-[45%] h-full bg-gradient-to-l from-white/10 to-transparent skew-x-12 opacity-40" />
-                    <div className="absolute top-12 left-6 w-2 h-[60%] bg-gradient-to-b from-white/40 to-transparent rounded-full blur-[1px]" />
-                    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[42%] h-12 bg-gradient-to-b from-[#2d2d2d] to-[#121212] rounded-b-2xl shadow-lg border-b border-white/10 z-30">
-                      <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-[60%] h-[1px] bg-[#00C853] shadow-[0_0_8px_rgba(0,200,83,0.8)]" />
-                    </div>
-                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full flex flex-col items-center justify-center text-center z-30">
-                      <h3 className="text-white text-5xl font-black tracking-[0.2em] uppercase rotate-90 lg:rotate-0 drop-shadow-2xl">SAVI</h3>
-                      <div className="hidden lg:block w-8 h-0.5 bg-[#00C853] mt-4 glow-effect" />
-                    </div>
+                
+                <div className="relative w-full h-full max-w-[500px] flex items-center justify-center">
+                  {/* Hero Bottle Image with reveal animation */}
+                  <div 
+                    className={`relative z-20 transition-all duration-1000 ${
+                      heroReady 
+                        ? 'opacity-100 animate-gentle-float' 
+                        : 'opacity-0 scale-75 translate-y-8'
+                    }`}
+                  >
+                    <img
+                      src="/3d-bottle-hero.png"
+                      alt="SAVI Premium Water Bottle"
+                      className="h-[55vh] lg:h-[80vh] w-auto object-contain drop-shadow-[0_30px_60px_rgba(0,0,0,0.6)] cursor-pointer transition-transform duration-700 hover:scale-[1.02]"
+                    />
                   </div>
-                  <div className="absolute top-[20%] right-[0%] lg:-right-[5%] p-5 bg-[#1a1a1a]/80 backdrop-blur-xl rounded-3xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.8)] border border-white/10 animate-float-delayed z-30 max-w-[180px]">
+                  
+                  {/* Floating info card - Certified */}
+                  <div 
+                    className={`absolute top-[20%] right-[0%] lg:-right-[5%] p-5 bg-[#1a1a1a]/80 backdrop-blur-xl rounded-3xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.8)] border border-white/10 z-30 max-w-[180px] transition-all duration-700 ${
+                      heroReady 
+                        ? 'opacity-100 translate-y-0 animate-float-delayed' 
+                        : 'opacity-0 translate-y-4'
+                    }`}
+                    style={{ transitionDelay: heroReady ? '0.3s' : '0s' }}
+                  >
                     <div className="flex items-center gap-2 mb-2">
                       <Shield className="size-5 text-[#00C853]" />
                       <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400">Certified</span>
                     </div>
                     <p className="text-sm font-bold text-white leading-tight">BIS License (ISI) Certified</p>
                   </div>
-                  <div className="absolute bottom-[25%] left-[-5%] lg:-left-[10%] p-5 bg-[#1a1a1a]/80 backdrop-blur-xl rounded-3xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.8)] border border-white/10 animate-float z-30 min-w-[140px]" style={{ animationDelay: '2s' }}>
+                  
+                  {/* Floating info card - pH */}
+                  <div 
+                    className={`absolute bottom-[25%] left-[-5%] lg:-left-[10%] p-5 bg-[#1a1a1a]/80 backdrop-blur-xl rounded-3xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.8)] border border-white/10 z-30 min-w-[140px] transition-all duration-700 ${
+                      heroReady 
+                        ? 'opacity-100 translate-y-0 animate-float' 
+                        : 'opacity-0 translate-y-4'
+                    }`}
+                    style={{ transitionDelay: heroReady ? '0.5s' : '0s', animationDelay: heroReady ? '2s' : '0s' }}
+                  >
                     <div className="flex items-center gap-2 mb-1">
                       <FlaskConical className="size-5 text-[#00C853]" />
                       <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400">Alkaline</span>
@@ -476,12 +513,18 @@ export default function Home() {
           <div className="max-w-[1440px] mx-auto px-4 md:px-8">
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4" style={{ gridAutoRows: '280px' }}>
               {[
-                { title: 'Fashion Week Gala', loc: 'Paris', span: 'md:col-span-2', icon: Star },
-                { title: 'Signature Glass', loc: 'Product', span: 'md:row-span-2', icon: Sparkles },
-                { title: 'VIP Hosting', loc: 'Service', span: '', icon: Users },
-                { title: 'Glacial Source', loc: 'Source', span: '', icon: Droplets },
-                { title: 'Global Fleet', loc: 'Logistics', span: 'md:col-span-2', icon: Truck },
-                { title: 'Corporate HQ', loc: 'Tokyo', span: '', icon: Building },
+                { title: 'Premium Bottles', loc: 'Product', span: 'md:col-span-2', image: '/bottle2.jpeg' },
+                { title: 'Event Hydration', loc: 'Events', span: 'md:row-span-2', image: '/event1.jpeg' },
+                { title: 'Bottle Collection', loc: 'Product', span: '', image: '/bottle3.jpeg' },
+                { title: 'VIP Service', loc: 'Corporate', span: '', image: '/event2.jpeg' },
+                { title: 'Production Facility', loc: 'Logistics', span: 'md:col-span-2', image: '/WhatsApp Image 2025-12-27 at 16.12.09 (4).jpeg' },
+                { title: 'Corporate Events', loc: 'Events', span: '', image: '/event3.jpeg' },
+                { title: 'Quality Packaging', loc: 'Product', span: '', image: '/bottle4.jpeg' },
+                { title: 'Water Plant', loc: 'Facility', span: 'md:col-span-2', image: '/WhatsApp Image 2025-12-27 at 16.12.09 (5).jpeg' },
+                { title: 'Premium Range', loc: 'Product', span: '', image: '/bottle5.jpeg' },
+                { title: 'Special Events', loc: 'Events', span: '', image: '/event4.jpeg' },
+                { title: 'Bulk Supply', loc: 'Logistics', span: 'md:col-span-2 md:row-span-2', image: '/20ltrbottle.jpeg' },
+                { title: 'Display Collection', loc: 'Product', span: '', image: '/bottle6.jpeg' },
               ].map((item, i) => (
                 <MagicBentoCard
                   key={i}
@@ -490,20 +533,17 @@ export default function Home() {
                   borderColor="rgba(0, 200, 83, 0.4)"
                 >
                   <div 
-                    className="relative h-full w-full overflow-hidden rounded-3xl"
+                    className="relative h-full w-full overflow-hidden rounded-3xl group"
                     style={{ 
                       animation: `fadeSlideUp 0.6s ease-out ${i * 0.1}s both`,
                     }}
                   >
-                    {/* Animated background icon */}
-                    <div className="absolute flex items-center justify-center inset-0 transition-all duration-700">
-                      <item.icon className="size-24 text-white/[0.03] hover:text-[#00C853]/10 transition-all duration-700 hover:scale-125 hover:rotate-12" />
-                    </div>
-                    
-                    {/* Shimmer effect on hover */}
-                    <div className="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-500">
-                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full hover:translate-x-full transition-transform duration-1000" />
-                    </div>
+                    {/* Image */}
+                    <img 
+                      src={item.image}
+                      alt={item.title}
+                      className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    />
                     
                     {/* Gradient overlay */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
