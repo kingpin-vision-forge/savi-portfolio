@@ -11,7 +11,7 @@ import {
 import Link from 'next/link';
 
 // Replace with client's actual WhatsApp number
-const WHATSAPP_NUMBER = '919876543210'; // Format: country code + number without +
+const WHATSAPP_NUMBER = '917760161401'; // Format: country code + number without +
 
 export default function CheckoutPage() {
   const { items, totalPrice, clearCart } = useCart();
@@ -199,7 +199,7 @@ Transaction ID: ${formData.transactionId}
                             value={formData.phone}
                             onChange={handleInputChange}
                             className="w-full bg-white rounded-2xl pl-12 pr-5 py-4 text-gray-900 font-medium placeholder:text-gray-400 outline-none focus:ring-2 focus:ring-[#00C853]" 
-                            placeholder="+91 98765 43210" 
+                            placeholder="+91 77601 61401" 
                             type="tel"
                             required
                           />
