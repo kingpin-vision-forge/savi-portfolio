@@ -17,6 +17,7 @@ import {
 const LiquidEther = dynamic(() => import('@/components/LiquidEther'), { ssr: false });
 import MagicBentoCard from '@/components/MagicBentoCard';
 import AnimateOnScroll, { AnimatedCounter, StaggerContainer } from '@/components/AnimateOnScroll';
+import GlowOnScroll from '@/components/GlowOnScroll';
 
 function Section({ id, children, className = '' }: { id: string; children: React.ReactNode; className?: string }) {
   return (
@@ -31,17 +32,7 @@ export default function Home() {
   const [showContent, setShowContent] = useState(false);
   const [heroReady, setHeroReady] = useState(false);
 
-  useEffect(() => {
-    const hasLoaded = sessionStorage.getItem('savi-loaded');
-    if (hasLoaded) {
-      setIsLoading(false);
-      setShowContent(true);
-      setHeroReady(true);
-    }
-  }, []);
-
   const handleLoadingComplete = () => {
-    sessionStorage.setItem('savi-loaded', 'true');
     setIsLoading(false);
     setTimeout(() => {
       setShowContent(true);
@@ -100,13 +91,15 @@ export default function Home() {
                   <AnimateOnScroll animation="fadeUp" delay={0.1}>
                     <div className="inline-flex items-center gap-2 self-start rounded-3xl bg-[#2d2d2d] border border-white/10 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-white/90 backdrop-blur-sm shadow-md">
                       <Sparkles className="size-3 text-[#00C853]" />
-                      Clinical Grade Hydration
+                      Hydration, Perfected
                     </div>
                   </AnimateOnScroll>
                   <AnimateOnScroll animation="fadeUp" delay={0.25}>
-                    <h1 className="text-white text-6xl sm:text-7xl lg:text-[5.5rem] font-extrabold leading-[0.95] tracking-tight text-glow">
-                      Hydration<br />Refined.
-                    </h1>
+                    <GlowOnScroll glowColor="rgba(255, 255, 255, 0.4)">
+                      <h1 className="text-white text-6xl sm:text-7xl lg:text-[5.5rem] font-extrabold leading-[0.95] tracking-tight">
+                        Hydration<br />Refined.
+                      </h1>
+                    </GlowOnScroll>
                   </AnimateOnScroll>
                   <AnimateOnScroll animation="fadeUp" delay={0.4}>
                     <p className="text-gray-400 text-lg md:text-xl font-medium leading-relaxed max-w-lg mt-2">
@@ -121,7 +114,7 @@ export default function Home() {
                       className="group relative flex h-14 min-w-[180px] items-center justify-center overflow-hidden rounded-3xl bg-[#2d2d2d] border border-white/10 hover:border-[#00C853] text-white text-base font-bold shadow-lg hover:shadow-[#00C853]/25 transition-all duration-300 hover:-translate-y-1"
                     >
                       <span className="relative z-10 flex items-center gap-2 text-white group-hover:text-[#00C853] transition-colors">
-                        Order Water 
+                        Order Savi 
                         <ArrowRight className="size-4 group-hover:translate-x-1 transition-transform" />
                       </span>
                     </Link>
@@ -227,12 +220,13 @@ export default function Home() {
             <div className="relative z-10 w-full max-w-[1000px] px-6 md:px-10 flex flex-col items-center text-center">
               <div className="glass-panel p-10 md:p-16 rounded-3xl max-w-4xl backdrop-blur-xl border border-white/10 shadow-2xl">
                 <span className="inline-flex items-center gap-2 py-1.5 px-4 border border-white/20 rounded-full text-white text-[10px] font-bold uppercase tracking-[0.3em] mb-8 bg-white/5 backdrop-blur-sm">
-                  <Clock className="size-3" />
-                  Established 2004
+                  Since 2004
                 </span>
-                <h2 className="text-5xl md:text-7xl font-light tracking-tighter text-white mb-8 drop-shadow-2xl">
-                  Purity in <span className="font-medium italic bg-clip-text text-transparent bg-gradient-to-r from-white via-gray-300 to-gray-500">Slate</span>
-                </h2>
+                <GlowOnScroll glowColor="rgba(255, 255, 255, 0.35)">
+                  <h2 className="text-5xl md:text-7xl font-light tracking-tighter text-white mb-8 drop-shadow-2xl">
+                    Purity in <span className="font-medium italic bg-clip-text text-transparent bg-gradient-to-r from-white via-gray-300 to-gray-500">Slate</span>
+                  </h2>
+                </GlowOnScroll>
                 <p className="text-lg md:text-xl text-gray-300 leading-relaxed max-w-2xl mx-auto mb-10 font-light tracking-wide">
                   Experience the essence of untouched nature, refined for your well-being. SAVI isn&apos;t just a resource, it&apos;s the foundation of a pure, quiet life.
                 </p>
@@ -341,9 +335,11 @@ export default function Home() {
                 </div>
               </AnimateOnScroll>
               <AnimateOnScroll animation="fadeUp" delay={0.25}>
-                <h2 className="text-white text-5xl md:text-7xl font-extrabold tracking-tight mb-8 text-glow leading-none">
-                  Uncompromising<br /><span className="text-gray-500">Purity Standards.</span>
-                </h2>
+                <GlowOnScroll glowColor="rgba(0, 200, 83, 0.4)">
+                  <h2 className="text-white text-5xl md:text-7xl font-extrabold tracking-tight mb-8 leading-none">
+                    Uncompromising<br /><span className="text-gray-500">Purity Standards.</span>
+                  </h2>
+                </GlowOnScroll>
               </AnimateOnScroll>
               <AnimateOnScroll animation="fadeUp" delay={0.4}>
                 <p className="text-gray-400 text-lg md:text-xl font-medium leading-relaxed max-w-2xl mx-auto">
@@ -478,10 +474,12 @@ export default function Home() {
                 <span className="text-[#00C853] text-[10px] font-bold tracking-[0.3em] uppercase opacity-90">Our Portfolio</span>
               </AnimateOnScroll>
               <AnimateOnScroll animation="fadeUp" delay={0.25}>
-                <h2 className="text-white text-5xl md:text-6xl lg:text-7xl font-light tracking-tighter leading-[1.1]">
-                  Curating Excellence <br />
-                  <span className="font-medium bg-clip-text text-transparent bg-gradient-to-r from-white via-gray-300 to-gray-500 italic">in Hydration</span>
-                </h2>
+                <GlowOnScroll glowColor="rgba(255, 255, 255, 0.35)">
+                  <h2 className="text-white text-5xl md:text-6xl lg:text-7xl font-light tracking-tighter leading-[1.1]">
+                    Curating Excellence <br />
+                    <span className="font-medium bg-clip-text text-transparent bg-gradient-to-r from-white via-gray-300 to-gray-500 italic">in Hydration</span>
+                  </h2>
+                </GlowOnScroll>
               </AnimateOnScroll>
               <AnimateOnScroll animation="scaleUp" delay={0.4}>
                 <div className="h-px w-20 bg-gradient-to-r from-transparent via-gray-600 to-transparent my-4" />
@@ -575,9 +573,11 @@ export default function Home() {
                 </div>
               </AnimateOnScroll>
               <AnimateOnScroll animation="fadeUp" delay={0.25}>
-                <h2 className="text-white text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight mb-6">
-                  Refine Your <br /> <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-500">Experience.</span>
-                </h2>
+                <GlowOnScroll glowColor="rgba(0, 200, 83, 0.4)">
+                  <h2 className="text-white text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight mb-6">
+                    Refine Your <br /> <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-500">Experience.</span>
+                  </h2>
+                </GlowOnScroll>
               </AnimateOnScroll>
               <AnimateOnScroll animation="fadeUp" delay={0.4}>
                 <p className="text-gray-400 text-lg md:text-xl font-medium leading-relaxed max-w-2xl">
@@ -638,7 +638,7 @@ export default function Home() {
                       <MessageCircle className="size-6 text-[#00C853] group-hover:text-white transition-colors" />
                     </div>
                     <span className="font-bold text-lg text-[#222222]">WhatsApp</span>
-                    <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider group-hover:text-[#00C853] transition-colors">9036522355</span>
+                    <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider group-hover:text-[#00C853] transition-colors">7760161401</span>
                   </button>
                   <button className="bg-white hover:bg-[#f5f5f5] text-[#222222] rounded-3xl p-6 flex flex-col items-center justify-center gap-2 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 group border border-transparent hover:border-[#00C853]">
                     <div className="size-12 rounded-full bg-[#00C853]/10 flex items-center justify-center mb-1 group-hover:bg-[#00C853] transition-colors duration-300">
@@ -661,6 +661,11 @@ export default function Home() {
                       SY NO 739/2B, Opp Hotel Town Palace<br />
                       Athani Road, Vijayapura - 586102
                     </p>
+                    <div className="h-px w-full bg-white/10 my-3" />
+                    <div className="flex items-center gap-3 text-gray-300">
+                      <Phone className="size-4 text-[#00C853]" />
+                      <span className="font-medium text-sm">9036522355, 7760151401</span>
+                    </div>
                   </div>
                 </div>
 
@@ -676,10 +681,19 @@ export default function Home() {
                       Chalukya Nagar, Solapur Road<br />
                       Vijayapura - 586103
                     </p>
-                    <div className="h-px w-full bg-white/10 my-4" />
+                    <div className="h-px w-full bg-white/10 my-3" />
+                    <div className="flex items-center gap-3 text-gray-300 mb-2">
+                      <Phone className="size-4 text-[#00C853]" />
+                      <span className="font-medium text-sm">08352216401, 08352265951</span>
+                    </div>
+                    <div className="flex items-center gap-3 text-gray-300 mb-2">
+                      <Phone className="size-4 text-[#00C853]" />
+                      <span className="font-medium text-sm">9448179701, 9845820401, 9880721401</span>
+                    </div>
+                    <div className="h-px w-full bg-white/10 my-3" />
                     <div className="flex items-center gap-3 text-gray-300">
                       <MessageCircle className="size-4 text-[#00C853]" />
-                      <span className="font-medium hover:text-white transition-colors cursor-pointer text-sm">JEVOOREMPIRE@GMAIL.COM</span>
+                      <span className="font-medium hover:text-white transition-colors cursor-pointer text-sm">savidhareminerals2004@gmail.com</span>
                     </div>
                   </div>
                 </div>

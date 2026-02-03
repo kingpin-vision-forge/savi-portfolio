@@ -82,7 +82,7 @@ export default function ContactPage() {
                     <span className="text-3xl">💬</span>
                   </div>
                   <span className="font-bold text-lg text-[#222222]">WhatsApp</span>
-                  <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider group-hover:text-[#00C853] transition-colors">9036522355 / 7760161401</span>
+                  <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider group-hover:text-[#00C853] transition-colors">7760161401</span>
                 </button>
                 <button className="bg-white hover:bg-[#f5f5f5] text-[#222222] rounded-3xl p-6 flex flex-col items-center justify-center gap-2 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 group border border-transparent hover:border-[#00C853]">
                   <div className="size-12 rounded-full bg-[#00C853]/10 flex items-center justify-center mb-1 group-hover:bg-[#00C853] group-hover:text-white transition-colors duration-300 text-[#00C853]">
@@ -105,6 +105,11 @@ export default function ContactPage() {
                     SY NO 739/2B, Opp Hotel Town Palace<br />
                     Athani Road, Vijayapura - 586102
                   </p>
+                  <div className="h-px w-full bg-white/10 my-3" />
+                  <div className="flex items-center gap-3 text-gray-300">
+                    <span className="text-[#00C853] text-sm">📞</span>
+                    <span className="font-medium text-sm">9036522355, 7760151401</span>
+                  </div>
                 </div>
               </div>
 
@@ -122,16 +127,17 @@ export default function ContactPage() {
                   </p>
                   <div className="h-px w-full bg-white/10 my-4" />
                   <div className="flex items-center gap-3 text-gray-300 mb-2">
+                    <span className="text-[#00C853] text-sm">📞</span>
+                    <span className="font-medium text-sm">08352216401, 08352265951</span>
+                  </div>
+                  <div className="flex items-center gap-3 text-gray-300 mb-2">
+                    <span className="text-[#00C853] text-sm">📞</span>
+                    <span className="font-medium text-sm">9448179701, 9845820401, 9880721401</span>
+                  </div>
+                  <div className="h-px w-full bg-white/10 my-3" />
+                  <div className="flex items-center gap-3 text-gray-300 mb-2">
                     <span className="text-[#00C853] text-sm">✉️</span>
-                    <span className="font-medium hover:text-white transition-colors cursor-pointer text-sm">JEVOOREMPIRE@GMAIL.COM</span>
-                  </div>
-                  <div className="flex items-center gap-3 text-gray-300 mb-2">
-                    <span className="text-[#00C853] text-sm">📞</span>
-                    <span className="font-medium text-sm">9845820401, 9880721401, 9448179701</span>
-                  </div>
-                  <div className="flex items-center gap-3 text-gray-300 mb-2">
-                    <span className="text-[#00C853] text-sm">📞</span>
-                    <span className="font-medium text-sm">08352265951, 08352261401</span>
+                    <span className="font-medium hover:text-white transition-colors cursor-pointer text-sm">savidhareminerals2004@gmail.com</span>
                   </div>
                   <div className="h-px w-full bg-white/10 my-4" />
                   <div className="flex items-center gap-3 text-gray-300">

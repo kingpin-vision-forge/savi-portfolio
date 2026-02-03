@@ -22,7 +22,7 @@ export default function AboutPage() {
           <div className="relative z-10 w-full max-w-[1280px] px-4 md:px-10 flex flex-col items-center text-center">
             <div className="glass-panel p-10 md:p-16 rounded-3xl max-w-4xl backdrop-blur-xl border border-white/10 shadow-2xl">
               <span className="inline-block py-1.5 px-4 border border-white/20 rounded-full text-white text-[10px] font-bold uppercase tracking-[0.3em] mb-8 bg-white/5 backdrop-blur-sm">
-                Established 2004
+                Since 2004
               </span>
               <h1 className="text-5xl md:text-7xl lg:text-8xl font-light tracking-tighter text-white mb-8 drop-shadow-2xl">
                 Purity in <span className="font-medium italic bg-clip-text text-transparent bg-gradient-to-r from-white via-gray-300 to-gray-500">Slate</span>
