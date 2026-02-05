@@ -38,7 +38,7 @@ export default function DealersPage() {
           </div>
 
           {/* Right - Green side */}
-          <div className="relative p-8 lg:p-20 flex flex-col justify-center h-full bg-[#00C853] text-white lg:rounded-bl-[4rem]">
+          <div className="relative p-8 lg:p-20 flex flex-col justify-center h-full text-white lg:rounded-bl-[4rem]">
             <div className="relative z-10">
               <h2 className="text-4xl font-bold mb-10 tracking-tight text-white">Franchise Benefits</h2>
               <div className="grid gap-6">
