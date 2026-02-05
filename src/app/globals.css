@@ -7,6 +7,39 @@ html {
   -moz-osx-font-smoothing: grayscale;
 }
 
+@keyframes flowMove {
+  from {
+    stroke-dashoffset: 0;
+  }
+  to {
+    stroke-dashoffset: -170;
+  }
+}
+
+@keyframes lightMove {
+  from {
+    stroke-dashoffset: 0;
+  }
+  to {
+    stroke-dashoffset: -420;
+  }
+}
+
+.flowPulse {
+  stroke-dasharray: 30 140;
+  animation: flowMove 1.6s linear infinite;
+  opacity: 0.9;
+}
+
+.flowLight {
+  stroke-dasharray: 140 320;
+  animation: lightMove 3.4s linear infinite;
+  filter: drop-shadow(0 0 8px rgba(0, 200, 83, 0.9))
+    drop-shadow(0 0 22px rgba(108, 99, 255, 0.8))
+    drop-shadow(0 0 40px rgba(255, 255, 255, 0.4));
+  opacity: 0.95;
+}
+
 /* CSS Variables */
 :root {
   --background: #0f0f0f;
@@ -70,8 +103,13 @@ body {
 
 /* Animations */
 @keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-12px); }
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
 }
 
 .animate-float {
@@ -84,8 +122,12 @@ body {
 }
 
 @keyframes shimmer {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(100%); }
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
 }
 
 .animate-shimmer {
@@ -93,8 +135,13 @@ body {
 }
 
 @keyframes pulseSlow {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.7; }
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
 }
 
 .animate-pulse-slow {
@@ -102,32 +149,38 @@ body {
 }
 
 @keyframes fadeSlideUp {
-  0% { 
-    opacity: 0; 
-    transform: translateY(24px); 
+  0% {
+    opacity: 0;
+    transform: translateY(24px);
   }
-  100% { 
-    opacity: 1; 
-    transform: translateY(0); 
+  100% {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
 @keyframes spotlightPulse {
-  0%, 100% { opacity: 0.6; }
-  50% { opacity: 1; }
+  0%,
+  100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
 }
 
 /* Card Styles */
 .product-card {
   background: #ffffff;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.12);
-  transition: transform 0.4s cubic-bezier(0.25, 0.1, 0.25, 1), 
-              box-shadow 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  transition:
+    transform 0.4s cubic-bezier(0.25, 0.1, 0.25, 1),
+    box-shadow 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 
 .product-card:hover {
   transform: translateY(-6px);
-  box-shadow: 0 20px 48px rgba(0,0,0,0.18);
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.18);
 }
 
 .card-hover-effect {
@@ -151,12 +204,16 @@ body {
 }
 
 input[type="checkbox"]:checked {
-  background-color: #00C853;
-  border-color: #00C853;
+  background-color: #00c853;
+  border-color: #00c853;
 }
 
 .refraction-bg {
-  background-image: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.02) 0%, transparent 70%);
+  background-image: radial-gradient(
+    circle at 50% 50%,
+    rgba(255, 255, 255, 0.02) 0%,
+    transparent 70%
+  );
 }
 
 ::selection {
@@ -168,64 +225,64 @@ input[type="checkbox"]:checked {
 
 /* Bottle slide-in from right */
 @keyframes bottleSlideIn {
-  0% { 
-    transform: translateX(100px) scale(0.8); 
-    opacity: 0; 
+  0% {
+    transform: translateX(100px) scale(0.8);
+    opacity: 0;
   }
-  100% { 
-    transform: translateX(0) scale(1); 
-    opacity: 1; 
+  100% {
+    transform: translateX(0) scale(1);
+    opacity: 1;
   }
 }
 
 /* Loading screen slide out left */
 @keyframes slideOutLeft {
-  0% { 
-    transform: translateX(0); 
-    opacity: 1; 
+  0% {
+    transform: translateX(0);
+    opacity: 1;
   }
-  100% { 
-    transform: translateX(-100%); 
-    opacity: 0; 
+  100% {
+    transform: translateX(-100%);
+    opacity: 0;
   }
 }
 
 /* Hero bottle scale and position reveal */
 @keyframes heroBottleReveal {
-  0% { 
-    transform: scale(0.6) translateY(20px); 
-    opacity: 0; 
+  0% {
+    transform: scale(0.6) translateY(20px);
+    opacity: 0;
   }
   60% {
     transform: scale(1.02) translateY(-5px);
     opacity: 1;
   }
-  100% { 
-    transform: scale(1) translateY(0); 
-    opacity: 1; 
+  100% {
+    transform: scale(1) translateY(0);
+    opacity: 1;
   }
 }
 
 /* Hero content fade in with upward motion */
 @keyframes heroContentReveal {
-  0% { 
-    transform: translateY(30px); 
-    opacity: 0; 
+  0% {
+    transform: translateY(30px);
+    opacity: 0;
   }
-  100% { 
-    transform: translateY(0); 
-    opacity: 1; 
+  100% {
+    transform: translateY(0);
+    opacity: 1;
   }
 }
 
 /* Water shimmer effect */
 @keyframes waterShimmer {
-  0% { 
-    background-position: -200% 0; 
+  0% {
+    background-position: -200% 0;
     opacity: 0.3;
   }
-  50% { 
-    background-position: 200% 0; 
+  50% {
+    background-position: 200% 0;
     opacity: 0.6;
   }
   100% {
@@ -236,17 +293,19 @@ input[type="checkbox"]:checked {
 
 /* Soft floating for hero bottle */
 @keyframes gentleFloat {
-  0%, 100% { 
-    transform: translateY(0); 
+  0%,
+  100% {
+    transform: translateY(0);
   }
-  50% { 
-    transform: translateY(-8px); 
+  50% {
+    transform: translateY(-8px);
   }
 }
 
 /* Soft glow pulse */
 @keyframes softGlow {
-  0%, 100% {
+  0%,
+  100% {
     box-shadow: 0 0 30px rgba(0, 200, 83, 0.1);
   }
   50% {
@@ -256,8 +315,12 @@ input[type="checkbox"]:checked {
 
 /* Bottle reflection fade */
 @keyframes reflectionFade {
-  0% { opacity: 0; }
-  100% { opacity: 0.3; }
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0.3;
+  }
 }
 
 /* Loading Screen Animation Utility Classes */
@@ -278,7 +341,12 @@ input[type="checkbox"]:checked {
 }
 
 .animate-water-shimmer {
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
   background-size: 200% 100%;
   animation: waterShimmer 3s ease-in-out infinite;
 }
@@ -296,8 +364,18 @@ input[type="checkbox"]:checked {
 }
 
 /* Stagger delay utilities for hero content */
-.stagger-1 { animation-delay: 0.1s; }
-.stagger-2 { animation-delay: 0.2s; }
-.stagger-3 { animation-delay: 0.3s; }
-.stagger-4 { animation-delay: 0.4s; }
-.stagger-5 { animation-delay: 0.5s; }
+.stagger-1 {
+  animation-delay: 0.1s;
+}
+.stagger-2 {
+  animation-delay: 0.2s;
+}
+.stagger-3 {
+  animation-delay: 0.3s;
+}
+.stagger-4 {
+  animation-delay: 0.4s;
+}
+.stagger-5 {
+  animation-delay: 0.5s;
+}
