@@ -108,7 +108,7 @@ export default function ContactPage() {
                   <div className="h-px w-full bg-white/10 my-3" />
                   <div className="flex items-center gap-3 text-gray-300">
                     <span className="text-[#00C853] text-sm">📞</span>
-                    <span className="font-medium text-sm">9036522355, 7760151401</span>
+                    <span className="font-medium text-sm">9036522355, 7760161401</span>
                   </div>
                 </div>
               </div>

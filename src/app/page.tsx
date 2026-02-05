@@ -247,12 +247,11 @@ export default function Home() {
           {/* Stats Bar */}
           <AnimateOnScroll animation="fadeUp" delay={0.3}>
             <div className="w-full max-w-[1280px] px-6 md:px-10 mx-auto -mt-8 mb-24">
-              <div className="bg-[#222222] border border-white/10 rounded-3xl p-8 shadow-[0_20px_50px_rgba(0,0,0,0.5)] grid grid-cols-2 md:grid-cols-4 gap-8 divide-x divide-white/5">
+              <div className="bg-[#222222] border border-white/10 rounded-3xl p-8 shadow-[0_20px_50px_rgba(0,0,0,0.5)] grid grid-cols-3 gap-8 divide-x divide-white/5">
                 {[
                   { value: 99.9, suffix: '%', label: 'Purity Level', icon: Sparkles },
                   { value: 50, suffix: '+', label: 'Natural Springs', icon: Droplets },
                   { value: 0, suffix: '', label: 'Carbon Footprint', icon: Leaf },
-                  { value: 2, suffix: 'M+', label: 'Happy Hydrators', icon: Users },
                 ].map((stat, i) => (
                   <div key={i} className="flex flex-col items-center text-center p-4 group">
                     <stat.icon className="size-6 text-[#00C853] mb-3 group-hover:scale-110 transition-transform" />
@@ -272,15 +271,16 @@ export default function Home() {
               <div className="text-center mb-16">
                 <span className="text-[#00C853] text-xs font-bold uppercase tracking-[0.2em] mb-3 block">History</span>
                 <h3 className="text-4xl md:text-5xl font-light text-white tracking-tight">The Flow of Time</h3>
+                <p className="text-gray-400 text-lg md:text-xl font-medium leading-relaxed max-w-2xl mx-auto mb-10 font-light tracking-wide">by Prashant S Jeevor & Somanath S Jeevor</p>
               </div>
             </AnimateOnScroll>
 
             <div className="space-y-6 w-full">
               {[
-                { year: '2004', title: 'Founding', icon: Droplets, desc: 'SAVI Packaged Drinking Water was established on 13th January 2004 by Somanath S Jevoor and Prashant S Jevoor as a Partnership Firm, starting with one sales outlet at Solapur Road, Vijayapura.' },
-                { year: '2010', title: 'Growth', icon: Factory, desc: 'Expanded operations with state-of-the-art manufacturing facility at Jevoor Empire, Athani Road. In-House Physical/Chemical Lab and Microbiological Lab established.' },
+                { year: '2004', title: 'Founding', icon: Droplets, desc: 'Savi Packaged Drinking Water was established on 13th January 2004 byPrashant S Jevoor and Somanath S Jevoor as a Proprietorship Firm with minimum Investment at Solapur Road, Vijayapura. Savi\'s journey started with manufactuing 20 litres water cans targetting only Vijayapura District.' },
+                { year: '2010', title: 'Growth', icon: Factory, desc: 'Expanded operations with state-of-the-art manufacturing facility at Jevoor Empire, Athani Road. Savi was the first firm to obtain BIS Certification in the region with all state and central government license also obtaining local authority license.' },
                 { year: '2018', title: 'Expansion', icon: Globe, desc: 'Grew to five outlets in Vijayapura City. Established distribution points across Vijayapura, Gulburga, Bagalkote, Hubballi, Gadag, and expanded to Maharashtra (Solapur & Pune).' },
-                { year: '2024', title: 'Recognition', icon: Award, desc: 'Achieved BIS License, FSSAI, ISO Certification, MSME Registration, and ZED Certification. Became the First ZED Gold Company of the District.' },
+                { year: '2026', title: 'Achievement', icon: Award, desc: 'SAVI proudly celebrates 22 years of serving pure, quality drinking water throughout Vijayapura district and neighbouring cities including Gulburga, Bagalkote, Hubballi, Gadag, Solapur, and Pune. A legacy of trust, purity, and dedication to community health.' },
               ].map((item, i) => (
                 <AnimateOnScroll key={i} animation="fadeLeft" delay={i * 0.2}>
                   <div className="flex gap-6 items-start group">
@@ -361,25 +361,27 @@ export default function Home() {
                     <Beaker className="size-5 text-[#00C853]" />
                     Live Water Analysis
                   </h3>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-8">
+                  <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-6">
                     {[
-                      { label: 'Alkalinity (pH)', value: '7.4', suffix: '+', bar: 85, note: 'Optimal Balance' },
-                      { label: 'TDS Level', value: '280', suffix: 'ppm', bar: 40, note: 'Electrolyte Rich' },
-                      { label: 'Contaminants', value: '0', suffix: '.00', bar: 0, note: 'Micro-Plastics Free' },
+                      { label: 'pH Level', value: '+6.0 to +8.5', suffix: '', bar: 85, note: 'Optimal Balance' },
+                      { label: 'TDS Level', value: '55±10', suffix: 'ppm', bar: 40, note: 'Pure & Balanced' },
+                      { label: 'Contaminants', value: '0.00', suffix: '', bar: 0, note: 'Micro-Plastics Free' },
+                      { label: 'UV Sterilization', value: 'Continuous', suffix: '', bar: 100, note: 'Active Protection' },
+                      { label: 'Ozonization', value: 'On-line', suffix: '', bar: 100, note: 'Real-time Treatment' },
                     ].map((item, i) => (
-                      <div key={i} className="flex flex-col gap-3">
-                        <div className="flex justify-between items-baseline">
-                          <span className="text-gray-500 text-xs font-bold uppercase tracking-wider">{item.label}</span>
-                          <CheckCircle2 className="size-4 text-[#00C853]" />
+                      <div key={i} className="flex flex-col gap-2 p-4 bg-[#222]/50 rounded-2xl">
+                        <div className="flex justify-between items-center">
+                          <span className="text-gray-500 text-[10px] font-bold uppercase tracking-wider">{item.label}</span>
+                          <CheckCircle2 className="size-3 text-[#00C853]" />
                         </div>
                         <div className="flex items-end gap-1">
-                          <span className="text-6xl font-extrabold text-white tracking-tighter">{item.value}</span>
-                          <span className="text-[#00C853] font-bold text-lg mb-2">{item.suffix}</span>
+                          <span className="text-xl font-bold text-white">{item.value}</span>
+                          {item.suffix && <span className="text-[#00C853] font-semibold text-xs mb-0.5">{item.suffix}</span>}
                         </div>
-                        <div className="w-full h-1.5 bg-white/10 rounded-full mt-2 overflow-hidden">
-                          <div className="h-full bg-[#00C853] shadow-[0_0_10px_rgba(0,200,83,0.5)] rounded-full transition-all duration-1000" style={{ width: `${item.bar}%` }} />
+                        <div className="w-full h-1 bg-white/10 rounded-full overflow-hidden">
+                          <div className="h-full bg-[#00C853] shadow-[0_0_8px_rgba(0,200,83,0.5)] rounded-full transition-all duration-1000" style={{ width: `${item.bar}%` }} />
                         </div>
-                        <p className="text-gray-400 text-xs mt-1">{item.note}</p>
+                        <p className="text-gray-500 text-[10px]">{item.note}</p>
                       </div>
                     ))}
                   </div>
@@ -432,6 +434,30 @@ export default function Home() {
               </div>
             </div>
 
+            {/* Quality Assurance */}
+            <div className="mb-20">
+              <div className="flex items-center justify-between mb-12">
+                <h3 className="text-white text-3xl font-bold border-l-4 border-[#00C853] pl-6">Quality Assurance & Testing</h3>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {[
+                  { icon: Beaker, title: 'Monthly NABL Reports', desc: 'Regular monthly testing conducted by NABL approved external laboratories ensuring consistent quality standards.' },
+                  { icon: FlaskConical, title: 'Six Monthly NABL Reports', desc: 'Comprehensive bi-annual analysis from NABL approved labs covering extensive water quality parameters.' },
+                  { icon: Award, title: 'Yearly NABL Reports', desc: 'Annual detailed quality assessment from NABL approved laboratories for complete compliance verification.' },
+                  { icon: Shield, title: 'Radio Activity Testing', desc: 'Specialized radio activity test reports ensuring water is free from harmful radioactive contaminants.' },
+                  { icon: Factory, title: 'Equipment Calibration', desc: 'Periodical calibration of all testing equipment by certified authorities maintaining measurement accuracy.' },
+                ].map((item, i) => (
+                  <div key={i} className="bg-[#2d2d2d] p-8 rounded-3xl border border-white/5 card-hover-effect group h-full flex flex-col">
+                    <div className="size-14 rounded-2xl bg-[#222] border border-white/10 flex items-center justify-center mb-6 shadow-lg shadow-black/50 group-hover:border-[#00C853]/30 transition-colors">
+                      <item.icon className="size-7 text-[#00C853]" />
+                    </div>
+                    <h4 className="text-white font-bold text-lg mb-3">{item.title}</h4>
+                    <p className="text-gray-400 text-sm leading-relaxed">{item.desc}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
             {/* Purity Protocol */}
             <div className="py-16 border-t border-white/5">
               <div className="flex flex-col lg:flex-row gap-16 lg:gap-24 items-start">
@@ -442,10 +468,137 @@ export default function Home() {
                 </div>
 
                 <div className="lg:w-2/3 flex flex-col gap-6 w-full">
+                  {/* Process Flow Chart - Premium Design */}
+                  <div className="bg-gradient-to-br from-[#1a1a1a] via-[#222] to-[#1a1a1a] rounded-[2rem] p-8 md:p-12 border border-white/10 mb-4 relative overflow-hidden shadow-2xl">
+                    {/* Background glow effects */}
+                    <div className="absolute top-0 left-1/4 w-1/2 h-32 bg-[#00C853]/10 blur-[80px] rounded-full" />
+                    <div className="absolute bottom-0 right-1/4 w-1/3 h-24 bg-[#00C853]/5 blur-[60px] rounded-full" />
+                    
+                    <div className="flex items-center justify-between mb-10 relative z-10">
+                      <h4 className="text-white text-xl md:text-2xl font-bold flex items-center gap-3">
+                        <div className="size-10 rounded-xl bg-gradient-to-br from-[#00C853] to-[#00C853]/60 flex items-center justify-center shadow-lg shadow-[#00C853]/20">
+                          <Sparkles className="size-5 text-white" />
+                        </div>
+                        Water Purification Process
+                      </h4>
+                      <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-[#00C853]/10 border border-[#00C853]/30">
+                        <span className="size-2 bg-[#00C853] rounded-full animate-pulse shadow-[0_0_8px_rgba(0,200,83,0.8)]" />
+                        <span className="text-[#00C853] text-xs font-bold uppercase tracking-wider">Live Process</span>
+                      </div>
+                    </div>
+
+                    {/* Flow Chart Grid */}
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 relative z-10">
+                      {[
+                        { step: 'Raw Water', num: '01', icon: Droplets },
+                        { step: 'Sand Filter', num: '02', icon: Beaker },
+                        { step: 'Carbon Filter', num: '03', icon: Beaker },
+                        { step: 'Softener', num: '04', icon: Sparkles },
+                        { step: 'Micron Filter', num: '05', icon: Shield },
+                        { step: 'RO System', num: '06', icon: Zap },
+                        { step: 'UV Sterilization', num: '07', icon: Zap },
+                        { step: 'Ozonization', num: '08', icon: Sparkles },
+                        { step: 'Storage Tank', num: '09', icon: Factory },
+                        { step: 'Final Filtration', num: '10', icon: FlaskConical },
+                        { step: 'Bottling', num: '11', icon: Award },
+                      ].map((item, i, arr) => (
+                        <div 
+                          key={i}
+                          className="group relative"
+                          style={{
+                            animation: `cardReveal 0.6s ease-out ${i * 0.08}s both`
+                          }}
+                        >
+                          <div 
+                            className="relative p-5 md:p-6 rounded-2xl bg-gradient-to-br from-[#2d2d2d] to-[#1f1f1f] border border-white/10 cursor-default overflow-hidden transition-all duration-500 hover:border-[#00C853]/50 hover:shadow-[0_0_30px_rgba(0,200,83,0.15)]"
+                            style={{
+                              animation: `boxGlow 11s ease-in-out ${i}s infinite`
+                            }}
+                          >
+                            {/* Step number badge */}
+                            <div className="absolute top-3 right-3 size-7 rounded-lg bg-[#00C853]/10 flex items-center justify-center border border-[#00C853]/20">
+                              <span className="text-[#00C853] text-[10px] font-bold">{item.num}</span>
+                            </div>
+                            
+                            {/* Icon */}
+                            <div className="size-12 rounded-xl bg-gradient-to-br from-[#00C853]/20 to-[#00C853]/5 flex items-center justify-center mb-4 group-hover:from-[#00C853]/30 group-hover:to-[#00C853]/10 transition-all duration-300">
+                              <item.icon className="size-6 text-[#00C853]" />
+                            </div>
+                            
+                            {/* Step name */}
+                            <h5 className="text-white font-bold text-sm md:text-base mb-1 group-hover:text-[#00C853] transition-colors">{item.step}</h5>
+                            <p className="text-gray-500 text-[10px] md:text-xs">Stage {item.num}</p>
+                            
+                            {/* Arrow indicator for non-last items */}
+                            {i < arr.length - 1 && (
+                              <div className="absolute -right-3 md:-right-4 top-1/2 -translate-y-1/2 z-20 hidden lg:block">
+                                <div className="size-6 rounded-full bg-[#2d2d2d] border border-white/10 flex items-center justify-center shadow-lg">
+                                  <ArrowRight className="size-3 text-[#00C853]" />
+                                </div>
+                              </div>
+                            )}
+                            
+                            {/* Glow overlay */}
+                            <div 
+                              className="absolute inset-0 bg-gradient-to-br from-[#00C853]/0 to-[#00C853]/0 rounded-2xl transition-all duration-500 pointer-events-none"
+                              style={{
+                                animation: `glowOverlay 11s ease-in-out ${i}s infinite`
+                              }}
+                            />
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                    
+                    {/* Bottom stats */}
+                    <div className="mt-10 pt-8 border-t border-white/5 grid grid-cols-3 gap-6 relative z-10">
+                      {[
+                        { label: 'Purification Stages', value: '11', icon: Beaker },
+                        { label: 'Purity Level', value: '99.9%', icon: Shield },
+                        { label: 'Processing Time', value: '~2min', icon: Clock },
+                      ].map((stat, i) => (
+                        <div key={i} className="flex flex-col items-center text-center group">
+                          <div className="size-10 rounded-xl bg-[#2d2d2d] border border-white/10 flex items-center justify-center mb-3 group-hover:border-[#00C853]/30 transition-colors">
+                            <stat.icon className="size-5 text-[#00C853]" />
+                          </div>
+                          <span className="text-white text-xl md:text-2xl font-bold mb-1">{stat.value}</span>
+                          <span className="text-gray-500 text-[10px] font-medium uppercase tracking-wider">{stat.label}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Add keyframe styles */}
+                  <style jsx>{`
+                    @keyframes cardReveal {
+                      0% { opacity: 0; transform: translateY(20px); }
+                      100% { opacity: 1; transform: translateY(0); }
+                    }
+                    @keyframes boxGlow {
+                      0%, 6% { 
+                        box-shadow: 0 0 30px rgba(0, 200, 83, 0.4), 0 0 60px rgba(0, 200, 83, 0.2), inset 0 0 20px rgba(0, 200, 83, 0.1);
+                        border-color: rgba(0, 200, 83, 0.6);
+                      }
+                      10%, 100% { 
+                        box-shadow: none;
+                        border-color: rgba(255, 255, 255, 0.1);
+                      }
+                    }
+                    @keyframes glowOverlay {
+                      0%, 6% { 
+                        background: linear-gradient(135deg, rgba(0, 200, 83, 0.15), rgba(0, 200, 83, 0.05));
+                      }
+                      10%, 100% { 
+                        background: linear-gradient(135deg, rgba(0, 200, 83, 0), rgba(0, 200, 83, 0));
+                      }
+                    }
+                  `}</style>
+
+                  {/* Process Steps */}
                   {[
                     { num: '01', title: 'Molecular Reverse Osmosis', icon: Beaker, desc: 'Water is forced through semi-permeable membranes to remove 99.9% of dissolved solids, bacteria, and impurities, stripping the water down to its essential H2O molecules.' },
-                    { num: '02', title: 'Mineral Infusion', icon: Sparkles, desc: 'A proprietary blend of calcium, magnesium, and potassium is reintroduced to create our signature smooth alkalinity and optimize hydration efficiency.' },
-                    { num: '03', title: 'Ozone Sanitization', icon: Zap, desc: 'Final purification using activated oxygen ensures the bottle and water remain sterile until the moment you open the cap, preserving freshness for 24 months.' },
+                    { num: '02', title: 'UV Sterilization', icon: Zap, desc: 'Continuous ultraviolet light treatment eliminates 99.99% of harmful microorganisms including bacteria, viruses, and parasites without adding any chemicals to the water.' },
+                    { num: '03', title: 'Ozone Sanitization', icon: Sparkles, desc: 'Final purification using activated oxygen ensures the bottle and water remain sterile until the moment you open the cap, preserving freshness for 24 months.' },
                   ].map((step, i) => (
                     <div key={i} className="flex flex-col sm:flex-row gap-6 p-8 rounded-3xl bg-[#2d2d2d]/30 border border-white/5 hover:bg-[#2d2d2d] transition-all duration-300 group">
                       <div className="flex items-start gap-4">
@@ -664,7 +817,7 @@ export default function Home() {
                     <div className="h-px w-full bg-white/10 my-3" />
                     <div className="flex items-center gap-3 text-gray-300">
                       <Phone className="size-4 text-[#00C853]" />
-                      <span className="font-medium text-sm">9036522355, 7760151401</span>
+                      <span className="font-medium text-sm">9036522355, 7760161401</span>
                     </div>
                   </div>
                 </div>
