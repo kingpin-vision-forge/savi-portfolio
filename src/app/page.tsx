@@ -371,7 +371,7 @@ export default function Home() {
                   The Flow of Time
                 </h3>
                 <p className="text-gray-400 text-lg md:text-xl font-medium leading-relaxed max-w-2xl mx-auto mb-10 font-light tracking-wide">
-                  by Prashant S Jeevor & Somanath S Jeevor
+                  by Prashant S jevoor & Somanath S jevoor
                 </p>
               </div>
             </AnimateOnScroll>
