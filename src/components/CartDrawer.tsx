@@ -12,11 +12,11 @@ export default function CartDrawer() {
   return (
     <>
       {/* Backdrop */}
-      <div 
+      <div
         className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 transition-opacity"
         onClick={() => setIsCartOpen(false)}
       />
-      
+
       {/* Drawer */}
       <div className="fixed right-0 top-0 h-full w-full max-w-md bg-[#1a1a1a] z-50 shadow-2xl flex flex-col border-l border-white/10">
         {/* Header */}
@@ -28,7 +28,7 @@ export default function CartDrawer() {
               {totalItems}
             </span>
           </div>
-          <button 
+          <button
             onClick={() => setIsCartOpen(false)}
             className="size-10 rounded-full hover:bg-white/10 flex items-center justify-center text-white transition-colors"
           >
@@ -43,7 +43,7 @@ export default function CartDrawer() {
               <ShoppingBag className="size-16 text-white/10 mb-4" />
               <p className="text-gray-400 text-lg mb-2">Your cart is empty</p>
               <p className="text-gray-500 text-sm mb-6">Add some premium hydration!</p>
-              <button 
+              <button
                 onClick={() => setIsCartOpen(false)}
                 className="text-[#00C853] font-bold hover:underline"
               >
@@ -59,11 +59,11 @@ export default function CartDrawer() {
                     <div className="size-20 rounded-xl bg-[#222] flex items-center justify-center shrink-0">
                       <ShoppingBag className="size-8 text-white/20" />
                     </div>
-                    
+
                     <div className="flex-1 min-w-0">
                       <div className="flex justify-between items-start mb-1">
                         <h3 className="text-white font-bold text-sm truncate pr-2">{item.name}</h3>
-                        <button 
+                        <button
                           onClick={() => removeFromCart(item.id)}
                           className="text-gray-500 hover:text-red-500 transition-colors shrink-0"
                         >
@@ -71,25 +71,25 @@ export default function CartDrawer() {
                         </button>
                       </div>
                       <p className="text-gray-500 text-xs mb-3">{item.size}</p>
-                      
+
                       <div className="flex items-center justify-between">
                         {/* Quantity Controls */}
                         <div className="flex items-center gap-1 bg-[#1a1a1a] rounded-full p-1">
-                          <button 
+                          <button
                             onClick={() => updateQuantity(item.id, item.quantity - 1)}
                             className="size-7 rounded-full hover:bg-white/10 flex items-center justify-center text-white transition-colors"
                           >
                             <Minus className="size-3" />
                           </button>
                           <span className="text-white font-bold text-sm w-8 text-center">{item.quantity}</span>
-                          <button 
+                          <button
                             onClick={() => updateQuantity(item.id, item.quantity + 1)}
                             className="size-7 rounded-full hover:bg-white/10 flex items-center justify-center text-white transition-colors"
                           >
                             <Plus className="size-3" />
                           </button>
                         </div>
-                        
+
                         <span className="text-[#00C853] font-bold">₹{(item.price * item.quantity).toLocaleString()}</span>
                       </div>
                     </div>
@@ -107,6 +107,7 @@ export default function CartDrawer() {
               <span className="text-gray-400">Subtotal</span>
               <span className="text-white text-2xl font-bold">₹{totalPrice.toLocaleString()}</span>
             </div>
+            {/* Checkout Button - TEMPORARILY HIDDEN
             <Link 
               href="/checkout"
               onClick={() => setIsCartOpen(false)}
@@ -115,6 +116,7 @@ export default function CartDrawer() {
               Proceed to Checkout
               <ArrowRight className="size-4 group-hover:translate-x-1 transition-transform" />
             </Link>
+            */}
           </div>
         )}
       </div>

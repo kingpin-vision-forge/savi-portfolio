@@ -148,6 +148,7 @@ export default function Home() {
                     </p>
                   </AnimateOnScroll>
                 </div>
+                {/* Marketplace Buttons - TEMPORARILY HIDDEN
                 <AnimateOnScroll animation="fadeUp" delay={0.55}>
                   <div className="flex flex-wrap gap-5 mt-2">
                     <Link
@@ -167,6 +168,7 @@ export default function Home() {
                     </Link>
                   </div>
                 </AnimateOnScroll>
+                */}
                 <AnimateOnScroll animation="fadeUp" delay={0.7}>
                   <div className="flex items-center gap-6 mt-8 pt-8 border-t border-white/10">
                     <div className="flex -space-x-4">
@@ -204,11 +206,10 @@ export default function Home() {
                 <div className="relative w-full h-full max-w-[500px] flex items-center justify-center">
                   {/* Hero Bottle Image with reveal animation */}
                   <div
-                    className={`relative z-20 transition-all duration-1000 ${
-                      heroReady
+                    className={`relative z-20 transition-all duration-1000 ${heroReady
                         ? "opacity-100 animate-gentle-float"
                         : "opacity-0 scale-75 translate-y-8"
-                    }`}
+                      }`}
                   >
                     <img
                       src="/3d-bottle-hero.png"
@@ -219,11 +220,10 @@ export default function Home() {
 
                   {/* Floating info card - Certified */}
                   <div
-                    className={`absolute top-[20%] right-[0%] lg:-right-[5%] p-5 bg-[#1a1a1a]/80 backdrop-blur-xl rounded-3xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.8)] border border-white/10 z-30 max-w-[180px] transition-all duration-700 ${
-                      heroReady
+                    className={`absolute top-[20%] right-[0%] lg:-right-[5%] p-5 bg-[#1a1a1a]/80 backdrop-blur-xl rounded-3xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.8)] border border-white/10 z-30 max-w-[180px] transition-all duration-700 ${heroReady
                         ? "opacity-100 translate-y-0 animate-float-delayed"
                         : "opacity-0 translate-y-4"
-                    }`}
+                      }`}
                     style={{ transitionDelay: heroReady ? "0.3s" : "0s" }}
                   >
                     <div className="flex items-center gap-2 mb-2">
@@ -239,11 +239,10 @@ export default function Home() {
 
                   {/* Floating info card - pH */}
                   <div
-                    className={`absolute bottom-[25%] left-[-5%] lg:-left-[10%] p-5 bg-[#1a1a1a]/80 backdrop-blur-xl rounded-3xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.8)] border border-white/10 z-30 min-w-[140px] transition-all duration-700 ${
-                      heroReady
+                    className={`absolute bottom-[25%] left-[-5%] lg:-left-[10%] p-5 bg-[#1a1a1a]/80 backdrop-blur-xl rounded-3xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.8)] border border-white/10 z-30 min-w-[140px] transition-all duration-700 ${heroReady
                         ? "opacity-100 translate-y-0 animate-float"
                         : "opacity-0 translate-y-4"
-                    }`}
+                      }`}
                     style={{
                       transitionDelay: heroReady ? "0.5s" : "0s",
                       animationDelay: heroReady ? "2s" : "0s",

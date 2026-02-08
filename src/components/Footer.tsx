@@ -57,7 +57,7 @@ export default function Footer() {
             <ul className="space-y-3">
               {['Home', 'About', 'Quality', 'Gallery', 'Contact'].map((item) => (
                 <li key={item}>
-                  <Link 
+                  <Link
                     href={isHomePage ? `#${item.toLowerCase()}` : `/#${item.toLowerCase()}`}
                     onClick={(e) => handleNavClick(e, `#${item.toLowerCase()}`)}
                     className="text-gray-400 hover:text-white text-sm transition-colors duration-300 flex items-center gap-2 group"
@@ -70,7 +70,7 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Marketplace Column */}
+          {/* Marketplace Column - TEMPORARILY HIDDEN
           <div>
             <h4 className="text-white font-bold text-sm uppercase tracking-wider mb-5 flex items-center gap-2">
               <ShoppingBag className="size-4 text-[#00C853]" />
@@ -103,6 +103,7 @@ export default function Footer() {
               </li>
             </ul>
           </div>
+          */}
 
           {/* Partners & Legal Column */}
           <div>
@@ -136,7 +137,7 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Marketplace CTA */}
+        {/* Marketplace CTA - TEMPORARILY HIDDEN
         <div className="mb-12 p-6 md:p-8 rounded-3xl bg-gradient-to-r from-[#00C853]/10 to-transparent border border-[#00C853]/20 flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="text-center md:text-left">
             <h3 className="text-white font-bold text-lg mb-1">Ready to order?</h3>
@@ -150,6 +151,7 @@ export default function Footer() {
             <ArrowRight className="size-4 group-hover:translate-x-1 transition-transform" />
           </Link>
         </div>
+        */}
 
         {/* Partner Logos */}
         <div className="mb-12 py-8 border-t border-b border-white/5">
@@ -170,7 +172,7 @@ export default function Footer() {
           <div className="text-gray-600 text-xs order-2 md:order-1">
             © 2024 SAVI Water Co. All rights reserved.
           </div>
-          
+
           <div className="flex items-center gap-2 order-1 md:order-2">
             <span className="text-gray-600 text-xs">Made by</span>
             <span className="text-white font-bold text-sm tracking-wide bg-gradient-to-r from-[#00C853] to-white bg-clip-text text-transparent">

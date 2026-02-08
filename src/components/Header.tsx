@@ -17,7 +17,7 @@ const navItems = [
 export default function Header() {
   const pathname = usePathname();
   const isHomePage = pathname === '/';
-  
+
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
   const [isScrolled, setIsScrolled] = useState(false);
@@ -77,11 +77,11 @@ export default function Header() {
     <header className={`fixed top-0 left-0 right-0 z-40 px-6 py-5 transition-all duration-500 ${isScrolled ? 'bg-[#0a0a0a]/90 backdrop-blur-xl border-b border-white/10 shadow-2xl' : 'bg-transparent'}`}>
       <div className="mx-auto flex max-w-[1400px] items-center justify-between">
         {/* Logo */}
-        <Link 
+        <Link
           href="/"
           className="flex items-center gap-3 group"
         >
-          <img 
+          <img
             src="/logo-white.jpeg"
             alt="SAVI"
             className="h-10 w-auto object-contain group-hover:opacity-80 transition-opacity duration-300"
@@ -96,11 +96,10 @@ export default function Header() {
                 key={item.href}
                 href={isHomePage ? item.href : `/${item.href}`}
                 onClick={(e) => handleNavClick(e, item.href)}
-                className={`relative text-sm font-medium transition-all duration-300 ${
-                  isHomePage && activeSection === item.href.slice(1)
+                className={`relative text-sm font-medium transition-all duration-300 ${isHomePage && activeSection === item.href.slice(1)
                     ? 'text-white font-semibold'
                     : 'text-white/70 hover:text-white'
-                }`}
+                  }`}
               >
                 {item.label}
                 {/* Only show dot on home page */}
@@ -115,7 +114,7 @@ export default function Header() {
         {/* Right section */}
         <div className="flex items-center gap-4">
           {/* Cart Button */}
-          <button 
+          <button
             onClick={() => setIsCartOpen(true)}
             className="flex size-10 items-center justify-center rounded-full hover:bg-white/10 text-white transition-all duration-300 relative border border-transparent hover:border-white/10"
           >
@@ -127,16 +126,17 @@ export default function Header() {
             )}
           </button>
 
-          {/* Marketplace Button - Desktop */}
+          {/* Marketplace Button - Desktop - TEMPORARILY HIDDEN
           <Link 
             href="/marketplace"
             className="hidden sm:flex h-11 items-center justify-center rounded-3xl bg-[#2d2d2d] border border-white/10 text-white hover:text-[#00C853] hover:border-[#00C853]/50 px-6 shadow-lg hover:shadow-[#00C853]/20 hover:-translate-y-0.5 transition-all duration-300 text-sm font-bold tracking-wide"
           >
             Marketplace
           </Link>
+          */}
 
           {/* Mobile Menu Button */}
-          <button 
+          <button
             className="md:hidden flex size-10 items-center justify-center rounded-full hover:bg-white/10 text-white transition-colors"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
@@ -153,16 +153,16 @@ export default function Header() {
               key={item.href}
               href={isHomePage ? item.href : `/${item.href}`}
               onClick={(e) => handleNavClick(e, item.href)}
-              className={`text-lg font-medium py-3 px-4 rounded-xl transition-all duration-300 ${
-                isHomePage && activeSection === item.href.slice(1)
+              className={`text-lg font-medium py-3 px-4 rounded-xl transition-all duration-300 ${isHomePage && activeSection === item.href.slice(1)
                   ? 'text-white bg-white/5 font-semibold'
                   : 'text-white/70 hover:text-white hover:bg-white/5'
-              }`}
+                }`}
               style={{ transitionDelay: `${index * 50}ms` }}
             >
               {item.label}
             </Link>
           ))}
+          {/* Marketplace Mobile Link - TEMPORARILY HIDDEN
           <div className="h-px bg-white/10 my-2" />
           <Link 
             href="/marketplace" 
@@ -172,6 +172,7 @@ export default function Header() {
             <ShoppingCart className="size-5" />
             Marketplace
           </Link>
+          */}
         </nav>
       </div>
     </header>
