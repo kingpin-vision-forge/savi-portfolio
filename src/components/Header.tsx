@@ -88,7 +88,7 @@ export default function Header() {
           className="flex items-center gap-3 group"
         >
           <img
-            src="/logo-white.jpeg"
+            src="/images/logo-white.jpeg"
             alt="SAVI"
             className="h-10 w-auto object-contain group-hover:opacity-80 transition-opacity duration-300"
           />

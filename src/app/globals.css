@@ -1,10 +1,24 @@
 @import "tailwindcss";
 
-/* Smooth scrolling */
+/* Smooth scrolling & base */
 html {
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+}
+
+/* Scale to 85% on large desktop displays */
+@media (min-width: 1280px) {
+  html {
+    zoom: 0.95;
+  }
+}
+
+/* Ensure proper sizing on all viewports */
+*, *::before, *::after {
+  box-sizing: border-box;
 }
 
 @keyframes flowMove {

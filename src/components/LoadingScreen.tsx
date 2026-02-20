@@ -50,14 +50,14 @@ export default function LoadingScreen({ onComplete, onTransitionStart }: Loading
 
   return (
     <div className={`fixed inset-0 z-50 flex flex-col items-center justify-center overflow-hidden bg-[#0a0a0a] transition-opacity duration-500 ${progress >= 100 ? 'opacity-0' : 'opacity-100'}`}>
-      
+
       {/* Main content */}
       <div className="relative z-10 flex flex-col items-center justify-center w-full max-w-5xl px-6">
-        
+
         {/* Anniversary Image */}
         <div className="mb-8">
-          <img 
-            src="/22-years-anniversary.png"
+          <img
+            src="/images/22-years-anniversary.png"
             alt="SAVI 22 Years Anniversary"
             className="w-full max-w-4xl h-auto object-contain"
           />
@@ -65,7 +65,7 @@ export default function LoadingScreen({ onComplete, onTransitionStart }: Loading
 
         {/* Slogan */}
         <div className="mb-10 text-center">
-          <p 
+          <p
             className="text-white/80 tracking-wide max-w-2xl mx-auto italic"
             style={{ fontSize: 'clamp(0.85rem, 2vw, 1.1rem)' }}
           >
@@ -79,19 +79,19 @@ export default function LoadingScreen({ onComplete, onTransitionStart }: Loading
             <p className="text-neutral-500 text-[10px] font-semibold uppercase tracking-widest">
               Loading
             </p>
-            <p 
+            <p
               className="text-[10px] font-bold tracking-widest font-mono"
               style={{ color: '#DAA520' }}
             >
               {Math.round(progress)}%
             </p>
           </div>
-          
+
           {/* Progress bar */}
           <div className="relative h-1 w-full overflow-hidden bg-neutral-800 rounded-full">
-            <div 
+            <div
               className="absolute left-0 top-0 h-full rounded-full transition-all duration-100 ease-out"
-              style={{ 
+              style={{
                 width: `${progress}%`,
                 background: 'linear-gradient(90deg, #8B6914, #B8860B, #D4AF37, #F0D78C)',
                 boxShadow: '0 0 20px rgba(218, 165, 32, 0.5)',

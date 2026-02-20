@@ -40,6 +40,7 @@ import AnimateOnScroll, {
 } from "@/components/AnimateOnScroll";
 import GlowOnScroll from "@/components/GlowOnScroll";
 import ProcessFlow from "./quality/ProcessFlow";
+import GallerySection from "@/components/GallerySection";
 
 
 function Section({
@@ -106,7 +107,7 @@ export default function Home() {
           {/* 22 Years Anniversary Background Logo */}
           <div className="absolute inset-0 z-[1] flex items-center justify-center pointer-events-none overflow-hidden">
             <img
-              src="/22-years-anniversary.png"
+              src="/images/22-years-anniversary.png"
               alt="SAVI 22 Years Anniversary"
               className="w-[280px] h-[280px] sm:w-[400px] sm:h-[400px] md:w-[500px] md:h-[500px] lg:w-[650px] lg:h-[650px] object-contain opacity-10 sm:opacity-15 select-none"
             />
@@ -201,7 +202,7 @@ export default function Home() {
                       }`}
                   >
                     <img
-                      src="/3d-bottle-hero.png"
+                      src="/images/3d-bottle-hero.png"
                       alt="SAVI Premium Water Bottle"
                       className="h-[35vh] sm:h-[45vh] md:h-[55vh] lg:h-[80vh] w-auto object-contain drop-shadow-[0_30px_60px_rgba(0,0,0,0.6)] cursor-pointer transition-transform duration-700 hover:scale-[1.02]"
                     />
@@ -757,174 +758,38 @@ export default function Home() {
         </Section>
 
         {/* ==================== GALLERY SECTION ==================== */}
-        <Section id="gallery" className="py-24 lg:py-32 bg-[#1a1a1a] relative">
-          <div className="w-full max-w-[1024px] px-6 mx-auto text-center mb-16">
-            <div className="flex flex-col gap-6 items-center">
-              <AnimateOnScroll animation="fadeUp" delay={0.1}>
-                <span className="text-[#00C853] text-[10px] font-bold tracking-[0.3em] uppercase opacity-90">
-                  Our Portfolio
-                </span>
-              </AnimateOnScroll>
-              <AnimateOnScroll animation="fadeUp" delay={0.25}>
-                <GlowOnScroll glowColor="rgba(255, 255, 255, 0.35)">
-                  <h2 className="text-white text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-light tracking-tighter leading-[1.1]">
-                    Curating Excellence <br className="hidden sm:block" />
-                    <span className="font-medium bg-clip-text text-transparent bg-gradient-to-r from-white via-gray-300 to-gray-500 italic">
-                      in Hydration
-                    </span>
-                  </h2>
-                </GlowOnScroll>
-              </AnimateOnScroll>
-              <AnimateOnScroll animation="scaleUp" delay={0.4}>
-                <div className="h-px w-20 bg-gradient-to-r from-transparent via-gray-600 to-transparent my-4" />
-              </AnimateOnScroll>
-              <AnimateOnScroll animation="fadeUp" delay={0.5}>
-                <p className="text-gray-400 text-lg md:text-xl font-light max-w-2xl leading-relaxed">
-                  Moments of purity, trust, and scale captured from our journey
-                  around the globe. Witness the fluid elegance of SAVI in
-                  action.
-                </p>
-              </AnimateOnScroll>
-            </div>
-          </div>
+        {(() => {
+          const allImages = {
+            events: [
+              "/images/event1.jpeg", "/images/event2.jpeg", "/images/event3.jpeg",
+              "/images/event4.jpeg", "/images/event5.jpeg", "/images/event6.jpg",
+              "/images/event7.jpeg", "/images/event8.jpeg", "/images/event9.jpeg",
+              "/images/event10.jpeg", "/images/event11.jpeg",
+            ],
+            products: [
+              "/images/product1.jpeg", "/images/product2.jpeg", "/images/product3.jpeg",
+              "/images/product4.jpeg", "/images/product5.jpeg", "/images/product6.jpeg",
+              "/images/produc7.jpeg", "/images/product8.jpeg", "/images/product9.jpeg",
+              "/images/product10.jpeg", "/images/product11.jpeg", "/images/product12.jpeg",
+              "/images/product13.jpeg", "/images/product14.jpeg", "/images/product15.jpeg",
+              "/images/product16.jpeg", "/images/product17.jpeg", "/images/product18.jpeg",
+              "/images/product19.jpeg", "/images/product20.jpeg", "/images/product21.jpeg",
+              "/images/product22.jpeg", "/images/product23.jpeg", "/images/product24.jpeg",
+              "/images/product25.jpeg", "/images/prodcut26.jpeg", "/images/product26.jpg",
+            ],
+            outlets: [
+              "/images/shop1.jpeg", "/images/shop2.jpeg", "/images/shop3.jpeg",
+              "/images/shop4.jpeg", "/images/shop5.jpeg", "/images/shop6.jpeg",
+              "/images/fridge.jpeg", "/images/fridge2.jpeg",
+            ],
+          };
 
-          {/* Filter Buttons */}
-          <AnimateOnScroll animation="fadeUp" delay={0.6}>
-            <div className="flex justify-center px-4 py-6 mb-8">
-              <div className="flex gap-1 p-1.5 glass-panel rounded-full overflow-x-auto scroll-hide max-w-full whitespace-nowrap">
-                {["All", "Corporate", "Private", "Logistics"].map(
-                  (filter, i) => (
-                    <button
-                      key={filter}
-                      className={`flex h-10 items-center px-4 sm:px-6 rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-wider transition-all shrink-0 ${i === 0 ? "bg-white text-black shadow-lg" : "hover:bg-[#00C853]/10 text-gray-400 hover:text-[#00C853]"}`}
-                    >
-                      {filter}
-                    </button>
-                  ),
-                )}
-              </div>
-            </div>
-          </AnimateOnScroll>
+          const filters = ["All", "Events", "Products", "Outlets"] as const;
 
-          <div className="max-w-[1440px] mx-auto px-4 md:px-8">
-            <div
-              className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4"
-              style={{ gridAutoRows: "min(280px, 60vw)" }}
-            >
-              {[
-                {
-                  title: "Premium Bottles",
-                  loc: "Product",
-                  span: "md:col-span-2",
-                  image: "/bottle2.jpeg",
-                },
-                {
-                  title: "Event Hydration",
-                  loc: "Events",
-                  span: "md:row-span-2",
-                  image: "/event1.jpeg",
-                },
-                {
-                  title: "Bottle Collection",
-                  loc: "Product",
-                  span: "",
-                  image: "/bottle3.jpeg",
-                },
-                {
-                  title: "VIP Service",
-                  loc: "Corporate",
-                  span: "",
-                  image: "/event2.jpeg",
-                },
-                {
-                  title: "Production Facility",
-                  loc: "Logistics",
-                  span: "md:col-span-2",
-                  image: "/WhatsApp Image 2025-12-27 at 16.12.09 (4).jpeg",
-                },
-                {
-                  title: "Corporate Events",
-                  loc: "Events",
-                  span: "",
-                  image: "/event3.jpeg",
-                },
-                {
-                  title: "Quality Packaging",
-                  loc: "Product",
-                  span: "",
-                  image: "/bottle4.jpeg",
-                },
-                {
-                  title: "Water Plant",
-                  loc: "Facility",
-                  span: "md:col-span-2",
-                  image: "/WhatsApp Image 2025-12-27 at 16.12.09 (5).jpeg",
-                },
-                {
-                  title: "Premium Range",
-                  loc: "Product",
-                  span: "",
-                  image: "/bottle5.jpeg",
-                },
-                {
-                  title: "Special Events",
-                  loc: "Events",
-                  span: "",
-                  image: "/event4.jpeg",
-                },
-                {
-                  title: "Bulk Supply",
-                  loc: "Logistics",
-                  span: "md:col-span-2 md:row-span-2",
-                  image: "/20ltrbottle.jpeg",
-                },
-                {
-                  title: "Display Collection",
-                  loc: "Product",
-                  span: "",
-                  image: "/bottle6.jpeg",
-                },
-              ].map((item, i) => (
-                <MagicBentoCard
-                  key={i}
-                  className={`bg-[#1a1a1a] cursor-pointer border border-white/5 rounded-3xl ${item.span}`}
-                  spotlightColor="rgba(0, 200, 83, 0.12)"
-                  borderColor="rgba(0, 200, 83, 0.4)"
-                >
-                  <div
-                    className="relative h-full w-full overflow-hidden rounded-3xl group"
-                    style={{
-                      animation: `fadeSlideUp 0.6s ease-out ${i * 0.1}s both`,
-                    }}
-                  >
-                    {/* Image */}
-                    <img
-                      src={item.image}
-                      alt={item.title}
-                      className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
-                    />
-
-                    {/* Gradient overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
-
-                    {/* Content */}
-                    <div className="absolute bottom-0 left-0 right-0 p-6 z-20">
-                      <div className="flex items-center gap-2 mb-3">
-                        <span className="w-2 h-2 rounded-full bg-[#00C853] shadow-[0_0_10px_rgba(0,200,83,0.8)] animate-pulse" />
-                        <span className="text-white/80 text-[10px] font-bold tracking-[0.2em] uppercase">
-                          {item.loc}
-                        </span>
-                      </div>
-                      <h3 className="text-white text-2xl font-light tracking-wide">
-                        {item.title}
-                      </h3>
-                    </div>
-                  </div>
-                </MagicBentoCard>
-              ))}
-            </div>
-          </div>
-        </Section>
+          return (
+            <GallerySection allImages={allImages} filters={filters} />
+          );
+        })()}
 
         {/* ==================== CONTACT SECTION ==================== */}
         <Section id="contact" className="py-24 lg:py-32 bg-[#121212] relative">
@@ -1127,12 +992,45 @@ export default function Home() {
                   </div>
                 </div>
 
-                {/* Map placeholder */}
-                <div className="w-full h-[250px] rounded-[2rem] overflow-hidden border border-white/10 relative group shadow-2xl bg-[#2d2d2d] flex items-center justify-center">
-                  <Globe className="size-20 text-white/10 group-hover:text-[#00C853]/20 transition-colors" />
-                  <div className="absolute bottom-4 left-4 bg-[#1a1a1a]/80 backdrop-blur-md border border-white/20 text-white px-4 py-2 rounded-xl text-[10px] font-bold uppercase tracking-widest pointer-events-none flex items-center gap-2">
-                    <span className="size-2 rounded-full bg-[#00C853] animate-pulse" />
-                    Live Location
+                {/* Map with location */}
+                <div className="w-full h-[300px] rounded-[2rem] overflow-hidden border border-white/10 relative group shadow-2xl">
+                  <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3418.5!2d75.71!3d16.83!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTbCsDQ5JzQ4LjAiTiA3NcKwNDInMzYuMCJF!5e0!3m2!1sen!2sin!4v1&q=SAVI+WATERS+Solapur+Rd+opp+ITI+College+Vijayapura+Karnataka+586103"
+                    width="100%"
+                    height="100%"
+                    style={{ border: 0, filter: "invert(90%) hue-rotate(180deg) brightness(0.8) contrast(1.2)" }}
+                    allowFullScreen
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                    title="SAVI Waters Location"
+                  />
+                  {/* Green pin overlay */}
+                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-full pointer-events-none z-10">
+                    <MapPin className="size-10 text-[#00C853] drop-shadow-[0_2px_8px_rgba(0,200,83,0.6)] animate-bounce" />
+                  </div>
+                  {/* Address badge */}
+                  <div className="absolute bottom-4 left-4 right-4 sm:right-auto bg-[#1a1a1a]/90 backdrop-blur-md border border-[#00C853]/30 text-white px-5 py-3 rounded-2xl pointer-events-auto z-20">
+                    <div className="flex items-start gap-3">
+                      <MapPin className="size-4 text-[#00C853] shrink-0 mt-0.5" />
+                      <div>
+                        <p className="text-xs font-bold text-white leading-relaxed">
+                          SAVI WATERS
+                        </p>
+                        <p className="text-[10px] text-gray-400 leading-relaxed">
+                          Solapur Rd, opp. ITI College, Chalukya Nagar,
+                          <br className="hidden sm:block" />
+                          Karnataka Housing Board Colony, Vijayapura, Karnataka 586103
+                        </p>
+                        <a
+                          href="https://www.google.com/maps/search/SAVI+WATERS+Solapur+Rd+opp+ITI+College+Vijayapura+Karnataka+586103"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-[#00C853] text-[10px] font-bold uppercase tracking-wider mt-1 inline-block hover:underline"
+                        >
+                          Open in Maps →
+                        </a>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </AnimateOnScroll>

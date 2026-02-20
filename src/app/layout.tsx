@@ -16,8 +16,8 @@ export const metadata: Metadata = {
   description: "SAVI delivers pristine molecular hydration with unmatched logistical precision. A darker, deeper commitment to purity.",
   keywords: ["packaged water", "premium water", "SAVI", "hydration", "pure water"],
   icons: {
-    icon: "/logo-black.jpeg",
-    apple: "/logo-black.jpeg",
+    icon: "/images/logo-black.jpeg",
+    apple: "/images/logo-black.jpeg",
   },
 };
 

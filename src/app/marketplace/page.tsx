@@ -6,13 +6,13 @@ import { useCart } from '@/context/CartContext';
 import { ShoppingCart, Plus, Minus, Package, Truck, Building, Check, Droplets } from 'lucide-react';
 
 const products = [
-  { id: 'savi-200ml-case', name: 'SAVI 200ML', size: '200ml × 48', price: 240, pack: 'Case (48 Bottles)', image: '/250ml.png' },
-  { id: 'savi-250ml-case', name: 'SAVI 250ML', size: '250ml × 36', price: 190, pack: 'Case (36 Bottles)', image: '/250ml.png' },
-  { id: 'savi-300ml-case', name: 'SAVI 300ML', size: '300ml × 30', price: 170, pack: 'Case (30 Bottles)', image: '/250ml-2.png' },
-  { id: 'savi-500ml-case', name: 'SAVI 500ML', size: '500ml × 24', price: 160, pack: 'Case (24 Bottles)', image: '/500ml.png' },
-  { id: 'savi-1000ml-case', name: 'SAVI 1000ML', size: '1000ml × 12', price: 110, pack: 'Case (12 Bottles)', image: '/1lrwhite.png' },
-  { id: 'savi-2000ml-case', name: 'SAVI 2000ML', size: '2000ml × 6', price: 110, pack: 'Case (6 Bottles)', image: '/1lrblack.png' },
-  { id: 'savi-20ltr-can', name: 'SAVI 20LTR', size: '20 Litre', price: 40, pack: 'Can', image: '/20ltr.png' },
+  { id: 'savi-200ml-case', name: 'SAVI 200ML', size: '200ml × 48', price: 240, pack: 'Case (48 Bottles)', image: '/images/250ml.png' },
+  { id: 'savi-250ml-case', name: 'SAVI 250ML', size: '250ml × 36', price: 190, pack: 'Case (36 Bottles)', image: '/images/250ml.png' },
+  { id: 'savi-300ml-case', name: 'SAVI 300ML', size: '300ml × 30', price: 170, pack: 'Case (30 Bottles)', image: '/images/250ml-2.png' },
+  { id: 'savi-500ml-case', name: 'SAVI 500ML', size: '500ml × 24', price: 160, pack: 'Case (24 Bottles)', image: '/images/500ml.png' },
+  { id: 'savi-1000ml-case', name: 'SAVI 1000ML', size: '1000ml × 12', price: 110, pack: 'Case (12 Bottles)', image: '/images/1lrwhite.png' },
+  { id: 'savi-2000ml-case', name: 'SAVI 2000ML', size: '2000ml × 6', price: 110, pack: 'Case (6 Bottles)', image: '/images/1lrblack.png' },
+  { id: 'savi-20ltr-can', name: 'SAVI 20LTR', size: '20 Litre', price: 40, pack: 'Can', image: '/images/20ltr.png' },
 ];
 
 export default function MarketplacePage() {
@@ -45,13 +45,13 @@ export default function MarketplacePage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {products.map((product) => {
                 const quantity = getItemQuantity(product.id);
-                
+
                 return (
                   <div key={product.id} className="bg-[#2d2d2d] rounded-3xl p-6 border border-white/5 hover:border-[#00C853]/20 transition-all group">
                     {/* Product Image */}
                     <div className="aspect-square rounded-2xl bg-gradient-to-b from-[#2a2a2a] to-[#1a1a1a] mb-6 flex items-center justify-center relative overflow-hidden p-4">
-                      <img 
-                        src={product.image} 
+                      <img
+                        src={product.image}
                         alt={product.name}
                         className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-500"
                       />
@@ -59,21 +59,21 @@ export default function MarketplacePage() {
                         {product.pack}
                       </div>
                     </div>
-                    
+
                     {/* Info */}
                     <h3 className="text-white font-bold text-lg mb-1">{product.name}</h3>
                     <p className="text-gray-500 text-sm mb-4">{product.size}</p>
-                    
+
                     <div className="flex items-center justify-between">
                       <span className="text-[#00C853] font-bold text-2xl">₹{product.price}</span>
-                      
+
                       {quantity === 0 ? (
-                        <button 
-                          onClick={() => addToCart({ 
-                            id: product.id, 
-                            name: product.name, 
-                            price: product.price, 
-                            size: product.size 
+                        <button
+                          onClick={() => addToCart({
+                            id: product.id,
+                            name: product.name,
+                            price: product.price,
+                            size: product.size
                           })}
                           className="flex items-center gap-2 bg-white text-[#1a1a1a] font-bold px-4 py-2.5 rounded-xl hover:bg-[#00C853] hover:text-white transition-all"
                         >
@@ -82,14 +82,14 @@ export default function MarketplacePage() {
                         </button>
                       ) : (
                         <div className="flex items-center gap-1 bg-[#1a1a1a] rounded-xl p-1">
-                          <button 
+                          <button
                             onClick={() => updateQuantity(product.id, quantity - 1)}
                             className="size-8 rounded-lg hover:bg-white/10 flex items-center justify-center text-white transition-colors"
                           >
                             <Minus className="size-4" />
                           </button>
                           <span className="text-white font-bold w-8 text-center">{quantity}</span>
-                          <button 
+                          <button
                             onClick={() => updateQuantity(product.id, quantity + 1)}
                             className="size-8 rounded-lg hover:bg-white/10 flex items-center justify-center text-white transition-colors"
                           >
@@ -115,7 +115,7 @@ export default function MarketplacePage() {
                 <p className="text-gray-400 text-lg mb-8 leading-relaxed">
                   For orders exceeding 100 units, we offer dedicated account management, custom delivery schedules, and preferred pricing structures.
                 </p>
-                
+
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
                   {[
                     { icon: Package, label: 'Custom Packaging', desc: 'Branded solutions' },
@@ -135,34 +135,34 @@ export default function MarketplacePage() {
               <div className="bg-[#2d2d2d] rounded-3xl p-8 border border-white/5">
                 <h3 className="text-white text-xl font-bold mb-6">Request Bulk Quote</h3>
                 <form className="space-y-4">
-                  <input 
-                    className="w-full bg-white rounded-2xl px-5 py-4 text-gray-900 text-sm font-medium placeholder:text-gray-400 outline-none focus:ring-2 focus:ring-[#00C853]" 
-                    placeholder="Company Name" 
-                    type="text" 
+                  <input
+                    className="w-full bg-white rounded-2xl px-5 py-4 text-gray-900 text-sm font-medium placeholder:text-gray-400 outline-none focus:ring-2 focus:ring-[#00C853]"
+                    placeholder="Company Name"
+                    type="text"
                   />
                   <div className="grid grid-cols-2 gap-4">
-                    <input 
-                      className="w-full bg-white rounded-2xl px-5 py-4 text-gray-900 text-sm font-medium placeholder:text-gray-400 outline-none focus:ring-2 focus:ring-[#00C853]" 
-                      placeholder="Contact Person" 
-                      type="text" 
+                    <input
+                      className="w-full bg-white rounded-2xl px-5 py-4 text-gray-900 text-sm font-medium placeholder:text-gray-400 outline-none focus:ring-2 focus:ring-[#00C853]"
+                      placeholder="Contact Person"
+                      type="text"
                     />
-                    <input 
-                      className="w-full bg-white rounded-2xl px-5 py-4 text-gray-900 text-sm font-medium placeholder:text-gray-400 outline-none focus:ring-2 focus:ring-[#00C853]" 
-                      placeholder="Phone Number" 
-                      type="tel" 
+                    <input
+                      className="w-full bg-white rounded-2xl px-5 py-4 text-gray-900 text-sm font-medium placeholder:text-gray-400 outline-none focus:ring-2 focus:ring-[#00C853]"
+                      placeholder="Phone Number"
+                      type="tel"
                     />
                   </div>
-                  <input 
-                    className="w-full bg-white rounded-2xl px-5 py-4 text-gray-900 text-sm font-medium placeholder:text-gray-400 outline-none focus:ring-2 focus:ring-[#00C853]" 
-                    placeholder="Estimated Monthly Quantity" 
-                    type="text" 
+                  <input
+                    className="w-full bg-white rounded-2xl px-5 py-4 text-gray-900 text-sm font-medium placeholder:text-gray-400 outline-none focus:ring-2 focus:ring-[#00C853]"
+                    placeholder="Estimated Monthly Quantity"
+                    type="text"
                   />
-                  <textarea 
-                    className="w-full bg-white rounded-2xl px-5 py-4 text-gray-900 text-sm font-medium placeholder:text-gray-400 outline-none focus:ring-2 focus:ring-[#00C853] resize-none" 
-                    placeholder="Additional Requirements" 
-                    rows={3} 
+                  <textarea
+                    className="w-full bg-white rounded-2xl px-5 py-4 text-gray-900 text-sm font-medium placeholder:text-gray-400 outline-none focus:ring-2 focus:ring-[#00C853] resize-none"
+                    placeholder="Additional Requirements"
+                    rows={3}
                   />
-                  <button 
+                  <button
                     type="button"
                     className="w-full bg-[#00C853] hover:bg-[#00e676] text-white font-bold rounded-2xl py-4 transition-all flex items-center justify-center gap-2"
                   >
@@ -183,7 +183,7 @@ export default function MarketplacePage() {
             <p className="text-gray-400 text-lg max-w-2xl mx-auto mb-12">
               Partner with SAVI for reliable, premium hydration solutions for your office, events, and hospitality needs.
             </p>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {[
                 { title: 'Office Hydration', desc: 'Regular delivery for your workplace', features: ['Weekly/Monthly plans', 'Dispenser included', 'Flexible scheduling'] },
