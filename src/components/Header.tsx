@@ -137,14 +137,12 @@ export default function Header() {
             )}
           </button>
 
-          {/* Marketplace Button - Desktop - TEMPORARILY HIDDEN
-          <Link 
+          <Link
             href="/marketplace"
             className="hidden sm:flex h-11 items-center justify-center rounded-3xl bg-[#2d2d2d] border border-white/10 text-white hover:text-[#00C853] hover:border-[#00C853]/50 px-6 shadow-lg hover:shadow-[#00C853]/20 hover:-translate-y-0.5 transition-all duration-300 text-sm font-bold tracking-wide"
           >
             Marketplace
           </Link>
-          */}
 
           {/* Mobile Menu Button */}
           <button
@@ -179,17 +177,15 @@ export default function Header() {
               </Link>
             );
           })}
-          {/* Marketplace Mobile Link - TEMPORARILY HIDDEN
           <div className="h-px bg-white/10 my-2" />
-          <Link 
-            href="/marketplace" 
+          <Link
+            href="/marketplace"
             className="text-[#00C853] text-lg font-bold py-3 px-4 rounded-xl hover:bg-[#00C853]/10 transition-colors flex items-center gap-2"
             onClick={() => setIsMenuOpen(false)}
           >
             <ShoppingCart className="size-5" />
             Marketplace
           </Link>
-          */}
         </nav>
       </div>
     </header>
