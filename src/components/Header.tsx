@@ -3,13 +3,14 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState, useEffect } from 'react';
-import { Droplets, ShoppingCart, Menu, X } from 'lucide-react';
+import { Droplets, ShoppingCart, Menu, X, Music as MusicIcon } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 
 const navItems = [
   { label: 'Home', href: '#home' },
   { label: 'About', href: '#about' },
   { label: 'Quality', href: '#quality' },
+  { label: 'Music', href: '/music' },
   { label: 'Gallery', href: '#gallery' },
   { label: 'Contact', href: '#contact' },
 ];
@@ -57,6 +58,11 @@ export default function Header() {
   }, [isHomePage]);
 
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    // Direct page links (like /music) — let Next.js handle navigation
+    if (!href.startsWith('#')) {
+      setIsMenuOpen(false);
+      return;
+    }
     // If on home page, scroll to section
     if (isHomePage) {
       e.preventDefault();
@@ -91,23 +97,28 @@ export default function Header() {
         {/* Desktop Navigation */}
         <nav className="hidden md:flex flex-1 justify-center">
           <div className="flex items-center gap-8 rounded-3xl bg-white/5 px-8 py-3 backdrop-blur-md border border-white/10 shadow-lg">
-            {navItems.map((item) => (
-              <Link
-                key={item.href}
-                href={isHomePage ? item.href : `/${item.href}`}
-                onClick={(e) => handleNavClick(e, item.href)}
-                className={`relative text-sm font-medium transition-all duration-300 ${isHomePage && activeSection === item.href.slice(1)
+            {navItems.map((item) => {
+              const isPageLink = !item.href.startsWith('#');
+              const isActive = isPageLink
+                ? pathname === item.href
+                : isHomePage && activeSection === item.href.slice(1);
+              return (
+                <Link
+                  key={item.href}
+                  href={isPageLink ? item.href : (isHomePage ? item.href : `/${item.href}`)}
+                  onClick={(e) => handleNavClick(e, item.href)}
+                  className={`relative text-sm font-medium transition-all duration-300 ${isActive
                     ? 'text-white font-semibold'
                     : 'text-white/70 hover:text-white'
-                  }`}
-              >
-                {item.label}
-                {/* Only show dot on home page */}
-                {isHomePage && activeSection === item.href.slice(1) && (
-                  <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-[#00C853] shadow-[0_0_8px_rgba(0,200,83,0.8)]" />
-                )}
-              </Link>
-            ))}
+                    }`}
+                >
+                  {item.label}
+                  {isActive && (
+                    <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-[#00C853] shadow-[0_0_8px_rgba(0,200,83,0.8)]" />
+                  )}
+                </Link>
+              );
+            })}
           </div>
         </nav>
 
@@ -148,20 +159,26 @@ export default function Header() {
       {/* Mobile Menu */}
       <div className={`md:hidden absolute top-full left-0 right-0 bg-[#0a0a0a]/95 backdrop-blur-xl border-t border-white/10 overflow-hidden transition-all duration-500 ${isMenuOpen ? 'max-h-[400px] py-6' : 'max-h-0 py-0'}`}>
         <nav className="flex flex-col gap-2 px-6">
-          {navItems.map((item, index) => (
-            <Link
-              key={item.href}
-              href={isHomePage ? item.href : `/${item.href}`}
-              onClick={(e) => handleNavClick(e, item.href)}
-              className={`text-lg font-medium py-3 px-4 rounded-xl transition-all duration-300 ${isHomePage && activeSection === item.href.slice(1)
+          {navItems.map((item, index) => {
+            const isPageLink = !item.href.startsWith('#');
+            const isActive = isPageLink
+              ? pathname === item.href
+              : isHomePage && activeSection === item.href.slice(1);
+            return (
+              <Link
+                key={item.href}
+                href={isPageLink ? item.href : (isHomePage ? item.href : `/${item.href}`)}
+                onClick={(e) => handleNavClick(e, item.href)}
+                className={`text-lg font-medium py-3 px-4 rounded-xl transition-all duration-300 ${isActive
                   ? 'text-white bg-white/5 font-semibold'
                   : 'text-white/70 hover:text-white hover:bg-white/5'
-                }`}
-              style={{ transitionDelay: `${index * 50}ms` }}
-            >
-              {item.label}
-            </Link>
-          ))}
+                  }`}
+                style={{ transitionDelay: `${index * 50}ms` }}
+              >
+                {item.label}
+              </Link>
+            );
+          })}
           {/* Marketplace Mobile Link - TEMPORARILY HIDDEN
           <div className="h-px bg-white/10 my-2" />
           <Link 

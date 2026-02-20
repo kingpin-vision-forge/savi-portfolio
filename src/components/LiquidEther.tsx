@@ -23,6 +23,7 @@ export interface LiquidEtherProps {
   takeoverDuration?: number;
   autoResumeDelay?: number;
   autoRampDuration?: number;
+  globalMode?: boolean;
 }
 
 interface SimOptions {
@@ -76,7 +77,8 @@ export default function LiquidEther({
   autoIntensity = 2.2,
   takeoverDuration = 0.25,
   autoResumeDelay = 1000,
-  autoRampDuration = 0.6
+  autoRampDuration = 0.6,
+  globalMode = true
 }: LiquidEtherProps): React.ReactElement {
   const mountRef = useRef<HTMLDivElement | null>(null);
   const webglRef = useRef<LiquidEtherWebGL | null>(null);
@@ -310,13 +312,15 @@ export default function LiquidEther({
       activationTime = 0;
       margin = 0.2;
       private _tmpDir = new THREE.Vector2();
-      constructor(mouse: MouseClass, manager: WebGLManager, opts: { enabled: boolean; speed: number; resumeDelay: number; rampDuration: number }) {
+      globalMode = false;
+      constructor(mouse: MouseClass, manager: WebGLManager, opts: { enabled: boolean; speed: number; resumeDelay: number; rampDuration: number; globalMode?: boolean }) {
         this.mouse = mouse;
         this.manager = manager;
         this.enabled = opts.enabled;
         this.speed = opts.speed;
         this.resumeDelay = opts.resumeDelay || 3000;
         this.rampDurationMs = (opts.rampDuration || 0) * 1000;
+        this.globalMode = opts.globalMode || false;
         this.pickNewTarget();
       }
       pickNewTarget() {
@@ -332,7 +336,7 @@ export default function LiquidEther({
         const now = performance.now();
         const idle = now - this.manager.lastUserInteraction;
         if (idle < this.resumeDelay) { if (this.active) this.forceStop(); return; }
-        if (this.mouse.isHoverInside) { if (this.active) this.forceStop(); return; }
+        if (!this.globalMode && this.mouse.isHoverInside) { if (this.active) this.forceStop(); return; }
         if (!this.active) {
           this.active = true;
           this.current.copy(this.mouse.coords);
@@ -623,7 +627,7 @@ export default function LiquidEther({
         Mouse.autoIntensity = props.autoIntensity as number;
         Mouse.takeoverDuration = props.takeoverDuration as number;
         Mouse.onInteract = () => { this.lastUserInteraction = performance.now(); if (this.autoDriver) this.autoDriver.forceStop(); };
-        this.autoDriver = new AutoDriver(Mouse, this, { enabled: props.autoDemo as boolean, speed: props.autoSpeed as number, resumeDelay: props.autoResumeDelay as number, rampDuration: props.autoRampDuration as number });
+        this.autoDriver = new AutoDriver(Mouse, this, { enabled: props.autoDemo as boolean, speed: props.autoSpeed as number, resumeDelay: props.autoResumeDelay as number, rampDuration: props.autoRampDuration as number, globalMode: props.globalMode as boolean });
         this.initManager();
         window.addEventListener('resize', this._resize);
         this._onVisibility = () => { if (document.hidden) this.pause(); else if (isVisibleRef.current) this.start(); };
@@ -642,7 +646,7 @@ export default function LiquidEther({
     container.style.position = container.style.position || 'relative';
     container.style.overflow = container.style.overflow || 'hidden';
 
-    const webgl = new WebGLManager({ $wrapper: container, autoDemo, autoSpeed, autoIntensity, takeoverDuration, autoResumeDelay, autoRampDuration });
+    const webgl = new WebGLManager({ $wrapper: container, autoDemo, autoSpeed, autoIntensity, takeoverDuration, autoResumeDelay, autoRampDuration, globalMode });
     webglRef.current = webgl;
 
     const applyOptionsFromProps = () => {
@@ -681,7 +685,7 @@ export default function LiquidEther({
       if (webglRef.current) webglRef.current.dispose();
       webglRef.current = null;
     };
-  }, [BFECC, cursorSize, dt, isBounce, isViscous, iterationsPoisson, iterationsViscous, mouseForce, resolution, viscous, colors, autoDemo, autoSpeed, autoIntensity, takeoverDuration, autoResumeDelay, autoRampDuration]);
+  }, [BFECC, cursorSize, dt, isBounce, isViscous, iterationsPoisson, iterationsViscous, mouseForce, resolution, viscous, colors, autoDemo, autoSpeed, autoIntensity, takeoverDuration, autoResumeDelay, autoRampDuration, globalMode]);
 
   useEffect(() => {
     const webgl = webglRef.current;

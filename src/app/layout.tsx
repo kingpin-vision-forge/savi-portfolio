@@ -3,6 +3,7 @@ import { Manrope } from "next/font/google";
 import "./globals.css";
 import { CartProvider } from "@/context/CartContext";
 import CartDrawer from "@/components/CartDrawer";
+import GlobalBackground from "@/components/GlobalBackground";
 
 const manrope = Manrope({
   variable: "--font-manrope",
@@ -27,12 +28,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark">
-      <body className={`${manrope.variable} font-sans antialiased bg-[#1a1a1a] text-[#f5f5f5] overflow-x-hidden`}>
+      <body className={`${manrope.variable} font-sans antialiased bg-[#0a0a0a] text-[#f5f5f5] overflow-x-hidden`}>
+        <GlobalBackground />
         <CartProvider>
-          {children}
+          <div className="relative z-10">
+            {children}
+          </div>
           <CartDrawer />
         </CartProvider>
       </body>
     </html>
   );
 }
+

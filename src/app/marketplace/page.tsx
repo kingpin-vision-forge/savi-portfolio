@@ -7,12 +7,12 @@ import { ShoppingCart, Plus, Minus, Package, Truck, Building, Check, Droplets } 
 
 const products = [
   { id: 'savi-200ml-case', name: 'SAVI 200ML', size: '200ml × 48', price: 240, pack: 'Case (48 Bottles)', image: '/250ml.png' },
-  { id: 'savi-250ml-case', name: 'SAVI 250ML', size: '250ml × 36', price: 300, pack: 'Case (36 Bottles)', image: '/250ml.png' },
-  { id: 'savi-300ml-case', name: 'SAVI 300ML', size: '300ml × 30', price: 360, pack: 'Case (30 Bottles)', image: '/250ml-2.png' },
-  { id: 'savi-500ml-case', name: 'SAVI 500ML', size: '500ml × 24', price: 600, pack: 'Case (24 Bottles)', image: '/500ml.png' },
-  { id: 'savi-1000ml-case', name: 'SAVI 1000ML', size: '1000ml × 12', price: 1200, pack: 'Case (12 Bottles)', image: '/1lrwhite.png' },
-  { id: 'savi-2000ml-case', name: 'SAVI 2000ML', size: '2000ml × 6', price: 2400, pack: 'Case (6 Bottles)', image: '/1lrblack.png' },
-  { id: 'savi-20ltr-can', name: 'SAVI 20LTR', size: '20 Litre', price: 2400, pack: 'Can', image: '/WhatsApp_Image_2025-12-27_at_15.43.08-removebg-preview.png' },
+  { id: 'savi-250ml-case', name: 'SAVI 250ML', size: '250ml × 36', price: 190, pack: 'Case (36 Bottles)', image: '/250ml.png' },
+  { id: 'savi-300ml-case', name: 'SAVI 300ML', size: '300ml × 30', price: 170, pack: 'Case (30 Bottles)', image: '/250ml-2.png' },
+  { id: 'savi-500ml-case', name: 'SAVI 500ML', size: '500ml × 24', price: 160, pack: 'Case (24 Bottles)', image: '/500ml.png' },
+  { id: 'savi-1000ml-case', name: 'SAVI 1000ML', size: '1000ml × 12', price: 110, pack: 'Case (12 Bottles)', image: '/1lrwhite.png' },
+  { id: 'savi-2000ml-case', name: 'SAVI 2000ML', size: '2000ml × 6', price: 110, pack: 'Case (6 Bottles)', image: '/1lrblack.png' },
+  { id: 'savi-20ltr-can', name: 'SAVI 20LTR', size: '20 Litre', price: 40, pack: 'Can', image: '/20ltr.png' },
 ];
 
 export default function MarketplacePage() {

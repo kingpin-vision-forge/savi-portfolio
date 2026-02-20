@@ -104,14 +104,14 @@ export default function LoadingScreen({ onComplete, onTransitionStart }: Loading
       </div>
 
       {/* Secure connection badge */}
-      <div className="absolute bottom-6 md:bottom-8 left-0 w-full text-center z-20">
+      {/* <div className="absolute bottom-6 md:bottom-8 left-0 w-full text-center z-20">
         <div className="inline-flex items-center gap-3 rounded-full border border-white/5 bg-white/5 px-4 py-1.5 backdrop-blur-md">
           <ShieldCheck className="size-4 text-[#00C853]" />
           <span className="text-[10px] font-semibold uppercase tracking-widest text-neutral-400">
             Secure Connection
           </span>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }
