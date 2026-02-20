@@ -80,22 +80,24 @@ export default function Header() {
   };
 
   return (
-    <header className={`fixed top-0 left-0 right-0 z-40 px-6 py-5 transition-all duration-500 ${isScrolled ? 'bg-[#0a0a0a]/90 backdrop-blur-xl border-b border-white/10 shadow-2xl' : 'bg-transparent'}`}>
-      <div className="mx-auto flex max-w-[1400px] items-center justify-between">
-        {/* Logo */}
-        <Link
-          href="/"
-          className="flex items-center gap-3 group"
-        >
-          <img
-            src="/images/logo-white.jpeg"
-            alt="SAVI"
-            className="h-10 w-auto object-contain group-hover:opacity-80 transition-opacity duration-300"
-          />
-        </Link>
+    <header className={`fixed top-0 left-0 right-0 z-40 py-5 transition-all duration-500 ${isScrolled ? 'bg-[#0a0a0a]/90 backdrop-blur-xl border-b border-white/10 shadow-2xl' : 'bg-transparent'}`}>
+      <div className="flex items-center justify-between" style={{ margin: '0 5%' }}>
+        {/* Div 1: Logo */}
+        <div className="flex-1">
+          <Link
+            href="/"
+            className="flex items-center gap-3 group"
+          >
+            <img
+              src="/images/logo-white.jpeg"
+              alt="SAVI"
+              className="h-10 w-auto object-contain group-hover:opacity-80 transition-opacity duration-300"
+            />
+          </Link>
+        </div>
 
-        {/* Desktop Navigation */}
-        <nav className="hidden md:flex flex-1 justify-center">
+        {/* Div 2: Navigation Buttons */}
+        <nav className="hidden md:flex">
           <div className="flex items-center gap-8 rounded-3xl bg-white/5 px-8 py-3 backdrop-blur-md border border-white/10 shadow-lg">
             {navItems.map((item) => {
               const isPageLink = !item.href.startsWith('#');
@@ -122,8 +124,8 @@ export default function Header() {
           </div>
         </nav>
 
-        {/* Right section */}
-        <div className="flex items-center gap-4">
+        {/* Div 3: Cart + Marketplace */}
+        <div className="flex-1 flex items-center justify-end gap-4">
           {/* Cart Button */}
           <button
             onClick={() => setIsCartOpen(true)}
