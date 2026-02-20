@@ -214,11 +214,15 @@ export default function MarketplacePage() {
                     type="button"
                     className="w-full bg-[#00C853] hover:bg-[#00e676] text-white font-bold rounded-2xl py-4 transition-all flex items-center justify-center gap-2"
                     onClick={() => {
-                      const company = (document.getElementById('bulk-company') as HTMLInputElement)?.value || '';
-                      const contact = (document.getElementById('bulk-contact') as HTMLInputElement)?.value || '';
-                      const phone = (document.getElementById('bulk-phone') as HTMLInputElement)?.value || '';
-                      const quantity = (document.getElementById('bulk-quantity') as HTMLInputElement)?.value || '';
-                      const requirements = (document.getElementById('bulk-requirements') as HTMLTextAreaElement)?.value || '';
+                      const company = (document.getElementById('bulk-company') as HTMLInputElement)?.value?.trim() || '';
+                      const contact = (document.getElementById('bulk-contact') as HTMLInputElement)?.value?.trim() || '';
+                      const phone = (document.getElementById('bulk-phone') as HTMLInputElement)?.value?.trim() || '';
+                      const quantity = (document.getElementById('bulk-quantity') as HTMLInputElement)?.value?.trim() || '';
+                      const requirements = (document.getElementById('bulk-requirements') as HTMLTextAreaElement)?.value?.trim() || '';
+                      if (!company || !contact || !phone || !quantity) {
+                        alert('Please fill in all required fields before submitting.');
+                        return;
+                      }
                       const text = `*Bulk Quote Request from SAVI Website*%0A%0A*Company:* ${company}%0A*Contact:* ${contact}%0A*Phone:* ${phone}%0A*Monthly Quantity:* ${quantity}%0A*Requirements:* ${requirements}`;
                       window.open(`https://wa.me/917760161401?text=${text}`, '_blank');
                     }}

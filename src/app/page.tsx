@@ -68,6 +68,10 @@ export default function Home() {
 
   const handleWhatsAppSubmit = () => {
     const { firstName, lastName, email, inquiryType, message } = contactForm;
+    if (!firstName.trim() || !lastName.trim() || !email.trim() || !message.trim()) {
+      alert('Please fill in all fields before submitting.');
+      return;
+    }
     const text = `*New Inquiry from SAVI Website*%0A%0A*Name:* ${firstName} ${lastName}%0A*Email:* ${email}%0A*Inquiry Type:* ${inquiryType}%0A*Message:* ${message}`;
     window.open(`https://wa.me/917760161401?text=${text}`, '_blank');
   };
