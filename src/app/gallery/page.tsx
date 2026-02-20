@@ -15,7 +15,7 @@ const galleryItems = [
   { title: 'Community Gathering', category: 'Corporate', date: 'December 2025', span: 'md:row-span-2', image: '/event2.jpeg' },
   { title: 'Team Celebration', category: 'Corporate', date: '', span: '', image: '/event3.jpeg' },
   // Products
-  { title: 'Premium 500ml', category: 'Product', date: 'Signature Series', span: '', image: '/500ml.png' },
+  { title: 'Premium 500ml', category: 'Product', date: 'Signature Series', span: '', image: '/500ml-1.png' },
   { title: 'Compact 250ml', category: 'Product', date: 'On-the-go', span: '', image: '/250ml.png' },
   { title: '20L Premium', category: 'Product', date: 'Home & Office', span: 'md:col-span-2', image: '/20ltrbottle.jpeg' },
   // Factory & Production

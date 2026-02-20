@@ -1,16 +1,8 @@
+'use client';
+
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-
-const partners = [
-  { name: 'LuxeSpa', icon: '🧖' },
-  { name: 'GrandHotel', icon: '🏨' },
-  { name: 'Equinoxx', icon: '💪' },
-  { name: 'AirVista', icon: '✈️' },
-  { name: 'TechCore', icon: '🏢' },
-  { name: 'MichelinStars', icon: '🍽️' },
-  { name: 'LiveEvents', icon: '🎪' },
-  { name: 'Prestige', icon: '💎' },
-];
+import PartnerMarquee, { partnerLogos } from '@/components/PartnerMarquee';
 
 const testimonials = [
   { quote: "SAVI has redefined our in-office experience. The design is impeccable, and the purity is noticeable. It aligns perfectly with our sustainability goals.", name: 'Michael Chen', title: 'CEO, TechCore' },
@@ -64,20 +56,32 @@ export default function PartnersPage() {
         </div>
       </section>
 
+      {/* Partner Logos Marquee */}
+      <section className="py-16 px-4 bg-[#1a1a1a] relative border-t border-white/5">
+        <div className="max-w-[1280px] mx-auto">
+          <div className="text-center mb-12">
+            <p className="text-xs font-bold uppercase tracking-widest text-gray-500 mb-2">Trusted By</p>
+            <h2 className="text-2xl md:text-3xl font-light text-white tracking-wide">Our Partners</h2>
+          </div>
+          <PartnerMarquee />
+        </div>
+      </section>
+
       {/* Partners Grid */}
-      <section className="py-24 px-4 bg-[#1a1a1a] relative border-t border-white/5">
+      <section className="py-24 px-4 bg-[#1a1a1a] relative">
         <div className="max-w-[1280px] mx-auto">
           <div className="text-center mb-20">
             <h2 className="text-2xl md:text-3xl font-light text-white mb-6 tracking-wide">Select Partners</h2>
             <div className="h-px w-24 bg-white mx-auto opacity-10" />
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-white/5 border border-white/5 overflow-hidden rounded-3xl">
-            {partners.map((partner, i) => (
-              <div key={i} className="group relative w-full aspect-[2/1] bg-[#1f1f1f] flex items-center justify-center p-8 transition-all duration-300 hover:bg-[#252525]">
-                <div className="flex items-center gap-3 opacity-60 group-hover:opacity-100 transition-all duration-500">
-                  <span className="text-3xl text-gray-300 group-hover:text-[#00C853] transition-colors font-light">{partner.icon}</span>
-                  <span className="font-medium text-sm text-white tracking-widest uppercase">{partner.name}</span>
-                </div>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-px bg-white/5 border border-white/5 overflow-hidden rounded-3xl">
+            {partnerLogos.map((partner, i) => (
+              <div key={i} className="group relative w-full aspect-[2/1] bg-[#1f1f1f] flex items-center justify-center p-6 transition-all duration-300 hover:bg-[#252525]">
+                <img
+                  src={partner.src}
+                  alt={partner.name}
+                  className="h-12 w-auto object-contain opacity-50 grayscale group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500"
+                />
               </div>
             ))}
           </div>

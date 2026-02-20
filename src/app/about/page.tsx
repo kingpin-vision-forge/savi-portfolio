@@ -73,7 +73,7 @@ export default function AboutPage() {
               { year: '2004', title: 'Founding', icon: '💧', desc: 'SAVI Packaged Drinking Water was established on 13th January 2004 by Somanath S Jevoor and Prashant S Jevoor as a Partnership Company, starting with one sales outlet at Solapur Road, Vijayapura.' },
               { year: '2010', title: 'Growth', icon: '🏭', desc: 'Expanded operations with state-of-the-art manufacturing facility at Jevoor Empire, Athani Road. In-House Physical/Chemical Lab and Microbiological Lab established for quality assurance.' },
               { year: '2018', title: 'Expansion', icon: '🌍', desc: 'Grew to five outlets in Vijayapura City. Established distribution points across all talukas of Vijayapura, Gulburga, Bagalkote, Hubballi, Gadag, and expanded to Maharashtra (Solapur & Pune).' },
-              { year: '2024', title: 'Recognition', icon: '🏆', desc: 'Achieved BIS License, FSSAI, ISO Certification, MSME Registration, and ZED Certification. Became the First ZED Gold Company of the District.' },
+              { year: '2026', title: 'Recognition', icon: '🏆', desc: 'Achieved BIS License, FSSAI, ISO Certification, MSME Registration, and ZED Certification. Became the First ZED Gold Company of the District.' },
             ].map((item, i) => (
               <div key={i} className="flex gap-6 items-start group">
                 <div className="size-14 rounded-full bg-[#222222] border border-white/10 shadow-lg flex items-center justify-center text-white group-hover:border-[#00C853] group-hover:text-[#00C853] group-hover:bg-[#00C853]/5 transition-all duration-300 shrink-0">

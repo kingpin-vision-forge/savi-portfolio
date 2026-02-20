@@ -1,7 +1,21 @@
+'use client';
+
+import { useState } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 
 export default function ContactPage() {
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [inquiryType, setInquiryType] = useState('Corporate Bulk Order');
+  const [message, setMessage] = useState('');
+
+  const handleSubmit = () => {
+    const text = `*New Inquiry from SAVI Website*%0A%0A*Name:* ${firstName} ${lastName}%0A*Email:* ${email}%0A*Inquiry Type:* ${inquiryType}%0A*Message:* ${message}`;
+    window.open(`https://wa.me/917760161401?text=${text}`, '_blank');
+  };
+
   return (
     <div className="relative flex min-h-screen w-full flex-col bg-[#1a1a1a]">
       {/* Background */}
@@ -33,25 +47,25 @@ export default function ContactPage() {
             {/* Contact Form */}
             <div className="lg:col-span-7 bg-[#2d2d2d]/20 backdrop-blur-xl border border-white/10 rounded-[2rem] p-8 md:p-10 shadow-2xl">
               <h3 className="text-2xl font-bold text-white mb-8">Send a Message</h3>
-              <form className="space-y-6">
+              <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2">
                     <label className="text-sm font-semibold text-gray-300 ml-2">First Name</label>
-                    <input className="w-full bg-white border-0 rounded-3xl px-6 py-4 text-gray-900 font-medium focus:ring-2 focus:ring-[#00C853] placeholder:text-gray-400 transition-shadow outline-none" placeholder="Enter first name" type="text" />
+                    <input className="w-full bg-white border-0 rounded-3xl px-6 py-4 text-gray-900 font-medium focus:ring-2 focus:ring-[#00C853] placeholder:text-gray-400 transition-shadow outline-none" placeholder="Enter first name" type="text" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
                   </div>
                   <div className="space-y-2">
                     <label className="text-sm font-semibold text-gray-300 ml-2">Last Name</label>
-                    <input className="w-full bg-white border-0 rounded-3xl px-6 py-4 text-gray-900 font-medium focus:ring-2 focus:ring-[#00C853] placeholder:text-gray-400 transition-shadow outline-none" placeholder="Enter last name" type="text" />
+                    <input className="w-full bg-white border-0 rounded-3xl px-6 py-4 text-gray-900 font-medium focus:ring-2 focus:ring-[#00C853] placeholder:text-gray-400 transition-shadow outline-none" placeholder="Enter last name" type="text" value={lastName} onChange={(e) => setLastName(e.target.value)} />
                   </div>
                 </div>
                 <div className="space-y-2">
                   <label className="text-sm font-semibold text-gray-300 ml-2">Email Address</label>
-                  <input className="w-full bg-white border-0 rounded-3xl px-6 py-4 text-gray-900 font-medium focus:ring-2 focus:ring-[#00C853] placeholder:text-gray-400 transition-shadow outline-none" placeholder="name@company.com" type="email" />
+                  <input className="w-full bg-white border-0 rounded-3xl px-6 py-4 text-gray-900 font-medium focus:ring-2 focus:ring-[#00C853] placeholder:text-gray-400 transition-shadow outline-none" placeholder="name@company.com" type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
                 </div>
                 <div className="space-y-2">
                   <label className="text-sm font-semibold text-gray-300 ml-2">Inquiry Type</label>
                   <div className="relative">
-                    <select className="w-full bg-white border-0 rounded-3xl px-6 py-4 text-gray-900 font-medium focus:ring-2 focus:ring-[#00C853] transition-shadow appearance-none cursor-pointer outline-none">
+                    <select className="w-full bg-white border-0 rounded-3xl px-6 py-4 text-gray-900 font-medium focus:ring-2 focus:ring-[#00C853] transition-shadow appearance-none cursor-pointer outline-none" value={inquiryType} onChange={(e) => setInquiryType(e.target.value)}>
                       <option>Corporate Bulk Order</option>
                       <option>Private Event Hydration</option>
                       <option>Partnership Inquiry</option>
@@ -64,9 +78,9 @@ export default function ContactPage() {
                 </div>
                 <div className="space-y-2">
                   <label className="text-sm font-semibold text-gray-300 ml-2">Message</label>
-                  <textarea className="w-full bg-white border-0 rounded-3xl px-6 py-4 text-gray-900 font-medium focus:ring-2 focus:ring-[#00C853] placeholder:text-gray-400 transition-shadow resize-none outline-none" placeholder="How can we help refine your hydration?" rows={4} />
+                  <textarea className="w-full bg-white border-0 rounded-3xl px-6 py-4 text-gray-900 font-medium focus:ring-2 focus:ring-[#00C853] placeholder:text-gray-400 transition-shadow resize-none outline-none" placeholder="How can we help refine your hydration?" rows={4} value={message} onChange={(e) => setMessage(e.target.value)} />
                 </div>
-                <button className="group w-full bg-[#00C853] hover:bg-[#00e676] text-[#1a1a1a] font-extrabold rounded-3xl py-4 mt-4 transition-all duration-300 flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(0,200,83,0.3)] hover:shadow-[0_0_30px_rgba(0,200,83,0.5)]" type="button">
+                <button className="group w-full bg-[#00C853] hover:bg-[#00e676] text-[#1a1a1a] font-extrabold rounded-3xl py-4 mt-4 transition-all duration-300 flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(0,200,83,0.3)] hover:shadow-[0_0_30px_rgba(0,200,83,0.5)]" type="button" onClick={handleSubmit}>
                   Submit Inquiry
                   <span className="transition-transform duration-300 group-hover:translate-x-1 font-bold">→</span>
                 </button>
@@ -110,6 +124,11 @@ export default function ContactPage() {
                     <span className="text-[#00C853] text-sm">📞</span>
                     <span className="font-medium text-sm">9036522355, 7760161401</span>
                   </div>
+                  <div className="h-px w-full bg-white/10 my-3" />
+                  <div className="flex items-center gap-3 text-gray-300 mb-2">
+                    <span className="text-[#00C853] text-sm">✉️</span>
+                    <span className="font-medium hover:text-white transition-colors cursor-pointer text-sm">jevoorempire@gmail.com</span>
+                  </div>
                 </div>
               </div>
 
@@ -132,7 +151,8 @@ export default function ContactPage() {
                   </div>
                   <div className="flex items-center gap-3 text-gray-300 mb-2">
                     <span className="text-[#00C853] text-sm">📞</span>
-                    <span className="font-medium text-sm">9448179701, 9845820401, 9880721401</span>
+                    <span className="font-medium text-sm">9845820401, 9880721401</span>
+                    <span className='font-medium text-sm'>9448179701, 7760161401</span>
                   </div>
                   <div className="h-px w-full bg-white/10 my-3" />
                   <div className="flex items-center gap-3 text-gray-300 mb-2">

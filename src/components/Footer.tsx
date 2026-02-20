@@ -2,7 +2,8 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Droplets, Facebook, Instagram, Twitter, Linkedin, MapPin, ArrowRight, ShoppingBag, Shield, FileText, Cookie } from 'lucide-react';
+import { Facebook, Instagram, Twitter, Linkedin, MapPin, ArrowRight, ShoppingBag, Shield, FileText, Cookie } from 'lucide-react';
+import PartnerMarquee from './PartnerMarquee';
 
 export default function Footer() {
   const pathname = usePathname();
@@ -29,8 +30,7 @@ export default function Footer() {
           {/* Brand Column */}
           <div className="col-span-2 md:col-span-1 lg:col-span-2">
             <Link href="/" className="flex items-center gap-2 mb-4">
-              <Droplets className="size-8 text-[#00C853]" />
-              <span className="text-white font-bold text-2xl tracking-tight">SAVI</span>
+              <img src="/images/logo-white.jpeg" alt="SAVI" className="h-10 w-auto object-contain" />
             </Link>
             <p className="text-gray-500 text-sm leading-relaxed mb-6 max-w-xs">
               Premium packaged water delivering pristine molecular hydration with unmatched logistical precision.
@@ -158,19 +158,13 @@ export default function Footer() {
           <p className="text-xs font-bold uppercase tracking-widest text-gray-600 text-center mb-6">
             Partnering with Industry Leaders
           </p>
-          <div className="flex flex-wrap justify-center gap-10 md:gap-16 opacity-40 hover:opacity-70 transition-all duration-700">
-            {['Hyatt', 'Marriott', 'Hilton', 'ITC', 'Taj'].map((name) => (
-              <div key={name} className="text-gray-400 font-bold text-sm tracking-wider uppercase">
-                {name}
-              </div>
-            ))}
-          </div>
+          <PartnerMarquee />
         </div>
 
         {/* Bottom Bar */}
         <div className="flex flex-col md:flex-row justify-between items-center gap-4 pt-4">
           <div className="text-gray-600 text-xs order-2 md:order-1">
-            © 2024 SAVI Water Co. All rights reserved.
+            © 2026 SAVI Water Co. All rights reserved.
           </div>
 
           <div className="flex items-center gap-2 order-1 md:order-2">

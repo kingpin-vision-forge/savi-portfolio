@@ -9,7 +9,7 @@ html {
   -ms-text-size-adjust: 100%;
 }
 
-/* Scale to 85% on large desktop displays */
+/* Scale to 95% on large desktop displays */
 @media (min-width: 1280px) {
   html {
     zoom: 0.95;
@@ -394,4 +394,16 @@ input[type="checkbox"]:checked {
   animation-delay: 0.5s;
 }
 
+/* Partner Marquee */
+@keyframes marquee {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
 
+.animate-marquee {
+  animation: marquee 30s linear infinite;
+}

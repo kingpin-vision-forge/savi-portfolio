@@ -4,15 +4,54 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { useCart } from '@/context/CartContext';
 import { ShoppingCart, Plus, Minus, Package, Truck, Building, Check, Droplets } from 'lucide-react';
+import { useRef, useState } from 'react';
+
+function ProductImageCarousel({ images, name }: { images: string[]; name: string }) {
+  const [activeIdx, setActiveIdx] = useState(0);
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  const handleScroll = () => {
+    if (!scrollRef.current) return;
+    const { scrollLeft, clientWidth } = scrollRef.current;
+    setActiveIdx(Math.round(scrollLeft / clientWidth));
+  };
+
+  return (
+    <div className="relative w-full h-full">
+      <div
+        ref={scrollRef}
+        onScroll={handleScroll}
+        className="flex w-full h-full overflow-x-auto snap-x snap-mandatory scroll-hide"
+      >
+        {images.map((img, idx) => (
+          <div key={idx} className="w-full h-full flex-shrink-0 snap-center flex items-center justify-center">
+            <img src={img} alt={`${name} - Pic ${idx + 1}`} className="w-full h-full object-contain" />
+          </div>
+        ))}
+      </div>
+      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2.5 z-20 bg-black/60 backdrop-blur-sm rounded-full px-3 py-1.5">
+        {images.map((_, idx) => (
+          <span
+            key={idx}
+            className={`size-3 rounded-full transition-all duration-300 ${idx === activeIdx
+              ? 'bg-[#00C853] shadow-[0_0_8px_rgba(0,200,83,0.9)]'
+              : 'bg-white/40'
+              }`}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
 
 const products = [
-  { id: 'savi-200ml-case', name: 'SAVI 200ML', size: '200ml × 48', price: 240, pack: 'Case (48 Bottles)', image: '/images/250ml.png' },
-  { id: 'savi-250ml-case', name: 'SAVI 250ML', size: '250ml × 36', price: 190, pack: 'Case (36 Bottles)', image: '/images/250ml.png' },
-  { id: 'savi-300ml-case', name: 'SAVI 300ML', size: '300ml × 30', price: 170, pack: 'Case (30 Bottles)', image: '/images/250ml-2.png' },
-  { id: 'savi-500ml-case', name: 'SAVI 500ML', size: '500ml × 24', price: 160, pack: 'Case (24 Bottles)', image: '/images/500ml.png' },
-  { id: 'savi-1000ml-case', name: 'SAVI 1000ML', size: '1000ml × 12', price: 110, pack: 'Case (12 Bottles)', image: '/images/1lrwhite.png' },
-  { id: 'savi-2000ml-case', name: 'SAVI 2000ML', size: '2000ml × 6', price: 110, pack: 'Case (6 Bottles)', image: '/images/1lrblack.png' },
-  { id: 'savi-20ltr-can', name: 'SAVI 20LTR', size: '20 Litre', price: 40, pack: 'Can', image: '/images/20ltr.png' },
+  { id: 'savi-200ml-case', name: 'SAVI 200ML', size: '200ml × 48', price: 240, pack: 'Case (48 Bottles)', image: '/images/200ml.png', images: ['/images/200ml.png'] },
+  { id: 'savi-250ml-case', name: 'SAVI 250ML', size: '250ml × 36', price: 190, pack: 'Case (36 Bottles)', image: '/images/250ml.png', images: ['/images/250ml.png'] },
+  { id: 'savi-300ml-case', name: 'SAVI 300ML', size: '300ml × 30', price: 170, pack: 'Case (30 Bottles)', image: '/images/250ml.png', images: ['/images/250ml.png'] },
+  { id: 'savi-500ml-case', name: 'SAVI 500ML', size: '500ml × 24', price: 160, pack: 'Case (24 Bottles)', image: '/images/500ml-1.png', images: ['/images/500ml-1.png'] },
+  { id: 'savi-1000ml-case', name: 'SAVI 1000ML', size: '1000ml × 12', price: 110, pack: 'Case (12 Bottles)', image: '/images/1lrwhite.png', images: ['/images/1lrwhite.png', '/images/1lrblack.png'] },
+  { id: 'savi-2000ml-case', name: 'SAVI 2000ML', size: '2000ml × 6', price: 110, pack: 'Case (6 Bottles)', image: '/images/1lrwhite.png', images: ['/images/1lrwhite.png'] },
+  { id: 'savi-20ltr-can', name: 'SAVI 20LTR', size: '20 Litre', price: 40, pack: 'Can', image: '/images/20ltr.png', images: ['/images/20ltr.png'] },
 ];
 
 export default function MarketplacePage() {
@@ -49,12 +88,16 @@ export default function MarketplacePage() {
                 return (
                   <div key={product.id} className="bg-[#2d2d2d] rounded-3xl p-6 border border-white/5 hover:border-[#00C853]/20 transition-all group">
                     {/* Product Image */}
-                    <div className="aspect-square rounded-2xl bg-gradient-to-b from-[#2a2a2a] to-[#1a1a1a] mb-6 flex items-center justify-center relative overflow-hidden p-4">
-                      <img
-                        src={product.image}
-                        alt={product.name}
-                        className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-500"
-                      />
+                    <div className="aspect-square rounded-2xl bg-gradient-to-b from-[#2a2a2a] to-[#1a1a1a] mb-6 relative overflow-hidden p-4">
+                      {product.images.length > 1 ? (
+                        <ProductImageCarousel images={product.images} name={product.name} />
+                      ) : (
+                        <img
+                          src={product.images[0]}
+                          alt={product.name}
+                          className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-500"
+                        />
+                      )}
                       <div className="absolute top-3 right-3 bg-[#00C853]/10 text-[#00C853] text-[10px] font-bold px-2 py-1 rounded-full">
                         {product.pack}
                       </div>
@@ -134,37 +177,51 @@ export default function MarketplacePage() {
               {/* Bulk Order Form */}
               <div className="bg-[#2d2d2d] rounded-3xl p-8 border border-white/5">
                 <h3 className="text-white text-xl font-bold mb-6">Request Bulk Quote</h3>
-                <form className="space-y-4">
+                <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
                   <input
                     className="w-full bg-white rounded-2xl px-5 py-4 text-gray-900 text-sm font-medium placeholder:text-gray-400 outline-none focus:ring-2 focus:ring-[#00C853]"
                     placeholder="Company Name"
                     type="text"
+                    id="bulk-company"
                   />
                   <div className="grid grid-cols-2 gap-4">
                     <input
                       className="w-full bg-white rounded-2xl px-5 py-4 text-gray-900 text-sm font-medium placeholder:text-gray-400 outline-none focus:ring-2 focus:ring-[#00C853]"
                       placeholder="Contact Person"
                       type="text"
+                      id="bulk-contact"
                     />
                     <input
                       className="w-full bg-white rounded-2xl px-5 py-4 text-gray-900 text-sm font-medium placeholder:text-gray-400 outline-none focus:ring-2 focus:ring-[#00C853]"
                       placeholder="Phone Number"
                       type="tel"
+                      id="bulk-phone"
                     />
                   </div>
                   <input
                     className="w-full bg-white rounded-2xl px-5 py-4 text-gray-900 text-sm font-medium placeholder:text-gray-400 outline-none focus:ring-2 focus:ring-[#00C853]"
                     placeholder="Estimated Monthly Quantity"
                     type="text"
+                    id="bulk-quantity"
                   />
                   <textarea
                     className="w-full bg-white rounded-2xl px-5 py-4 text-gray-900 text-sm font-medium placeholder:text-gray-400 outline-none focus:ring-2 focus:ring-[#00C853] resize-none"
                     placeholder="Additional Requirements"
                     rows={3}
+                    id="bulk-requirements"
                   />
                   <button
                     type="button"
                     className="w-full bg-[#00C853] hover:bg-[#00e676] text-white font-bold rounded-2xl py-4 transition-all flex items-center justify-center gap-2"
+                    onClick={() => {
+                      const company = (document.getElementById('bulk-company') as HTMLInputElement)?.value || '';
+                      const contact = (document.getElementById('bulk-contact') as HTMLInputElement)?.value || '';
+                      const phone = (document.getElementById('bulk-phone') as HTMLInputElement)?.value || '';
+                      const quantity = (document.getElementById('bulk-quantity') as HTMLInputElement)?.value || '';
+                      const requirements = (document.getElementById('bulk-requirements') as HTMLTextAreaElement)?.value || '';
+                      const text = `*Bulk Quote Request from SAVI Website*%0A%0A*Company:* ${company}%0A*Contact:* ${contact}%0A*Phone:* ${phone}%0A*Monthly Quantity:* ${quantity}%0A*Requirements:* ${requirements}`;
+                      window.open(`https://wa.me/917760161401?text=${text}`, '_blank');
+                    }}
                   >
                     <Check className="size-4" />
                     Request Quote
