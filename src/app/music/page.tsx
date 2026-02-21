@@ -11,50 +11,103 @@ interface Track {
     duration: string;
     cover: string;
     audioSrc?: string;
+    language: 'Hindi' | 'Kannada';
+    era: '1980s' | '1990s' | '2000s' | '2010s' | 'Latest';
 }
 
 const tracks: Track[] = [
-    {
-        id: 1,
-        title: 'Waves of Serenity',
-        artist: 'SAVI Sounds',
-        duration: '3:45',
-        cover: '/gallery/promo-serenity.jpg',
-        audioSrc: '/music/track1.mp3'
-    },
-    {
-        id: 2,
-        title: 'Pure Flow',
-        artist: 'SAVI Sounds',
-        duration: '4:12',
-        cover: '/gallery/promo-elegance.jpg',
-        audioSrc: '/music/track2.mp3'
-    },
-    {
-        id: 3,
-        title: 'Crystal Clear',
-        artist: 'SAVI Sounds',
-        duration: '3:28',
-        cover: '/bottle2.jpeg',
-        audioSrc: '/music/track3.mp3'
-    },
-    {
-        id: 4,
-        title: 'Hydration Vibes',
-        artist: 'SAVI Sounds',
-        duration: '5:01',
-        cover: '/bottle3.jpeg',
-        audioSrc: '/music/track4.mp3'
-    },
-    {
-        id: 5,
-        title: 'Aqua Dreams',
-        artist: 'SAVI Sounds',
-        duration: '3:55',
-        cover: '/bottle4.jpeg',
-        audioSrc: '/music/track5.mp3'
-    },
+    // ── 1980s Hindi ──
+    { id: 1, title: 'Ek Do Teen', artist: 'Tezaab', duration: '4:30', cover: '/gallery/promo-serenity.jpg', audioSrc: '/music/ek-do-teen.mp3', language: 'Hindi', era: '1980s' },
+    { id: 2, title: 'Papa Kehte Hain', artist: 'Qayamat Se Qayamat Tak', duration: '5:02', cover: '/gallery/promo-elegance.jpg', audioSrc: '/music/papa-kehte-hain.mp3', language: 'Hindi', era: '1980s' },
+    { id: 3, title: 'Hawa Hawai', artist: 'Mr. India', duration: '4:45', cover: '/bottle2.jpeg', audioSrc: '/music/hawa-hawai.mp3', language: 'Hindi', era: '1980s' },
+    { id: 4, title: 'Tirchi Topiwale', artist: 'Tridev', duration: '5:15', cover: '/bottle3.jpeg', audioSrc: '/music/tirchi-topiwale.mp3', language: 'Hindi', era: '1980s' },
+    { id: 5, title: 'Neele Neele Ambar Par', artist: 'Kalaakaar', duration: '5:38', cover: '/bottle4.jpeg', audioSrc: '/music/neele-neele-ambar.mp3', language: 'Hindi', era: '1980s' },
+    { id: 6, title: 'Jumma Chumma De De', artist: 'Hum', duration: '6:10', cover: '/gallery/promo-serenity.jpg', audioSrc: '/music/jumma-chumma.mp3', language: 'Hindi', era: '1980s' },
+    { id: 7, title: 'Gazab Ka Hai Din', artist: 'Qayamat Se Qayamat Tak', duration: '4:55', cover: '/gallery/promo-elegance.jpg', audioSrc: '/music/gazab-ka-hai-din.mp3', language: 'Hindi', era: '1980s' },
+
+    // ── 1980s Kannada ──
+    { id: 8, title: 'Jotheyali Jothe Jotheyali', artist: 'Geetha', duration: '4:20', cover: '/bottle2.jpeg', audioSrc: '/music/jotheyali-jothe.mp3', language: 'Kannada', era: '1980s' },
+    { id: 9, title: 'Baalu Belakayithu', artist: 'Haalu Jenu', duration: '4:35', cover: '/bottle3.jpeg', audioSrc: '/music/baalu-belakayithu.mp3', language: 'Kannada', era: '1980s' },
+    { id: 10, title: 'Ganga Yamuna Sangama', artist: 'Anuraga Aralithu', duration: '3:58', cover: '/bottle4.jpeg', audioSrc: '/music/ganga-yamuna-sangama.mp3', language: 'Kannada', era: '1980s' },
+    { id: 11, title: 'Kelade Nimageega', artist: 'Geetha', duration: '4:42', cover: '/gallery/promo-serenity.jpg', audioSrc: '/music/kelade-nimageega.mp3', language: 'Kannada', era: '1980s' },
+    { id: 12, title: 'Nammoora Mandara Hoove', artist: 'Aalemane', duration: '5:10', cover: '/gallery/promo-elegance.jpg', audioSrc: '/music/nammoora-mandara-hoove.mp3', language: 'Kannada', era: '1980s' },
+    { id: 13, title: 'Olume Siriya', artist: 'Bangarada Jinke', duration: '4:48', cover: '/bottle2.jpeg', audioSrc: '/music/olume-siriya.mp3', language: 'Kannada', era: '1980s' },
+    { id: 14, title: 'Anupama Cheluvu', artist: 'Anupama', duration: '4:15', cover: '/bottle3.jpeg', audioSrc: '/music/anupama-cheluvu.mp3', language: 'Kannada', era: '1980s' },
+
+    // ── 1990s Hindi ──
+    { id: 15, title: 'Chaiyya Chaiyya', artist: 'Dil Se', duration: '6:23', cover: '/bottle4.jpeg', audioSrc: '/music/chaiyya-chaiyya.mp3', language: 'Hindi', era: '1990s' },
+    { id: 16, title: 'Pehla Nasha', artist: 'Jo Jeeta Wohi Sikandar', duration: '5:12', cover: '/gallery/promo-serenity.jpg', audioSrc: '/music/pehla-nasha.mp3', language: 'Hindi', era: '1990s' },
+    { id: 17, title: 'Tujhe Dekha To', artist: 'DDLJ', duration: '5:45', cover: '/gallery/promo-elegance.jpg', audioSrc: '/music/tujhe-dekha-to.mp3', language: 'Hindi', era: '1990s' },
+    { id: 18, title: 'Chunnari Chunnari', artist: 'Biwi No. 1', duration: '5:30', cover: '/bottle2.jpeg', audioSrc: '/music/chunnari-chunnari.mp3', language: 'Hindi', era: '1990s' },
+    { id: 19, title: 'O O Jaane Jaana', artist: 'Pyar Kiya Toh Darna Kya', duration: '5:08', cover: '/bottle3.jpeg', audioSrc: '/music/o-jaane-jaana.mp3', language: 'Hindi', era: '1990s' },
+    { id: 20, title: 'Didi Tera Devar Deewana', artist: 'Hum Aapke Hain Koun', duration: '4:55', cover: '/bottle4.jpeg', audioSrc: '/music/didi-tera-devar.mp3', language: 'Hindi', era: '1990s' },
+    { id: 21, title: 'Bole Chudiyan', artist: 'Kabhi Khushi Kabhie Gham', duration: '5:18', cover: '/gallery/promo-serenity.jpg', audioSrc: '/music/bole-chudiyan.mp3', language: 'Hindi', era: '1990s' },
+
+    // ── 1990s Kannada ──
+    { id: 22, title: 'Haayaada Ee Sanje', artist: 'Vasantha Geetha', duration: '5:10', cover: '/gallery/promo-elegance.jpg', audioSrc: '/music/haayaada-ee-sanje.mp3', language: 'Kannada', era: '1990s' },
+    { id: 23, title: 'Huttidare Kannada', artist: 'Akasmika', duration: '4:48', cover: '/bottle2.jpeg', audioSrc: '/music/huttidare-kannada.mp3', language: 'Kannada', era: '1990s' },
+    { id: 24, title: 'Janumada Jodi', artist: 'Janumada Jodi', duration: '4:22', cover: '/bottle3.jpeg', audioSrc: '/music/janumada-jodi.mp3', language: 'Kannada', era: '1990s' },
+    { id: 25, title: 'Nooru Janmaku', artist: 'America America', duration: '4:05', cover: '/bottle4.jpeg', audioSrc: '/music/nooru-janmaku.mp3', language: 'Kannada', era: '1990s' },
+    { id: 26, title: 'Ninna Nodalentho', artist: 'Mussanje Maathu', duration: '4:38', cover: '/gallery/promo-serenity.jpg', audioSrc: '/music/ninna-nodalentho.mp3', language: 'Kannada', era: '1990s' },
+    { id: 27, title: 'Nalivaa Gulaabi Hoove', artist: 'Auto Raja', duration: '3:55', cover: '/gallery/promo-elegance.jpg', audioSrc: '/music/nalivaa-gulaabi-hoove.mp3', language: 'Kannada', era: '1990s' },
+    { id: 28, title: 'Prema Chandrama', artist: 'Yajamana', duration: '4:30', cover: '/bottle2.jpeg', audioSrc: '/music/prema-chandrama.mp3', language: 'Kannada', era: '1990s' },
+
+    // ── 2000s Hindi ──
+    { id: 29, title: 'Kal Ho Naa Ho', artist: 'Kal Ho Naa Ho', duration: '5:19', cover: '/bottle3.jpeg', audioSrc: '/music/kal-ho-naa-ho.mp3', language: 'Hindi', era: '2000s' },
+    { id: 30, title: 'Kajra Re', artist: 'Bunty Aur Babli', duration: '5:42', cover: '/bottle4.jpeg', audioSrc: '/music/kajra-re.mp3', language: 'Hindi', era: '2000s' },
+    { id: 31, title: 'Tum Ko Dekha To', artist: 'Jagjit Singh', duration: '5:55', cover: '/gallery/promo-serenity.jpg', audioSrc: '/music/tum-ko-dekha-to.mp3', language: 'Hindi', era: '2000s' },
+    { id: 32, title: 'Mauja Hi Mauja', artist: 'Jab We Met', duration: '5:28', cover: '/gallery/promo-elegance.jpg', audioSrc: '/music/mauja-hi-mauja.mp3', language: 'Hindi', era: '2000s' },
+    { id: 33, title: 'Desi Girl', artist: 'Dostana', duration: '4:15', cover: '/bottle2.jpeg', audioSrc: '/music/desi-girl.mp3', language: 'Hindi', era: '2000s' },
+    { id: 34, title: 'Pehli Nazar Mein', artist: 'Race', duration: '5:05', cover: '/bottle3.jpeg', audioSrc: '/music/pehli-nazar-mein.mp3', language: 'Hindi', era: '2000s' },
+    { id: 35, title: 'Teri Ore', artist: 'Singh Is Kinng', duration: '5:32', cover: '/bottle4.jpeg', audioSrc: '/music/teri-ore.mp3', language: 'Hindi', era: '2000s' },
+
+    // ── 2000s Kannada ──
+    { id: 36, title: 'Yaare Nee Devatheya', artist: 'Ambari', duration: '4:35', cover: '/gallery/promo-serenity.jpg', audioSrc: '/music/yaare-nee-devatheya.mp3', language: 'Kannada', era: '2000s' },
+    { id: 37, title: 'Minchagi Neenu Baralu', artist: 'Gaalipata', duration: '4:12', cover: '/gallery/promo-elegance.jpg', audioSrc: '/music/minchagi-neenu.mp3', language: 'Kannada', era: '2000s' },
+    { id: 38, title: 'Anisuthide', artist: 'Mungaru Male', duration: '4:48', cover: '/bottle2.jpeg', audioSrc: '/music/anisuthide.mp3', language: 'Kannada', era: '2000s' },
+    { id: 39, title: 'Mungaru Maleye', artist: 'Mungaru Male', duration: '3:58', cover: '/bottle3.jpeg', audioSrc: '/music/mungaru-maleye.mp3', language: 'Kannada', era: '2000s' },
+    { id: 40, title: 'Onde Ondu Saari', artist: 'Mungaru Male', duration: '4:22', cover: '/bottle4.jpeg', audioSrc: '/music/onde-ondu-saari.mp3', language: 'Kannada', era: '2000s' },
+    { id: 41, title: 'Open Hairu Bitkondu', artist: 'Adhyaksha', duration: '4:10', cover: '/gallery/promo-serenity.jpg', audioSrc: '/music/open-hairu.mp3', language: 'Kannada', era: '2000s' },
+    { id: 42, title: 'Paravashanadenu', artist: 'Paramathma', duration: '4:28', cover: '/gallery/promo-elegance.jpg', audioSrc: '/music/paravashanadenu.mp3', language: 'Kannada', era: '2000s' },
+
+    // ── 2010s Hindi ──
+    { id: 43, title: 'Tum Hi Ho', artist: 'Aashiqui 2', duration: '4:22', cover: '/bottle2.jpeg', audioSrc: '/music/tum-hi-ho.mp3', language: 'Hindi', era: '2010s' },
+    { id: 44, title: 'Kabira', artist: 'Yeh Jawaani Hai Deewani', duration: '4:50', cover: '/bottle3.jpeg', audioSrc: '/music/kabira.mp3', language: 'Hindi', era: '2010s' },
+    { id: 45, title: 'Zaalima', artist: 'Raees', duration: '4:32', cover: '/bottle4.jpeg', audioSrc: '/music/zaalima.mp3', language: 'Hindi', era: '2010s' },
+    { id: 46, title: 'Nashe Si Chadh Gayi', artist: 'Befikre', duration: '3:55', cover: '/gallery/promo-serenity.jpg', audioSrc: '/music/nashe-si-chadh-gayi.mp3', language: 'Hindi', era: '2010s' },
+    { id: 47, title: 'Dil Diyan Gallan', artist: 'Tiger Zinda Hai', duration: '4:48', cover: '/gallery/promo-elegance.jpg', audioSrc: '/music/dil-diyan-gallan.mp3', language: 'Hindi', era: '2010s' },
+    { id: 48, title: 'Humsafar', artist: 'Badrinath Ki Dulhania', duration: '5:12', cover: '/bottle2.jpeg', audioSrc: '/music/humsafar.mp3', language: 'Hindi', era: '2010s' },
+    { id: 49, title: 'Swag Se Swagat', artist: 'Tiger Zinda Hai', duration: '3:28', cover: '/bottle3.jpeg', audioSrc: '/music/swag-se-swagat.mp3', language: 'Hindi', era: '2010s' },
+
+    // ── 2010s Kannada ──
+    { id: 50, title: 'Belageddu', artist: 'Kirik Party', duration: '4:12', cover: '/bottle4.jpeg', audioSrc: '/music/belageddu.mp3', language: 'Kannada', era: '2010s' },
+    { id: 51, title: 'Chuttu Chuttu', artist: 'Raambo 2', duration: '3:45', cover: '/gallery/promo-serenity.jpg', audioSrc: '/music/chuttu-chuttu.mp3', language: 'Kannada', era: '2010s' },
+    { id: 52, title: 'Bombe Helutaithe', artist: 'Raajakumara', duration: '4:30', cover: '/gallery/promo-elegance.jpg', audioSrc: '/music/bombe-helutaithe.mp3', language: 'Kannada', era: '2010s' },
+    { id: 53, title: 'Mungaru Maleyalli', artist: 'Andondittu Kaala', duration: '3:58', cover: '/bottle2.jpeg', audioSrc: '/music/mungaru-maleyalli.mp3', language: 'Kannada', era: '2010s' },
+    { id: 54, title: 'Geleya Ennale', artist: 'Mass Leader', duration: '4:15', cover: '/bottle3.jpeg', audioSrc: '/music/geleya-ennale.mp3', language: 'Kannada', era: '2010s' },
+    { id: 55, title: 'Sanju Mathu Geetha', artist: 'Sanju Weds Geetha', duration: '4:42', cover: '/bottle4.jpeg', audioSrc: '/music/sanju-mathu-geetha.mp3', language: 'Kannada', era: '2010s' },
+    { id: 56, title: 'Naane Neenanthe', artist: 'BRAT', duration: '5:10', cover: '/gallery/promo-serenity.jpg', audioSrc: '/music/naane-neenanthe.mp3', language: 'Kannada', era: '2010s' },
+
+    // ── Latest (2020s) Hindi ──
+    { id: 57, title: 'Akhiyaan Gulaab', artist: 'Teri Baaton Mein Aisa Uljha Jiya', duration: '4:28', cover: '/gallery/promo-elegance.jpg', audioSrc: '/music/akhiyaan-gulaab.mp3', language: 'Hindi', era: 'Latest' },
+    { id: 58, title: 'Satyanaas', artist: 'Chandu Champion', duration: '3:55', cover: '/bottle2.jpeg', audioSrc: '/music/satyanaas.mp3', language: 'Hindi', era: 'Latest' },
+    { id: 59, title: 'Tauba Tauba', artist: 'Bad Newz', duration: '3:42', cover: '/bottle3.jpeg', audioSrc: '/music/tauba-tauba.mp3', language: 'Hindi', era: 'Latest' },
+    { id: 60, title: 'Vaada Hai', artist: "O'Romeo", duration: '4:15', cover: '/bottle4.jpeg', audioSrc: '/music/vaada-hai.mp3', language: 'Hindi', era: 'Latest' },
+    { id: 61, title: 'Zinda Banda', artist: 'Jawan', duration: '3:18', cover: '/gallery/promo-serenity.jpg', audioSrc: '/music/zinda-banda.mp3', language: 'Hindi', era: 'Latest' },
+    { id: 62, title: 'Main Hoon', artist: 'Battle Of Galwan', duration: '4:05', cover: '/gallery/promo-elegance.jpg', audioSrc: '/music/main-hoon.mp3', language: 'Hindi', era: 'Latest' },
+    { id: 63, title: 'Gali Gali', artist: 'KGF', duration: '3:32', cover: '/bottle2.jpeg', audioSrc: '/music/gali-gali.mp3', language: 'Hindi', era: 'Latest' },
+
+    // ── Latest (2020s) Kannada ──
+    { id: 64, title: 'Salaam Rocky Bhai', artist: 'KGF Chapter 1', duration: '3:48', cover: '/bottle3.jpeg', audioSrc: '/music/salaam-rocky-bhai.mp3', language: 'Kannada', era: 'Latest' },
+    { id: 65, title: 'Dheera Dheera', artist: 'KGF', duration: '4:22', cover: '/bottle4.jpeg', audioSrc: '/music/dheera-dheera.mp3', language: 'Kannada', era: 'Latest' },
+    { id: 66, title: 'Idre Nemdiyaag Irbek', artist: 'The Devil', duration: '4:55', cover: '/gallery/promo-serenity.jpg', audioSrc: '/music/idre-nemdiyaag.mp3', language: 'Kannada', era: 'Latest' },
+    { id: 67, title: 'Bangle Bangari', artist: 'EKKA', duration: '5:08', cover: '/gallery/promo-elegance.jpg', audioSrc: '/music/bangle-bangari.mp3', language: 'Kannada', era: 'Latest' },
+    { id: 68, title: 'Ayyo Sivane', artist: 'Cult', duration: '4:15', cover: '/bottle2.jpeg', audioSrc: '/music/ayyo-sivane.mp3', language: 'Kannada', era: 'Latest' },
+    { id: 69, title: 'Shiva Shiva', artist: 'KD', duration: '3:42', cover: '/bottle3.jpeg', audioSrc: '/music/shiva-shiva.mp3', language: 'Kannada', era: 'Latest' },
+    { id: 70, title: 'Bole Chudiyan', artist: 'K3G', duration: '4:30', cover: '/bottle4.jpeg', audioSrc: '/music/bole-chudiyan-full.mp3', language: 'Hindi', era: '2000s' },
 ];
+
+const eras = ['1980s', '1990s', '2000s', '2010s', 'Latest'] as const;
 
 export default function MusicPage() {
     const [currentTrack, setCurrentTrack] = useState<Track | null>(null);
@@ -64,8 +117,16 @@ export default function MusicPage() {
     const [volume, setVolume] = useState(0.7);
     const [isShuffled, setIsShuffled] = useState(false);
     const [isRepeating, setIsRepeating] = useState(false);
+    const [selectedLanguage, setSelectedLanguage] = useState<'All' | 'Hindi' | 'Kannada'>('All');
+    const [selectedEra, setSelectedEra] = useState<string>('All');
     const audioRef = useRef<HTMLAudioElement>(null);
     const progressBarRef = useRef<HTMLDivElement>(null);
+
+    const filteredTracks = tracks.filter(t => {
+        const langMatch = selectedLanguage === 'All' || t.language === selectedLanguage;
+        const eraMatch = selectedEra === 'All' || t.era === selectedEra;
+        return langMatch && eraMatch;
+    });
 
     useEffect(() => {
         if (audioRef.current) {
@@ -132,25 +193,27 @@ export default function MusicPage() {
 
     const playNext = () => {
         if (!currentTrack) return;
-        const currentIndex = tracks.findIndex(t => t.id === currentTrack.id);
+        const list = filteredTracks.length > 0 ? filteredTracks : tracks;
+        const currentIndex = list.findIndex(t => t.id === currentTrack.id);
         let nextIndex: number;
 
         if (isShuffled) {
             do {
-                nextIndex = Math.floor(Math.random() * tracks.length);
-            } while (nextIndex === currentIndex && tracks.length > 1);
+                nextIndex = Math.floor(Math.random() * list.length);
+            } while (nextIndex === currentIndex && list.length > 1);
         } else {
-            nextIndex = (currentIndex + 1) % tracks.length;
+            nextIndex = (currentIndex + 1) % list.length;
         }
 
-        playTrack(tracks[nextIndex]);
+        playTrack(list[nextIndex]);
     };
 
     const playPrevious = () => {
         if (!currentTrack) return;
-        const currentIndex = tracks.findIndex(t => t.id === currentTrack.id);
-        const prevIndex = currentIndex === 0 ? tracks.length - 1 : currentIndex - 1;
-        playTrack(tracks[prevIndex]);
+        const list = filteredTracks.length > 0 ? filteredTracks : tracks;
+        const currentIndex = list.findIndex(t => t.id === currentTrack.id);
+        const prevIndex = currentIndex <= 0 ? list.length - 1 : currentIndex - 1;
+        playTrack(list[prevIndex]);
     };
 
     const handleProgressClick = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -184,6 +247,52 @@ export default function MusicPage() {
                     </div>
                 </section>
 
+                {/* Filters */}
+                <section className="w-full max-w-[1200px] px-4 md:px-8 pb-8">
+                    <div className="glass-panel rounded-2xl p-5 flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                        {/* Language Filter */}
+                        <div className="flex items-center gap-2">
+                            <span className="text-gray-500 text-xs font-bold uppercase tracking-wider mr-1">Language</span>
+                            {(['All', 'Hindi', 'Kannada'] as const).map(lang => (
+                                <button
+                                    key={lang}
+                                    onClick={() => { setSelectedLanguage(lang); setSelectedEra('All'); }}
+                                    className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${selectedLanguage === lang
+                                        ? 'bg-[#00C853] text-white shadow-[0_0_15px_rgba(0,200,83,0.4)]'
+                                        : 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white border border-white/10'
+                                        }`}
+                                >
+                                    {lang}
+                                </button>
+                            ))}
+                        </div>
+
+                        {/* Divider */}
+                        <div className="hidden sm:block w-px h-8 bg-white/10" />
+
+                        {/* Era Dropdown */}
+                        <div className="flex items-center gap-2">
+                            <span className="text-gray-500 text-xs font-bold uppercase tracking-wider mr-1">Era</span>
+                            <select
+                                value={selectedEra}
+                                onChange={(e) => setSelectedEra(e.target.value)}
+                                className="bg-white/5 border border-white/10 rounded-full px-4 py-2 text-sm text-white font-medium appearance-none cursor-pointer outline-none focus:ring-2 focus:ring-[#00C853] transition-all pr-8"
+                                style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23999' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10z'/%3E%3C/svg%3E")`, backgroundRepeat: 'no-repeat', backgroundPosition: 'right 12px center' }}
+                            >
+                                <option value="All" className="bg-[#2d2d2d]">All Decades</option>
+                                {eras.map(era => (
+                                    <option key={era} value={era} className="bg-[#2d2d2d]">{era}</option>
+                                ))}
+                            </select>
+                        </div>
+
+                        {/* Track Count */}
+                        <div className="sm:ml-auto">
+                            <span className="text-gray-500 text-xs font-mono">{filteredTracks.length} tracks</span>
+                        </div>
+                    </div>
+                </section>
+
                 {/* Music Player Container */}
                 <section className="w-full max-w-[1200px] px-4 md:px-8 pb-32">
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -204,8 +313,17 @@ export default function MusicPage() {
                                             {/* Vinyl Animation */}
                                             <div className={`absolute inset-4 rounded-full border-4 border-white/10 ${isPlaying ? 'animate-spin' : ''}`} style={{ animationDuration: '3s' }}>
                                                 <div className="absolute inset-0 flex items-center justify-center">
-                                                    <div className="w-4 h-4 rounded-full bg-white/20" />
+                                                    <div className="w-12 h-12 rounded-full bg-black/40 backdrop-blur-sm flex items-center justify-center">
+                                                        <svg className="w-6 h-6 text-white/80" fill="currentColor" viewBox="0 0 24 24">
+                                                            <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z" />
+                                                        </svg>
+                                                    </div>
                                                 </div>
+                                            </div>
+
+                                            {/* Language Badge */}
+                                            <div className="absolute top-3 left-3 px-2 py-1 rounded-full bg-black/60 backdrop-blur-sm text-[10px] font-bold text-[#00C853] uppercase tracking-wider">
+                                                {currentTrack.language} · {currentTrack.era}
                                             </div>
                                         </div>
 
@@ -324,17 +442,17 @@ export default function MusicPage() {
                         <div className="lg:col-span-2">
                             <div className="flex items-center justify-between mb-6">
                                 <h2 className="text-white text-2xl font-light">Playlist</h2>
-                                <span className="text-gray-500 text-sm">{tracks.length} tracks</span>
+                                <span className="text-gray-500 text-sm">{filteredTracks.length} tracks</span>
                             </div>
 
                             <div className="space-y-3">
-                                {tracks.map((track, index) => (
+                                {filteredTracks.map((track, index) => (
                                     <div
                                         key={track.id}
                                         onClick={() => playTrack(track)}
                                         className={`group flex items-center gap-4 p-4 rounded-2xl cursor-pointer transition-all duration-300 ${currentTrack?.id === track.id
-                                                ? 'bg-white/10 border border-[#00C853]/30'
-                                                : 'glass-panel hover:bg-white/5'
+                                            ? 'bg-white/10 border border-[#00C853]/30'
+                                            : 'glass-panel hover:bg-white/5'
                                             }`}
                                     >
                                         {/* Track Number / Playing Indicator */}
@@ -360,15 +478,12 @@ export default function MusicPage() {
                                         </div>
 
                                         {/* Cover Art */}
-                                        <div className="relative w-14 h-14 rounded-xl overflow-hidden flex-shrink-0">
-                                            <div
-                                                className="absolute inset-0 bg-cover bg-center"
-                                                style={{ backgroundImage: `url(${track.cover})` }}
-                                            />
-                                            <div className="absolute inset-0 bg-black/20" />
+                                        <div className="relative w-14 h-14 rounded-xl overflow-hidden flex-shrink-0 bg-white/5 flex items-center justify-center">
+                                            <svg className="w-6 h-6 text-gray-500" fill="currentColor" viewBox="0 0 24 24">
+                                                <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z" />
+                                            </svg>
                                         </div>
 
-                                        {/* Track Info */}
                                         <div className="flex-1 min-w-0">
                                             <h3 className={`font-medium truncate ${currentTrack?.id === track.id ? 'text-[#00C853]' : 'text-white'
                                                 }`}>
@@ -376,6 +491,11 @@ export default function MusicPage() {
                                             </h3>
                                             <p className="text-gray-500 text-sm truncate">{track.artist}</p>
                                         </div>
+
+                                        {/* Language/Era Tag */}
+                                        <span className="hidden sm:inline-block text-[10px] font-bold uppercase tracking-wider text-gray-500 bg-white/5 px-2 py-1 rounded-full">
+                                            {track.language} · {track.era}
+                                        </span>
 
                                         {/* Duration */}
                                         <span className="text-gray-500 text-sm font-mono">{track.duration}</span>
