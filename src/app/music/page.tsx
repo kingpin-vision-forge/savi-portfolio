@@ -224,7 +224,7 @@ export default function MusicPage() {
     };
 
     return (
-        <div className="relative flex min-h-screen w-full flex-col bg-[#1a1a1a]">
+        <div className="relative flex min-h-screen w-full flex-col">
             <Header />
 
             <main className="flex-grow flex flex-col items-center w-full">

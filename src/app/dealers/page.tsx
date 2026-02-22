@@ -5,7 +5,7 @@ import Footer from '@/components/Footer';
 
 export default function DealersPage() {
   return (
-    <div className="relative flex min-h-screen w-full flex-col bg-[#1a1a1a]">
+    <div className="relative flex min-h-screen w-full flex-col">
       <Header />
 
       {/* Hero Section with Split Design */}
@@ -26,7 +26,7 @@ export default function DealersPage() {
                 Join an exclusive circle of partners delivering pharmaceutical-grade hydration. Secure your territory with SAVI.
               </p>
               <div className="flex flex-wrap gap-4">
-                <button 
+                <button
                   className="h-14 px-8 bg-[#00C853] hover:bg-[#009624] text-white rounded-2xl text-base font-bold tracking-wide transition-all flex items-center gap-2 shadow-xl shadow-[#00C853]/20"
                   onClick={() => document.getElementById('application-form')?.scrollIntoView({ behavior: 'smooth' })}
                 >

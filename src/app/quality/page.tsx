@@ -3,7 +3,7 @@ import Footer from '@/components/Footer';
 
 export default function QualityPage() {
   return (
-    <div className="relative flex min-h-screen w-full flex-col bg-[#1a1a1a]">
+    <div className="relative flex min-h-screen w-full flex-col">
       {/* Background */}
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
         <div className="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] bg-[#2d2d2d] opacity-30 blur-[150px] rounded-full" />

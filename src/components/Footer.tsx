@@ -26,9 +26,9 @@ export default function Footer() {
     <footer className="w-full border-t border-white/5 bg-[#121212] pt-16 pb-8">
       <div className="px-6 md:px-20 mx-auto max-w-[1400px]">
         {/* Main Footer Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-10 mb-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-10 mb-16">
           {/* Brand Column */}
-          <div className="col-span-2 md:col-span-1 lg:col-span-2">
+          <div className="col-span-1 sm:col-span-2 md:col-span-1 lg:col-span-2">
             <Link href="/" className="flex items-center gap-2 mb-4">
               <img src="/images/logo-white.jpeg" alt="SAVI" className="h-10 w-auto object-contain" />
             </Link>

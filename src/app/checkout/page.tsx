@@ -265,7 +265,7 @@ Transaction ID: ${formData.transactionId}
                     </h2>
 
                     <div className="space-y-5">
-                      <div className="grid grid-cols-2 gap-4">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                           <label className="text-sm font-semibold text-gray-300 mb-2 block">First Name *</label>
                           <div className="relative">
@@ -338,7 +338,7 @@ Transaction ID: ${formData.transactionId}
                         />
                       </div>
 
-                      <div className="grid grid-cols-2 gap-4">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                           <label className="text-sm font-semibold text-gray-300 mb-2 block">City *</label>
                           <input
@@ -371,7 +371,7 @@ Transaction ID: ${formData.transactionId}
                           <Navigation className="size-4 text-[#00C853]" />
                           Location Coordinates (Optional)
                         </label>
-                        <div className="grid grid-cols-2 gap-4 mb-3">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-3">
                           <div>
                             <input
                               name="latitude"

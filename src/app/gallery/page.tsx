@@ -36,7 +36,7 @@ export default function GalleryPage() {
     : galleryItems.filter(item => item.category === activeFilter);
 
   return (
-    <div className="relative flex min-h-screen w-full flex-col bg-[#1a1a1a]">
+    <div className="relative flex min-h-screen w-full flex-col">
       <Header />
 
       <main className="flex-grow flex flex-col items-center w-full">
@@ -63,8 +63,8 @@ export default function GalleryPage() {
                 key={cat}
                 onClick={() => setActiveFilter(cat)}
                 className={`flex h-10 items-center px-6 rounded-full text-xs font-bold uppercase tracking-wider transition-all ${activeFilter === cat
-                    ? 'bg-white text-black shadow-lg'
-                    : 'hover:bg-white/5 text-gray-400 hover:text-white font-medium'
+                  ? 'bg-white text-black shadow-lg'
+                  : 'hover:bg-white/5 text-gray-400 hover:text-white font-medium'
                   }`}
               >
                 {cat}
