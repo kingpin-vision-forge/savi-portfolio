@@ -1,14 +1,25 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
+import dynamic from 'next/dynamic';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { useCart } from '@/context/CartContext';
-import { 
-  ShieldCheck, ArrowRight, Package, MapPin, Phone, User, Mail, 
-  CheckCircle2, MessageCircle, QrCode, Smartphone, AlertCircle
+import {
+  ShieldCheck, ArrowRight, Package, MapPin, Phone, User, Mail,
+  CheckCircle2, MessageCircle, QrCode, Smartphone, AlertCircle, Navigation, Loader2
 } from 'lucide-react';
 import Link from 'next/link';
+
+// Leaflet requires window — must be dynamically imported
+const LocationMap = dynamic(() => import('@/components/LocationMap'), {
+  ssr: false,
+  loading: () => (
+    <div className="w-full h-[250px] sm:h-[300px] rounded-2xl bg-[#222] animate-pulse flex items-center justify-center">
+      <span className="text-gray-500 text-sm">Loading map…</span>
+    </div>
+  ),
+});
 
 // Replace with client's actual WhatsApp number
 const WHATSAPP_NUMBER = '917760161401'; // Format: country code + number without +
@@ -24,9 +35,13 @@ export default function CheckoutPage() {
     address: '',
     city: '',
     pincode: '',
+    latitude: '',
+    longitude: '',
     notes: '',
     transactionId: '',
   });
+  const [geoStatus, setGeoStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [geoError, setGeoError] = useState('');
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -38,8 +53,37 @@ export default function CheckoutPage() {
     }
   };
 
+  const fetchCurrentLocation = useCallback(() => {
+    if (!navigator.geolocation) {
+      setGeoStatus('error');
+      setGeoError('Geolocation is not supported by your browser');
+      return;
+    }
+    setGeoStatus('loading');
+    setGeoError('');
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setFormData(prev => ({
+          ...prev,
+          latitude: position.coords.latitude.toFixed(6),
+          longitude: position.coords.longitude.toFixed(6),
+        }));
+        setGeoStatus('success');
+      },
+      (err) => {
+        setGeoStatus('error');
+        setGeoError(
+          err.code === 1 ? 'Location permission denied. Please allow access in your browser settings.' :
+            err.code === 2 ? 'Location unavailable. Please try again.' :
+              'Location request timed out. Please try again.'
+        );
+      },
+      { enableHighAccuracy: true, timeout: 10000 }
+    );
+  }, []);
+
   const generateWhatsAppMessage = () => {
-    const orderItems = items.map(item => 
+    const orderItems = items.map(item =>
       `• ${item.name} (${item.size}) × ${item.quantity} = ₹${(item.price * item.quantity).toLocaleString()}`
     ).join('\n');
 
@@ -58,6 +102,10 @@ Email: ${formData.email || 'Not provided'}
 📍 *Delivery Address:*
 ${formData.address}
 ${formData.city} - ${formData.pincode}
+${formData.latitude && formData.longitude ? `
+📌 *Location Coordinates:*
+Lat: ${formData.latitude}, Lng: ${formData.longitude}
+🗺️ Google Maps: https://maps.google.com/?q=${formData.latitude},${formData.longitude}` : ''}
 
 ${formData.notes ? `📝 Notes: ${formData.notes}` : ''}
 
@@ -71,7 +119,7 @@ Transaction ID: ${formData.transactionId}
   const confirmPaymentAndRedirect = () => {
     const message = generateWhatsAppMessage();
     const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${message}`;
-    
+
     // Clear cart and redirect
     clearCart();
     window.open(whatsappUrl, '_blank');
@@ -87,7 +135,7 @@ Transaction ID: ${formData.transactionId}
             <Package className="size-20 text-white/10 mx-auto mb-6" />
             <h1 className="text-white text-3xl font-bold mb-4">Your cart is empty</h1>
             <p className="text-gray-400 mb-8">Add some products before checkout</p>
-            <Link 
+            <Link
               href="/marketplace"
               className="inline-flex items-center gap-2 bg-[#00C853] text-white font-bold px-8 py-4 rounded-2xl hover:bg-[#00e676] transition-all"
             >
@@ -116,11 +164,10 @@ Transaction ID: ${formData.transactionId}
             ].map((s, i) => (
               <div key={s.num} className="flex items-center gap-4">
                 <div className={`flex items-center gap-3 ${step >= s.num ? 'text-white' : 'text-gray-500'}`}>
-                  <div className={`size-10 rounded-full flex items-center justify-center font-bold text-sm transition-all ${
-                    step > s.num ? 'bg-[#00C853] text-white' : 
-                    step === s.num ? 'bg-white text-[#1a1a1a]' : 
-                    'bg-[#2d2d2d] text-gray-500'
-                  }`}>
+                  <div className={`size-10 rounded-full flex items-center justify-center font-bold text-sm transition-all ${step > s.num ? 'bg-[#00C853] text-white' :
+                    step === s.num ? 'bg-white text-[#1a1a1a]' :
+                      'bg-[#2d2d2d] text-gray-500'
+                    }`}>
                     {step > s.num ? <CheckCircle2 className="size-5" /> : s.num}
                   </div>
                   <span className="font-medium hidden sm:block">{s.label}</span>
@@ -140,7 +187,7 @@ Transaction ID: ${formData.transactionId}
               <p className="text-gray-400 text-lg mb-8">
                 Your order details have been sent to WhatsApp. Our team will confirm your order shortly.
               </p>
-              <Link 
+              <Link
                 href="/"
                 className="inline-flex items-center gap-2 bg-white text-[#1a1a1a] font-bold px-8 py-4 rounded-2xl hover:bg-gray-100 transition-all"
               >
@@ -166,12 +213,12 @@ Transaction ID: ${formData.transactionId}
                           <label className="text-sm font-semibold text-gray-300 mb-2 block">First Name *</label>
                           <div className="relative">
                             <User className="absolute left-4 top-1/2 -translate-y-1/2 size-5 text-gray-400" />
-                            <input 
+                            <input
                               name="firstName"
                               value={formData.firstName}
                               onChange={handleInputChange}
-                              className="w-full bg-white rounded-2xl pl-12 pr-5 py-4 text-gray-900 font-medium placeholder:text-gray-400 outline-none focus:ring-2 focus:ring-[#00C853]" 
-                              placeholder="John" 
+                              className="w-full bg-white rounded-2xl pl-12 pr-5 py-4 text-gray-900 font-medium placeholder:text-gray-400 outline-none focus:ring-2 focus:ring-[#00C853]"
+                              placeholder="John"
                               type="text"
                               required
                             />
@@ -179,13 +226,13 @@ Transaction ID: ${formData.transactionId}
                         </div>
                         <div>
                           <label className="text-sm font-semibold text-gray-300 mb-2 block">Last Name</label>
-                          <input 
+                          <input
                             name="lastName"
                             value={formData.lastName}
                             onChange={handleInputChange}
-                            className="w-full bg-white rounded-2xl px-5 py-4 text-gray-900 font-medium placeholder:text-gray-400 outline-none focus:ring-2 focus:ring-[#00C853]" 
-                            placeholder="Doe" 
-                            type="text" 
+                            className="w-full bg-white rounded-2xl px-5 py-4 text-gray-900 font-medium placeholder:text-gray-400 outline-none focus:ring-2 focus:ring-[#00C853]"
+                            placeholder="Doe"
+                            type="text"
                           />
                         </div>
                       </div>
@@ -194,12 +241,12 @@ Transaction ID: ${formData.transactionId}
                         <label className="text-sm font-semibold text-gray-300 mb-2 block">Phone Number *</label>
                         <div className="relative">
                           <Phone className="absolute left-4 top-1/2 -translate-y-1/2 size-5 text-gray-400" />
-                          <input 
+                          <input
                             name="phone"
                             value={formData.phone}
                             onChange={handleInputChange}
-                            className="w-full bg-white rounded-2xl pl-12 pr-5 py-4 text-gray-900 font-medium placeholder:text-gray-400 outline-none focus:ring-2 focus:ring-[#00C853]" 
-                            placeholder="+91 77601 61401" 
+                            className="w-full bg-white rounded-2xl pl-12 pr-5 py-4 text-gray-900 font-medium placeholder:text-gray-400 outline-none focus:ring-2 focus:ring-[#00C853]"
+                            placeholder="+91 77601 61401"
                             type="tel"
                             required
                           />
@@ -210,25 +257,25 @@ Transaction ID: ${formData.transactionId}
                         <label className="text-sm font-semibold text-gray-300 mb-2 block">Email (Optional)</label>
                         <div className="relative">
                           <Mail className="absolute left-4 top-1/2 -translate-y-1/2 size-5 text-gray-400" />
-                          <input 
+                          <input
                             name="email"
                             value={formData.email}
                             onChange={handleInputChange}
-                            className="w-full bg-white rounded-2xl pl-12 pr-5 py-4 text-gray-900 font-medium placeholder:text-gray-400 outline-none focus:ring-2 focus:ring-[#00C853]" 
-                            placeholder="john@example.com" 
-                            type="email" 
+                            className="w-full bg-white rounded-2xl pl-12 pr-5 py-4 text-gray-900 font-medium placeholder:text-gray-400 outline-none focus:ring-2 focus:ring-[#00C853]"
+                            placeholder="john@example.com"
+                            type="email"
                           />
                         </div>
                       </div>
 
                       <div>
                         <label className="text-sm font-semibold text-gray-300 mb-2 block">Delivery Address *</label>
-                        <textarea 
+                        <textarea
                           name="address"
                           value={formData.address}
                           onChange={handleInputChange}
-                          className="w-full bg-white rounded-2xl px-5 py-4 text-gray-900 font-medium placeholder:text-gray-400 outline-none focus:ring-2 focus:ring-[#00C853] resize-none" 
-                          placeholder="House/Flat No., Building, Street, Landmark" 
+                          className="w-full bg-white rounded-2xl px-5 py-4 text-gray-900 font-medium placeholder:text-gray-400 outline-none focus:ring-2 focus:ring-[#00C853] resize-none"
+                          placeholder="House/Flat No., Building, Street, Landmark"
                           rows={2}
                           required
                         />
@@ -237,44 +284,122 @@ Transaction ID: ${formData.transactionId}
                       <div className="grid grid-cols-2 gap-4">
                         <div>
                           <label className="text-sm font-semibold text-gray-300 mb-2 block">City *</label>
-                          <input 
+                          <input
                             name="city"
                             value={formData.city}
                             onChange={handleInputChange}
-                            className="w-full bg-white rounded-2xl px-5 py-4 text-gray-900 font-medium placeholder:text-gray-400 outline-none focus:ring-2 focus:ring-[#00C853]" 
-                            placeholder="Mumbai" 
+                            className="w-full bg-white rounded-2xl px-5 py-4 text-gray-900 font-medium placeholder:text-gray-400 outline-none focus:ring-2 focus:ring-[#00C853]"
+                            placeholder="Mumbai"
                             type="text"
                             required
                           />
                         </div>
                         <div>
                           <label className="text-sm font-semibold text-gray-300 mb-2 block">Pincode *</label>
-                          <input 
+                          <input
                             name="pincode"
                             value={formData.pincode}
                             onChange={handleInputChange}
-                            className="w-full bg-white rounded-2xl px-5 py-4 text-gray-900 font-medium placeholder:text-gray-400 outline-none focus:ring-2 focus:ring-[#00C853]" 
-                            placeholder="400001" 
+                            className="w-full bg-white rounded-2xl px-5 py-4 text-gray-900 font-medium placeholder:text-gray-400 outline-none focus:ring-2 focus:ring-[#00C853]"
+                            placeholder="400001"
                             type="text"
                             required
                           />
                         </div>
                       </div>
 
+                      {/* Location Coordinates */}
+                      <div className="pt-2">
+                        <label className="text-sm font-semibold text-gray-300 mb-3 block flex items-center gap-2">
+                          <Navigation className="size-4 text-[#00C853]" />
+                          Location Coordinates (Optional)
+                        </label>
+                        <div className="grid grid-cols-2 gap-4 mb-3">
+                          <div>
+                            <input
+                              name="latitude"
+                              value={formData.latitude}
+                              onChange={handleInputChange}
+                              className="w-full bg-white rounded-2xl px-5 py-4 text-gray-900 font-medium placeholder:text-gray-400 outline-none focus:ring-2 focus:ring-[#00C853]"
+                              placeholder="e.g. 12.971598"
+                              type="text"
+                            />
+                            <span className="text-xs text-gray-500 mt-1 block ml-1">Latitude</span>
+                          </div>
+                          <div>
+                            <input
+                              name="longitude"
+                              value={formData.longitude}
+                              onChange={handleInputChange}
+                              className="w-full bg-white rounded-2xl px-5 py-4 text-gray-900 font-medium placeholder:text-gray-400 outline-none focus:ring-2 focus:ring-[#00C853]"
+                              placeholder="e.g. 77.594566"
+                              type="text"
+                            />
+                            <span className="text-xs text-gray-500 mt-1 block ml-1">Longitude</span>
+                          </div>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={fetchCurrentLocation}
+                          disabled={geoStatus === 'loading'}
+                          className={`w-full flex items-center justify-center gap-2 py-3 rounded-2xl font-semibold text-sm transition-all ${geoStatus === 'success'
+                            ? 'bg-[#00C853]/15 text-[#00C853] border border-[#00C853]/30'
+                            : 'bg-[#1a1a1a] text-gray-300 border border-white/10 hover:border-[#00C853]/50 hover:text-[#00C853]'
+                            } disabled:opacity-50 disabled:cursor-not-allowed`}
+                        >
+                          {geoStatus === 'loading' ? (
+                            <>
+                              <Loader2 className="size-4 animate-spin" />
+                              Fetching location…
+                            </>
+                          ) : geoStatus === 'success' ? (
+                            <>
+                              <CheckCircle2 className="size-4" />
+                              Location captured!
+                            </>
+                          ) : (
+                            <>
+                              <Navigation className="size-4" />
+                              Use My Current Location
+                            </>
+                          )}
+                        </button>
+                        {geoStatus === 'error' && (
+                          <p className="text-red-400 text-xs mt-2 flex items-center gap-1">
+                            <AlertCircle className="size-3" /> {geoError}
+                          </p>
+                        )}
+                        {formData.latitude && formData.longitude && (
+                          <div className="mt-3">
+                            <LocationMap
+                              latitude={parseFloat(formData.latitude)}
+                              longitude={parseFloat(formData.longitude)}
+                              onLocationChange={(lat, lng) => {
+                                setFormData(prev => ({
+                                  ...prev,
+                                  latitude: lat.toFixed(6),
+                                  longitude: lng.toFixed(6),
+                                }));
+                              }}
+                            />
+                          </div>
+                        )}
+                      </div>
+
                       <div>
                         <label className="text-sm font-semibold text-gray-300 mb-2 block">Order Notes (Optional)</label>
-                        <textarea 
+                        <textarea
                           name="notes"
                           value={formData.notes}
                           onChange={handleInputChange}
-                          className="w-full bg-white rounded-2xl px-5 py-4 text-gray-900 font-medium placeholder:text-gray-400 outline-none focus:ring-2 focus:ring-[#00C853] resize-none" 
-                          placeholder="Any special delivery instructions..." 
+                          className="w-full bg-white rounded-2xl px-5 py-4 text-gray-900 font-medium placeholder:text-gray-400 outline-none focus:ring-2 focus:ring-[#00C853] resize-none"
+                          placeholder="Any special delivery instructions..."
                           rows={2}
                         />
                       </div>
                     </div>
 
-                    <button 
+                    <button
                       onClick={proceedToPayment}
                       disabled={!formData.firstName || !formData.phone || !formData.address || !formData.city || !formData.pincode}
                       className="w-full mt-8 bg-[#00C853] hover:bg-[#00e676] disabled:bg-gray-600 disabled:cursor-not-allowed text-white font-bold rounded-2xl py-4 transition-all flex items-center justify-center gap-2 group"
@@ -322,12 +447,12 @@ Transaction ID: ${formData.transactionId}
                       {/* Transaction ID Input */}
                       <div className="w-full">
                         <label className="text-sm font-semibold text-gray-300 mb-2 block text-left">PhonePe Transaction ID / UTR Number *</label>
-                        <input 
+                        <input
                           name="transactionId"
                           value={formData.transactionId}
                           onChange={handleInputChange}
-                          className="w-full bg-white rounded-2xl px-5 py-4 text-gray-900 font-medium placeholder:text-gray-400 outline-none focus:ring-2 focus:ring-[#00C853] text-center tracking-wider" 
-                          placeholder="Enter 12-digit UTR number" 
+                          className="w-full bg-white rounded-2xl px-5 py-4 text-gray-900 font-medium placeholder:text-gray-400 outline-none focus:ring-2 focus:ring-[#00C853] text-center tracking-wider"
+                          placeholder="Enter 12-digit UTR number"
                           type="text"
                           required
                         />
@@ -335,7 +460,7 @@ Transaction ID: ${formData.transactionId}
                       </div>
                     </div>
 
-                    <button 
+                    <button
                       onClick={confirmPaymentAndRedirect}
                       disabled={!formData.transactionId}
                       className="w-full bg-[#25D366] hover:bg-[#22c55e] disabled:bg-gray-600 disabled:cursor-not-allowed text-white font-bold rounded-2xl py-4 transition-all flex items-center justify-center gap-3 group shadow-lg"
@@ -345,7 +470,7 @@ Transaction ID: ${formData.transactionId}
                       <ArrowRight className="size-4 group-hover:translate-x-1 transition-transform" />
                     </button>
 
-                    <button 
+                    <button
                       onClick={() => setStep(1)}
                       className="w-full mt-4 text-gray-400 hover:text-white font-medium py-3 transition-colors"
                     >

@@ -107,8 +107,7 @@ export default function CartDrawer() {
               <span className="text-gray-400">Subtotal</span>
               <span className="text-white text-2xl font-bold">₹{totalPrice.toLocaleString()}</span>
             </div>
-            {/* Checkout Button - TEMPORARILY HIDDEN
-            <Link 
+            <Link
               href="/checkout"
               onClick={() => setIsCartOpen(false)}
               className="w-full bg-[#00C853] hover:bg-[#00e676] text-white font-bold rounded-2xl py-4 flex items-center justify-center gap-2 transition-all shadow-lg hover:shadow-[#00C853]/30 group"
@@ -116,7 +115,6 @@ export default function CartDrawer() {
               Proceed to Checkout
               <ArrowRight className="size-4 group-hover:translate-x-1 transition-transform" />
             </Link>
-            */}
           </div>
         )}
       </div>
