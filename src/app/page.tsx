@@ -101,11 +101,7 @@ export default function Home() {
     <div
       className={`relative flex flex-col min-h-screen w-full transition-opacity duration-700 ${showContent ? "opacity-100" : "opacity-0"}`}
     >
-      {/* Background effects */}
-      <div className="fixed top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none bg-[#0a0a0a]">
-        <div className="absolute top-[-20%] left-[-10%] w-[70%] h-[70%] bg-[#1a1a1a] opacity-40 blur-[150px] rounded-full" />
-        <div className="absolute bottom-[10%] right-[-10%] w-[50%] h-[50%] bg-[#111] opacity-30 blur-[120px] rounded-full" />
-      </div>
+      {/* Background effects removed — GlobalBackground LiquidEther handles this */}
 
       <Header />
 
@@ -222,26 +218,26 @@ export default function Home() {
 
                   {/* Floating info card - Certified */}
                   <div
-                    className={`absolute top-[20%] right-[0%] lg:-right-[5%] p-3 sm:p-5 bg-[#1a1a1a]/80 backdrop-blur-xl rounded-2xl sm:rounded-3xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.8)] border border-white/10 z-30 max-w-[140px] sm:max-w-[180px] hidden sm:block transition-all duration-700 ${heroReady
+                    className={`absolute top-[5%] right-[2%] sm:top-[20%] sm:right-[0%] lg:-right-[5%] p-2 sm:p-5 bg-[#1a1a1a]/80 backdrop-blur-xl rounded-xl sm:rounded-3xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.8)] border border-white/10 z-30 max-w-[110px] sm:max-w-[180px] transition-all duration-700 ${heroReady
                       ? "opacity-100 translate-y-0 animate-float-delayed"
                       : "opacity-0 translate-y-4"
                       }`}
                     style={{ transitionDelay: heroReady ? "0.3s" : "0s" }}
                   >
-                    <div className="flex items-center gap-2 mb-2">
-                      <Shield className="size-5 text-[#00C853]" />
-                      <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400">
+                    <div className="flex items-center gap-1.5 sm:gap-2 mb-1 sm:mb-2">
+                      <Shield className="size-4 sm:size-5 text-[#00C853]" />
+                      <span className="text-[8px] sm:text-[10px] font-bold uppercase tracking-widest text-gray-400">
                         Certified
                       </span>
                     </div>
-                    <p className="text-sm font-bold text-white leading-tight">
+                    <p className="text-xs sm:text-sm font-bold text-white leading-tight">
                       BIS License (ISI) Certified
                     </p>
                   </div>
 
                   {/* Floating info card - pH */}
                   <div
-                    className={`absolute bottom-[15%] left-[-15%] lg:-left-[10%] p-3 sm:p-5 bg-[#1a1a1a]/80 backdrop-blur-xl rounded-2xl sm:rounded-3xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.8)] border border-white/10 z-30 min-w-[120px] sm:min-w-[140px] hidden sm:block transition-all duration-700 ${heroReady
+                    className={`absolute bottom-[5%] left-[2%] sm:bottom-[15%] sm:left-[-15%] lg:-left-[10%] p-2 sm:p-5 bg-[#1a1a1a]/80 backdrop-blur-xl rounded-xl sm:rounded-3xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.8)] border border-white/10 z-30 min-w-[80px] sm:min-w-[140px] transition-all duration-700 ${heroReady
                       ? "opacity-100 translate-y-0 animate-float"
                       : "opacity-0 translate-y-4"
                       }`}
@@ -250,17 +246,17 @@ export default function Home() {
                       animationDelay: heroReady ? "2s" : "0s",
                     }}
                   >
-                    <div className="flex items-center gap-1 mb-1">
-                      <FlaskConical className="size-5 text-[#00C853]" />
-                      <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400">
+                    <div className="flex items-center gap-1 mb-0.5 sm:mb-1">
+                      <FlaskConical className="size-4 sm:size-5 text-[#00C853]" />
+                      <span className="text-[8px] sm:text-[10px] font-bold uppercase tracking-widest text-gray-400">
                         Alkaline
                       </span>
                     </div>
                     <div className="flex items-baseline gap-1">
-                      <p className="text-3xl font-black text-white leading-none">
+                      <p className="text-2xl sm:text-3xl font-black text-white leading-none">
                         7.4
                       </p>
-                      <span className="text-sm font-bold text-[#00C853]">
+                      <span className="text-xs sm:text-sm font-bold text-[#00C853]">
                         pH
                       </span>
                     </div>

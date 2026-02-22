@@ -56,12 +56,8 @@ const timelineItems = [
 
 export default function JourneyPage() {
     return (
-        <div className="relative flex flex-col min-h-screen w-full bg-[#0a0a0a]">
-            {/* Background effects */}
-            <div className="fixed top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none bg-[#0a0a0a]">
-                <div className="absolute top-[-20%] left-[-10%] w-[70%] h-[70%] bg-[#1a1a1a] opacity-40 blur-[150px] rounded-full" />
-                <div className="absolute bottom-[10%] right-[-10%] w-[50%] h-[50%] bg-[#111] opacity-30 blur-[120px] rounded-full" />
-            </div>
+        <div className="relative flex flex-col min-h-screen w-full">
+            {/* Background effects removed — GlobalBackground LiquidEther handles this */}
 
             <Header />
 

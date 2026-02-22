@@ -185,7 +185,7 @@ Transaction ID: ${formData.transactionId}
 
   if (items.length === 0 && step !== 3) {
     return (
-      <div className="relative flex min-h-screen flex-col bg-[#1a1a1a]">
+      <div className="relative flex min-h-screen flex-col">
         <Header />
         <main className="flex-1 flex items-center justify-center pt-24">
           <div className="text-center p-10">
@@ -207,7 +207,7 @@ Transaction ID: ${formData.transactionId}
   }
 
   return (
-    <div className="relative flex min-h-screen flex-col bg-[#1a1a1a]">
+    <div className="relative flex min-h-screen flex-col">
       <Header />
 
       <main className="flex-1 pt-24 pb-16">

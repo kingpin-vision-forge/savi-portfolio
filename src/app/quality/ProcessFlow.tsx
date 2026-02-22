@@ -17,30 +17,18 @@ const steps = [
   { title: "Bottling", value: "Final Pack", meta: "food-grade filling" },
 ];
 
-// Snake layout:
+// Desktop snake layout:
 // Row 1 (L→R): 0, 1, 2
 //                       |
 // Row 2 (R→L): 5, 4, 3
 //              |
 // Row 3 (L→R): 6, 7, 8
-//
-// Grid positions (row, col):
-// [0]=r0c0  [1]=r0c1  [2]=r0c2
-// [5]=r1c0  [4]=r1c1  [3]=r1c2
-// [6]=r2c0  [7]=r2c1  [8]=r2c2
-
-// Visual order in the grid (by row, left to right):
 const gridOrder = [
-  [0, 1, 2], // row 1
-  [5, 4, 3], // row 2 (reversed)
-  [6, 7, 8], // row 3
+  [0, 1, 2],
+  [5, 4, 3],
+  [6, 7, 8],
 ];
 
-// Connection sequence: 0→1→2→3→4→5→6→7→8
-// Directions:
-// 0→1: right, 1→2: right, 2→3: down
-// 3→4: left, 4→5: left, 5→6: down
-// 6→7: right, 7→8: right
 const connections: { from: number; to: number; fromSide: string; toSide: string }[] = [
   { from: 0, to: 1, fromSide: "right", toSide: "left" },
   { from: 1, to: 2, fromSide: "right", toSide: "left" },
@@ -58,10 +46,24 @@ const rowColors = [
   { from: "rgba(108,99,255,0.28)", to: "rgba(108,99,255,0.10)", shadow: "rgba(108,99,255,0.20)" },
 ];
 
+function getRowColor(stepIdx: number) {
+  if (stepIdx < 3) return rowColors[0];
+  if (stepIdx < 6) return rowColors[1];
+  return rowColors[2];
+}
+
 export default function ProcessFlow() {
   const containerRef = useRef<HTMLDivElement>(null);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
   const [paths, setPaths] = useState<string[]>([]);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 640);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
 
   function getPoint(el: HTMLElement, parent: HTMLElement, side: string): Point {
     const r = el.getBoundingClientRect();
@@ -86,7 +88,10 @@ export default function ProcessFlow() {
   }
 
   function updatePaths() {
-    if (!containerRef.current) return;
+    if (!containerRef.current || isMobile) {
+      setPaths([]);
+      return;
+    }
     const parent = containerRef.current;
     const segments: string[] = [];
 
@@ -111,7 +116,8 @@ export default function ProcessFlow() {
       clearTimeout(t);
       window.removeEventListener("resize", updatePaths);
     };
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isMobile]);
 
   return (
     <div className="relative overflow-hidden rounded-[28px] border border-white/10 bg-gradient-to-b from-white/[0.06] to-white/[0.02] p-6 md:p-8 shadow-[0_30px_80px_rgba(0,0,0,0.55)]">
@@ -137,50 +143,50 @@ export default function ProcessFlow() {
 
       {/* Flow container */}
       <div ref={containerRef} className="relative z-10 isolate">
-        {/* SVG ribbons */}
-        <svg className="absolute inset-0 w-full h-full pointer-events-none z-0">
-          <defs>
-            <linearGradient id="flowGrad9" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stopColor="#00C853">
-                <animate attributeName="offset" values="0;1" dur="3s" repeatCount="indefinite" />
-              </stop>
-              <stop offset="50%" stopColor="#ff4d8d">
-                <animate attributeName="offset" values="0.5;1.5" dur="3s" repeatCount="indefinite" />
-              </stop>
-              <stop offset="100%" stopColor="#6C63FF">
-                <animate attributeName="offset" values="1;2" dur="3s" repeatCount="indefinite" />
-              </stop>
-            </linearGradient>
-            <filter id="glow9">
-              <feGaussianBlur stdDeviation="4" result="blur" />
-              <feMerge>
-                <feMergeNode in="blur" />
-                <feMergeNode in="SourceGraphic" />
-              </feMerge>
-            </filter>
-          </defs>
+        {/* SVG ribbons — desktop only */}
+        {!isMobile && (
+          <svg className="absolute inset-0 w-full h-full pointer-events-none z-0">
+            <defs>
+              <linearGradient id="flowGrad9" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor="#00C853">
+                  <animate attributeName="offset" values="0;1" dur="3s" repeatCount="indefinite" />
+                </stop>
+                <stop offset="50%" stopColor="#ff4d8d">
+                  <animate attributeName="offset" values="0.5;1.5" dur="3s" repeatCount="indefinite" />
+                </stop>
+                <stop offset="100%" stopColor="#6C63FF">
+                  <animate attributeName="offset" values="1;2" dur="3s" repeatCount="indefinite" />
+                </stop>
+              </linearGradient>
+              <filter id="glow9">
+                <feGaussianBlur stdDeviation="4" result="blur" />
+                <feMerge>
+                  <feMergeNode in="blur" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
+            </defs>
 
-          {paths.length > 0 && (
-            <g>
-              <path d={paths[0]} stroke="url(#flowGrad9)" strokeWidth="16" fill="none" strokeLinecap="round" opacity="0.22" filter="url(#glow9)" />
-              <path d={paths[0]} stroke="#00C853" strokeWidth="4" fill="none" strokeLinecap="round" strokeDasharray="30 140" />
-              <path d={paths[0]} stroke="#ffffff" strokeWidth="4" fill="none" strokeLinecap="round" strokeDasharray="30 140" opacity="0.8" className="flowPulse" />
-            </g>
-          )}
-        </svg>
+            {paths.length > 0 && (
+              <g>
+                <path d={paths[0]} stroke="url(#flowGrad9)" strokeWidth="16" fill="none" strokeLinecap="round" opacity="0.22" filter="url(#glow9)" />
+                <path d={paths[0]} stroke="#00C853" strokeWidth="4" fill="none" strokeLinecap="round" strokeDasharray="30 140" />
+                <path d={paths[0]} stroke="#ffffff" strokeWidth="4" fill="none" strokeLinecap="round" strokeDasharray="30 140" opacity="0.8" className="flowPulse" />
+              </g>
+            )}
+          </svg>
+        )}
 
-        {/* Snake grid: 3 rows × 3 cols */}
-        <div className="relative z-30 flex flex-col gap-6 lg:gap-8">
-          {gridOrder.map((row, rowIdx) => (
-            <div key={rowIdx} className="grid grid-cols-1 sm:grid-cols-3 gap-4 lg:gap-6">
-              {row.map((stepIdx) => {
-                const step = steps[stepIdx];
-                const color = rowColors[rowIdx];
-                return (
+        {/* Mobile: simple vertical list 1→9 with connecting lines */}
+        {isMobile ? (
+          <div className="relative z-30 flex flex-col items-center">
+            {steps.map((step, idx) => {
+              const color = getRowColor(idx);
+              return (
+                <div key={idx} className="w-full flex flex-col items-center">
+                  {/* Card */}
                   <div
-                    key={stepIdx}
-                    ref={(el) => { cardRefs.current[stepIdx] = el; }}
-                    className="rounded-2xl border border-white/10 px-6 py-5"
+                    className="w-full rounded-2xl border border-white/10 px-5 py-4"
                     style={{
                       background: `linear-gradient(135deg, ${color.from}, ${color.to})`,
                       boxShadow: `0 18px 50px ${color.shadow}`,
@@ -189,17 +195,56 @@ export default function ProcessFlow() {
                     <div className="flex items-center justify-between">
                       <div className="text-sm font-medium text-white/70">{step.title}</div>
                       <span className="rounded-full border border-white/15 bg-white/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-white/70">
-                        Stage {String(stepIdx + 1).padStart(2, "0")}
+                        Stage {String(idx + 1).padStart(2, "0")}
                       </span>
                     </div>
                     <div className="mt-2 text-2xl font-extrabold text-white tracking-tight">{step.value}</div>
                     <div className="mt-1 text-xs text-white/60">{step.meta}</div>
                   </div>
-                );
-              })}
-            </div>
-          ))}
-        </div>
+                  {/* Connector line between cards */}
+                  {idx < steps.length - 1 && (
+                    <div className="flex flex-col items-center py-1">
+                      <div className="w-px h-6 bg-gradient-to-b from-[#00C853]/60 to-[#00C853]/20" />
+                      <div className="size-2 rounded-full bg-[#00C853]/40" />
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        ) : (
+          /* Desktop: 3×3 snake grid */
+          <div className="relative z-30 flex flex-col gap-6 lg:gap-8">
+            {gridOrder.map((row, rowIdx) => (
+              <div key={rowIdx} className="grid grid-cols-3 gap-4 lg:gap-6">
+                {row.map((stepIdx) => {
+                  const step = steps[stepIdx];
+                  const color = rowColors[rowIdx];
+                  return (
+                    <div
+                      key={stepIdx}
+                      ref={(el) => { cardRefs.current[stepIdx] = el; }}
+                      className="rounded-2xl border border-white/10 px-6 py-5"
+                      style={{
+                        background: `linear-gradient(135deg, ${color.from}, ${color.to})`,
+                        boxShadow: `0 18px 50px ${color.shadow}`,
+                      }}
+                    >
+                      <div className="flex items-center justify-between">
+                        <div className="text-sm font-medium text-white/70">{step.title}</div>
+                        <span className="rounded-full border border-white/15 bg-white/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-white/70">
+                          Stage {String(stepIdx + 1).padStart(2, "0")}
+                        </span>
+                      </div>
+                      <div className="mt-2 text-2xl font-extrabold text-white tracking-tight">{step.value}</div>
+                      <div className="mt-1 text-xs text-white/60">{step.meta}</div>
+                    </div>
+                  );
+                })}
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
