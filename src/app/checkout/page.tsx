@@ -1,7 +1,8 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import dynamic from 'next/dynamic';
+import QRCode from 'qrcode';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { useCart } from '@/context/CartContext';
@@ -21,8 +22,12 @@ const LocationMap = dynamic(() => import('@/components/LocationMap'), {
   ),
 });
 
-// Replace with client's actual WhatsApp number
-const WHATSAPP_NUMBER = '917760161401'; // Format: country code + number without +
+// UPI payment details — loaded from .env.local
+const UPI_ID = process.env.NEXT_PUBLIC_UPI_ID || '';
+const UPI_NAME = process.env.NEXT_PUBLIC_UPI_NAME || 'SAVI';
+
+// WhatsApp number — loaded from .env.local
+const WHATSAPP_NUMBER = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '';
 
 export default function CheckoutPage() {
   const { items, totalPrice, clearCart } = useCart();
@@ -42,6 +47,23 @@ export default function CheckoutPage() {
   });
   const [geoStatus, setGeoStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [geoError, setGeoError] = useState('');
+  const [qrDataUrl, setQrDataUrl] = useState<string | null>(null);
+
+  // Generate UPI QR code when reaching payment step
+  useEffect(() => {
+    if (step === 2 && totalPrice > 0) {
+      const payeeName = `${formData.firstName} ${formData.lastName}`.trim() || UPI_NAME;
+      const upiUri = `upi://pay?pa=${UPI_ID}&pn=${encodeURIComponent(payeeName)}&am=${totalPrice}&cu=INR`;
+      QRCode.toDataURL(upiUri, {
+        width: 280,
+        margin: 2,
+        color: { dark: '#000000', light: '#ffffff' },
+        errorCorrectionLevel: 'M',
+      })
+        .then(setQrDataUrl)
+        .catch(() => setQrDataUrl(null));
+    }
+  }, [step, totalPrice]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -62,12 +84,47 @@ export default function CheckoutPage() {
     setGeoStatus('loading');
     setGeoError('');
     navigator.geolocation.getCurrentPosition(
-      (position) => {
+      async (position) => {
+        const lat = position.coords.latitude;
+        const lng = position.coords.longitude;
+
         setFormData(prev => ({
           ...prev,
-          latitude: position.coords.latitude.toFixed(6),
-          longitude: position.coords.longitude.toFixed(6),
+          latitude: lat.toFixed(6),
+          longitude: lng.toFixed(6),
         }));
+
+        // Reverse geocode to auto-fill address, city, pincode
+        try {
+          const res = await fetch(
+            `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json&addressdetails=1`,
+            { headers: { 'Accept-Language': 'en' } }
+          );
+          const data = await res.json();
+          if (data?.address) {
+            const addr = data.address;
+            // Build a readable street address
+            const parts = [
+              addr.house_number,
+              addr.road,
+              addr.neighbourhood || addr.suburb,
+            ].filter(Boolean);
+            const streetAddress = parts.join(', ') || data.display_name?.split(',').slice(0, 3).join(',') || '';
+
+            const city = addr.city || addr.town || addr.village || addr.county || '';
+            const pincode = addr.postcode || '';
+
+            setFormData(prev => ({
+              ...prev,
+              address: prev.address || streetAddress,
+              city: prev.city || city,
+              pincode: prev.pincode || pincode,
+            }));
+          }
+        } catch {
+          // Geocoding failed silently — coordinates are still set
+        }
+
         setGeoStatus('success');
       },
       (err) => {
@@ -413,21 +470,30 @@ Transaction ID: ${formData.transactionId}
                   <div className="bg-[#2d2d2d] rounded-3xl p-8 border border-white/5">
                     <h2 className="text-white text-2xl font-bold mb-8 flex items-center gap-3">
                       <Smartphone className="size-6 text-[#00C853]" />
-                      Pay with PhonePe
+                      Pay via UPI
                     </h2>
 
                     <div className="flex flex-col items-center text-center mb-8">
-                      {/* PhonePe QR Code Placeholder */}
-                      <div className="bg-white rounded-3xl p-6 mb-6">
-                        <div className="size-48 bg-gray-100 rounded-2xl flex flex-col items-center justify-center">
-                          <QrCode className="size-20 text-[#5f259f] mb-2" />
-                          <p className="text-gray-500 text-xs">PhonePe QR Code</p>
-                        </div>
+                      {/* Dynamic UPI QR Code */}
+                      <div className="bg-white rounded-3xl p-5 mb-6 shadow-lg">
+                        {qrDataUrl ? (
+                          <img
+                            src={qrDataUrl}
+                            alt="UPI Payment QR Code"
+                            className="w-56 h-56 rounded-2xl"
+                          />
+                        ) : (
+                          <div className="w-56 h-56 rounded-2xl bg-gray-100 flex flex-col items-center justify-center">
+                            <Loader2 className="size-10 text-gray-400 animate-spin mb-2" />
+                            <p className="text-gray-500 text-xs">Generating QR…</p>
+                          </div>
+                        )}
                       </div>
 
-                      <div className="bg-[#5f259f]/10 rounded-2xl p-4 mb-6 w-full max-w-sm">
-                        <p className="text-[#5f259f] font-bold text-3xl mb-1">₹{totalPrice.toLocaleString()}</p>
-                        <p className="text-gray-400 text-sm">Scan to pay with PhonePe</p>
+                      <div className="bg-[#00C853]/10 rounded-2xl p-4 mb-6 w-full max-w-sm border border-[#00C853]/20">
+                        <p className="text-[#00C853] font-bold text-3xl mb-1">₹{totalPrice.toLocaleString()}</p>
+                        <p className="text-gray-400 text-sm">Scan with any UPI app to pay</p>
+                        <p className="text-gray-500 text-xs mt-1">UPI ID: <span className="text-white font-mono">{UPI_ID}</span></p>
                       </div>
 
                       <div className="bg-[#1a1a1a] rounded-2xl p-4 text-left w-full mb-6">
@@ -436,9 +502,9 @@ Transaction ID: ${formData.transactionId}
                           Payment Instructions
                         </h4>
                         <ol className="text-gray-400 text-sm space-y-2">
-                          <li>1. Open PhonePe app on your phone</li>
-                          <li>2. Tap &quot;Scan&quot; and scan the QR code above</li>
-                          <li>3. Enter the exact amount: <strong className="text-white">₹{totalPrice.toLocaleString()}</strong></li>
+                          <li>1. Open any UPI app (PhonePe, GPay, Paytm, etc.)</li>
+                          <li>2. Scan the QR code above</li>
+                          <li>3. The amount <strong className="text-white">₹{totalPrice.toLocaleString()}</strong> will be pre-filled</li>
                           <li>4. Complete the payment</li>
                           <li>5. Enter your Transaction ID below</li>
                         </ol>
