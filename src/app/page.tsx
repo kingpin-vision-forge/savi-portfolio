@@ -145,12 +145,20 @@ export default function Home() {
                 <AnimateOnScroll animation="fadeUp" delay={0.7}>
                   <div className="flex items-center gap-4 sm:gap-6 mt-6 sm:mt-8 pt-6 sm:pt-8 border-t border-white/10">
                     <div className="flex -space-x-4">
-                      {[1, 2, 3].map((i) => (
+                      {[
+                        { src: '/partners/hdfc.jpg', alt: 'HDFC' },
+                        { src: '/partners/sbi.png', alt: 'SBI' },
+                        { src: '/partners/icici.avif', alt: 'ICICI' },
+                      ].map((firm) => (
                         <div
-                          key={i}
+                          key={firm.alt}
                           className="size-12 rounded-full border-2 border-[#1a1a1a] bg-[#2d2d2d] overflow-hidden flex items-center justify-center"
                         >
-                          <Users className="size-5 text-white/30" />
+                          <img
+                            src={firm.src}
+                            alt={firm.alt}
+                            className="w-full h-full object-cover"
+                          />
                         </div>
                       ))}
                       <div className="size-12 flex items-center justify-center rounded-full border-2 border-[#1a1a1a] bg-[#2d2d2d] text-white text-xs font-bold">
