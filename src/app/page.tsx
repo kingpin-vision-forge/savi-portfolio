@@ -1,8 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import dynamic from "next/dynamic";
-import LoadingScreen from "@/components/LoadingScreen";
+import { useState } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Link from "next/link";
@@ -61,9 +59,7 @@ function Section({
 }
 
 export default function Home() {
-  const [isLoading, setIsLoading] = useState(true);
-  const [showContent, setShowContent] = useState(false);
-  const [heroReady, setHeroReady] = useState(false);
+  const [heroReady, setHeroReady] = useState(true);
   const [contactForm, setContactForm] = useState({ firstName: '', lastName: '', email: '', inquiryType: 'Corporate Bulk Order', message: '' });
 
   const handleWhatsAppSubmit = () => {
@@ -76,30 +72,9 @@ export default function Home() {
     window.open(`https://wa.me/917760161401?text=${text}`, '_blank');
   };
 
-  const handleLoadingComplete = () => {
-    setIsLoading(false);
-    setTimeout(() => {
-      setShowContent(true);
-      setTimeout(() => setHeroReady(true), 100);
-    }, 100);
-  };
-
-  const handleTransitionStart = () => {
-    // Prepare for hero bottle animation
-  };
-
-  if (isLoading) {
-    return (
-      <LoadingScreen
-        onComplete={handleLoadingComplete}
-        onTransitionStart={handleTransitionStart}
-      />
-    );
-  }
-
   return (
     <div
-      className={`relative flex flex-col min-h-screen w-full transition-opacity duration-700 ${showContent ? "opacity-100" : "opacity-0"}`}
+      className="relative flex flex-col min-h-screen w-full"
     >
       {/* Background effects removed — GlobalBackground LiquidEther handles this */}
 

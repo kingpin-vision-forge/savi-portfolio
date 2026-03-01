@@ -4,6 +4,7 @@ import "./globals.css";
 import { CartProvider } from "@/context/CartContext";
 import CartDrawer from "@/components/CartDrawer";
 import GlobalBackground from "@/components/GlobalBackground";
+import AppLoadingWrapper from "@/components/AppLoadingWrapper";
 
 const manrope = Manrope({
   variable: "--font-manrope",
@@ -31,9 +32,11 @@ export default function RootLayout({
       <body className={`${manrope.variable} font-sans antialiased bg-[#0a0a0a] text-[#f5f5f5] overflow-x-hidden`}>
         <GlobalBackground />
         <CartProvider>
-          <div className="relative z-10">
-            {children}
-          </div>
+          <AppLoadingWrapper>
+            <div className="relative z-10">
+              {children}
+            </div>
+          </AppLoadingWrapper>
           <CartDrawer />
         </CartProvider>
       </body>

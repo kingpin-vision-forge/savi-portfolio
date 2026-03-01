@@ -522,9 +522,9 @@ export default function MusicPage() {
                                         </svg>
                                     </div>
                                     <div>
-                                        <h4 className="text-white font-medium mb-1">Add Your Music</h4>
+                                        <h4 className="text-white font-medium mb-1">Want Us to Add Your Music?</h4>
                                         <p className="text-gray-400 text-sm leading-relaxed">
-                                            To add your own music, place MP3 files in the <code className="text-[#00C853] bg-white/5 px-1.5 py-0.5 rounded">/public/music/</code> folder and update the track list in this page.
+                                            Drop us your favourite song on our WhatsApp number and we&apos;ll add it to the playlist!
                                         </p>
                                     </div>
                                 </div>
