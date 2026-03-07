@@ -170,7 +170,9 @@ export default function Footer() {
           <div className="flex items-center gap-2 order-1 md:order-2">
             <span className="text-gray-600 text-xs">Made by</span>
             <span className="text-white font-bold text-sm tracking-wide bg-gradient-to-r from-[#00C853] to-white bg-clip-text text-transparent">
-              Kingpin Vision Forge
+              <a href='https://kingpinvisionforge.com' target='_blank' rel='noopener noreferrer'>
+                KingpiN Vision Forge
+              </a>
             </span>
           </div>
         </div>
