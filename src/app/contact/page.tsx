@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import { buildClientQueryMessage, buildWhatsAppUrl } from '@/lib/whatsappTemplates';
 
 export default function ContactPage() {
   const [firstName, setFirstName] = useState('');
@@ -16,8 +17,14 @@ export default function ContactPage() {
       alert('Please fill in all fields before submitting.');
       return;
     }
-    const text = `*New Inquiry from SAVI Website*%0A%0A*Name:* ${firstName} ${lastName}%0A*Email:* ${email}%0A*Inquiry Type:* ${inquiryType}%0A*Message:* ${message}`;
-    window.open(`https://wa.me/917760161401?text=${text}`, '_blank');
+    const text = buildClientQueryMessage({
+      firstName,
+      lastName,
+      email,
+      inquiryType,
+      message,
+    });
+    window.open(buildWhatsAppUrl(text), '_blank');
   };
 
   return (

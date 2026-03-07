@@ -6,6 +6,7 @@ import QRCode from 'qrcode';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { useCart } from '@/context/CartContext';
+import { buildOrderConfirmationMessage, buildWhatsAppUrl } from '@/lib/whatsappTemplates';
 import {
   ShieldCheck, ArrowRight, Package, MapPin, Phone, User, Mail,
   CheckCircle2, MessageCircle, QrCode, Smartphone, AlertCircle, Navigation, Loader2
@@ -139,43 +140,35 @@ export default function CheckoutPage() {
     );
   }, []);
 
-  const generateWhatsAppMessage = () => {
-    const orderItems = items.map(item =>
-      `• ${item.name} (${item.size}) × ${item.quantity} = ₹${(item.price * item.quantity).toLocaleString()}`
-    ).join('\n');
-
-    const message = `🛒 *New Order from SAVI Website*
-
-📦 *Order Details:*
-${orderItems}
-
-💰 *Total: ₹${totalPrice.toLocaleString()}*
-
-👤 *Customer Details:*
-Name: ${formData.firstName} ${formData.lastName}
-Phone: ${formData.phone}
-Email: ${formData.email || 'Not provided'}
-
-📍 *Delivery Address:*
-${formData.address}
-${formData.city} - ${formData.pincode}
-${formData.latitude && formData.longitude ? `
-📌 *Location Coordinates:*
-Lat: ${formData.latitude}, Lng: ${formData.longitude}
-🗺️ Google Maps: https://maps.google.com/?q=${formData.latitude},${formData.longitude}` : ''}
-
-${formData.notes ? `📝 Notes: ${formData.notes}` : ''}
-
-💳 *Payment Details:*
-Transaction ID: ${formData.transactionId}
-✅ Payment confirmed via PhonePe`;
-
-    return encodeURIComponent(message);
-  };
+  const generateWhatsAppMessage = () =>
+    buildOrderConfirmationMessage({
+      items: items.map((item) => ({
+        name: item.name,
+        size: item.size,
+        quantity: item.quantity,
+        price: item.price,
+      })),
+      totalPrice,
+      customer: {
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        phone: formData.phone,
+        email: formData.email,
+      },
+      delivery: {
+        address: formData.address,
+        city: formData.city,
+        pincode: formData.pincode,
+        latitude: formData.latitude,
+        longitude: formData.longitude,
+      },
+      notes: formData.notes,
+      transactionId: formData.transactionId,
+    });
 
   const confirmPaymentAndRedirect = () => {
     const message = generateWhatsAppMessage();
-    const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${message}`;
+    const whatsappUrl = buildWhatsAppUrl(message, WHATSAPP_NUMBER);
 
     // Clear cart and redirect
     clearCart();

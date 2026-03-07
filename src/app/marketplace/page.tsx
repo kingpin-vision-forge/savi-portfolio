@@ -5,6 +5,7 @@ import Footer from '@/components/Footer';
 import { useCart } from '@/context/CartContext';
 import { ShoppingCart, Plus, Minus, Package, Truck, Building, Check, Droplets } from 'lucide-react';
 import { useRef, useState } from 'react';
+import { buildBulkOrderRequestMessage, buildWhatsAppUrl } from '@/lib/whatsappTemplates';
 
 function ProductImageCarousel({ images, name }: { images: string[]; name: string }) {
   const [activeIdx, setActiveIdx] = useState(0);
@@ -223,8 +224,14 @@ export default function MarketplacePage() {
                         alert('Please fill in all required fields before submitting.');
                         return;
                       }
-                      const text = `*Bulk Quote Request from SAVI Website*%0A%0A*Company:* ${company}%0A*Contact:* ${contact}%0A*Phone:* ${phone}%0A*Monthly Quantity:* ${quantity}%0A*Requirements:* ${requirements}`;
-                      window.open(`https://wa.me/917760161401?text=${text}`, '_blank');
+                      const text = buildBulkOrderRequestMessage({
+                        company,
+                        contact,
+                        phone,
+                        quantity,
+                        requirements,
+                      });
+                      window.open(buildWhatsAppUrl(text), '_blank');
                     }}
                   >
                     <Check className="size-4" />

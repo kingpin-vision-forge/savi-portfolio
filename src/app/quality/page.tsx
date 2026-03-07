@@ -96,7 +96,7 @@ export default function QualityPage() {
                   <div className="size-12 rounded-2xl bg-[#2d2d2d] border border-white/10 flex items-center justify-center">
                     <span className="text-[#00C853] text-2xl">📄</span>
                   </div>
-                  <span className="text-white/30 text-[10px] font-bold tracking-widest border border-white/10 px-2 py-1 rounded-lg">UPDATED: OCT 2023</span>
+                  <span className="text-white/30 text-[10px] font-bold tracking-widest border border-white/10 px-2 py-1 rounded-lg">UPDATED: 2026</span>
                 </div>
                 <h3 className="text-white text-xl font-bold mb-3">Detailed Lab Report</h3>
                 <p className="text-gray-400 text-sm leading-relaxed">View the full spectrum analysis from our ISO 17025 accredited laboratory detailing mineral composition and purity tests.</p>

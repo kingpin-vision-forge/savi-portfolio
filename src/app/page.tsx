@@ -40,6 +40,7 @@ import AnimateOnScroll, {
 import GlowOnScroll from "@/components/GlowOnScroll";
 import ProcessFlow from "./quality/ProcessFlow";
 import GallerySection from "@/components/GallerySection";
+import { buildClientQueryMessage, buildWhatsAppUrl } from "@/lib/whatsappTemplates";
 
 
 function Section({
@@ -68,8 +69,14 @@ export default function Home() {
       alert('Please fill in all fields before submitting.');
       return;
     }
-    const text = `*New Inquiry from SAVI Website*%0A%0A*Name:* ${firstName} ${lastName}%0A*Email:* ${email}%0A*Inquiry Type:* ${inquiryType}%0A*Message:* ${message}`;
-    window.open(`https://wa.me/917760161401?text=${text}`, '_blank');
+    const text = buildClientQueryMessage({
+      firstName,
+      lastName,
+      email,
+      inquiryType,
+      message,
+    });
+    window.open(buildWhatsAppUrl(text), '_blank');
   };
 
   return (
@@ -489,7 +496,7 @@ export default function Home() {
                       <Eye className="size-6 text-[#00C853]" />
                     </div>
                     <span className="text-white/30 text-[10px] font-bold tracking-widest border border-white/10 px-2 py-1 rounded-lg">
-                      UPDATED: OCT 2023
+                      UPDATED: 2026
                     </span>
                   </div>
                   <h3 className="text-white text-xl font-bold mb-3">
