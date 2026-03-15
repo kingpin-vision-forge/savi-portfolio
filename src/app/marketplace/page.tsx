@@ -4,8 +4,32 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { useCart } from '@/context/CartContext';
 import { ShoppingCart, Plus, Minus, Package, Truck, Building, Check, Droplets } from 'lucide-react';
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { buildBulkOrderRequestMessage, buildWhatsAppUrl } from '@/lib/whatsappTemplates';
+import { collection, getDocs, orderBy, query } from 'firebase/firestore';
+import { db } from '@/lib/firebase';
+
+interface Product {
+  id: string;
+  name: string;
+  size: string;
+  price: number;
+  pack: string;
+  image: string;
+  images: string[];
+  sortOrder: number;
+}
+
+// Fallback defaults in case Firestore is unavailable
+const fallbackProducts: Product[] = [
+  { id: 'savi-200ml-case', name: 'SAVI 200ML', size: '200ml × 48', price: 240, pack: 'Case (48 Bottles)', image: '/images/200ml.png', images: ['/images/200ml.png'], sortOrder: 1 },
+  { id: 'savi-250ml-case', name: 'SAVI 250ML', size: '250ml × 36', price: 190, pack: 'Case (36 Bottles)', image: '/images/250ml.png', images: ['/images/250ml.png'], sortOrder: 2 },
+  { id: 'savi-300ml-case', name: 'SAVI 300ML', size: '300ml × 30', price: 170, pack: 'Case (30 Bottles)', image: '/images/250ml.png', images: ['/images/250ml.png'], sortOrder: 3 },
+  { id: 'savi-500ml-case', name: 'SAVI 500ML', size: '500ml × 24', price: 160, pack: 'Case (24 Bottles)', image: '/images/500ml-1.png', images: ['/images/500ml-1.png'], sortOrder: 4 },
+  { id: 'savi-1000ml-case', name: 'SAVI 1000ML', size: '1000ml × 12', price: 110, pack: 'Case (12 Bottles)', image: '/images/1lrwhite.png', images: ['/images/1lrwhite.png', '/images/1lrblack.png'], sortOrder: 5 },
+  { id: 'savi-2000ml-case', name: 'SAVI 2000ML', size: '2000ml × 6', price: 110, pack: 'Case (6 Bottles)', image: '/images/1lrwhite.png', images: ['/images/1lrwhite.png'], sortOrder: 6 },
+  { id: 'savi-20ltr-can', name: 'SAVI 20LTR', size: '20 Litre', price: 40, pack: 'Can', image: '/images/20ltr.png', images: ['/images/20ltr.png'], sortOrder: 7 },
+];
 
 function ProductImageCarousel({ images, name }: { images: string[]; name: string }) {
   const [activeIdx, setActiveIdx] = useState(0);
@@ -45,18 +69,45 @@ function ProductImageCarousel({ images, name }: { images: string[]; name: string
   );
 }
 
-const products = [
-  { id: 'savi-200ml-case', name: 'SAVI 200ML', size: '200ml × 48', price: 240, pack: 'Case (48 Bottles)', image: '/images/200ml.png', images: ['/images/200ml.png'] },
-  { id: 'savi-250ml-case', name: 'SAVI 250ML', size: '250ml × 36', price: 190, pack: 'Case (36 Bottles)', image: '/images/250ml.png', images: ['/images/250ml.png'] },
-  { id: 'savi-300ml-case', name: 'SAVI 300ML', size: '300ml × 30', price: 170, pack: 'Case (30 Bottles)', image: '/images/250ml.png', images: ['/images/250ml.png'] },
-  { id: 'savi-500ml-case', name: 'SAVI 500ML', size: '500ml × 24', price: 160, pack: 'Case (24 Bottles)', image: '/images/500ml-1.png', images: ['/images/500ml-1.png'] },
-  { id: 'savi-1000ml-case', name: 'SAVI 1000ML', size: '1000ml × 12', price: 110, pack: 'Case (12 Bottles)', image: '/images/1lrwhite.png', images: ['/images/1lrwhite.png', '/images/1lrblack.png'] },
-  { id: 'savi-2000ml-case', name: 'SAVI 2000ML', size: '2000ml × 6', price: 110, pack: 'Case (6 Bottles)', image: '/images/1lrwhite.png', images: ['/images/1lrwhite.png'] },
-  { id: 'savi-20ltr-can', name: 'SAVI 20LTR', size: '20 Litre', price: 40, pack: 'Can', image: '/images/20ltr.png', images: ['/images/20ltr.png'] },
-];
+function ProductCardSkeleton() {
+  return (
+    <div className="bg-[#2d2d2d] rounded-3xl p-6 border border-white/5 animate-pulse">
+      <div className="aspect-square rounded-2xl bg-[#1a1a1a] mb-6" />
+      <div className="h-5 bg-[#1a1a1a] rounded-lg w-2/3 mb-2" />
+      <div className="h-4 bg-[#1a1a1a] rounded-lg w-1/3 mb-4" />
+      <div className="flex items-center justify-between">
+        <div className="h-7 bg-[#1a1a1a] rounded-lg w-16" />
+        <div className="h-10 bg-[#1a1a1a] rounded-xl w-20" />
+      </div>
+    </div>
+  );
+}
 
 export default function MarketplacePage() {
   const { addToCart, items, updateQuantity } = useCart();
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loadingProducts, setLoadingProducts] = useState(true);
+
+  // Fetch products from Firestore
+  useEffect(() => {
+    async function fetchProducts() {
+      try {
+        const q = query(collection(db, 'products'), orderBy('sortOrder'));
+        const snapshot = await getDocs(q);
+        const prods: Product[] = snapshot.docs.map((d) => ({
+          id: d.id,
+          ...d.data(),
+        })) as Product[];
+        setProducts(prods.length > 0 ? prods : fallbackProducts);
+      } catch {
+        // Firestore unavailable — use fallback
+        setProducts(fallbackProducts);
+      } finally {
+        setLoadingProducts(false);
+      }
+    }
+    fetchProducts();
+  }, []);
 
   const getItemQuantity = (id: string) => {
     const item = items.find(i => i.id === id);
@@ -83,7 +134,9 @@ export default function MarketplacePage() {
 
             {/* Products Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {products.map((product) => {
+              {loadingProducts ? (
+                Array.from({ length: 7 }).map((_, i) => <ProductCardSkeleton key={i} />)
+              ) : products.map((product) => {
                 const quantity = getItemQuantity(product.id);
 
                 return (
