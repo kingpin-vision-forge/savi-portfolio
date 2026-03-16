@@ -5,6 +5,7 @@ import { signInWithEmailAndPassword, signOut, onAuthStateChanged, User } from 'f
 import { collection, getDocs, doc, updateDoc, orderBy, query } from 'firebase/firestore';
 import { auth, db } from '@/lib/firebase';
 import { Lock, LogOut, Save, Loader2, CheckCircle2, AlertCircle, Package, DollarSign } from 'lucide-react';
+import { SignInPage } from '@/components/ui/sign-in';
 
 interface Product {
   id: string;
@@ -18,15 +19,16 @@ interface Product {
 }
 
 function LoginScreen({ onLogin }: { onLogin: () => void }) {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleSignIn = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError('');
     setLoading(true);
+    const formData = new FormData(e.currentTarget);
+    const email = formData.get('email') as string;
+    const password = formData.get('password') as string;
     try {
       await signInWithEmailAndPassword(auth, email, password);
       onLogin();
@@ -38,74 +40,13 @@ function LoginScreen({ onLogin }: { onLogin: () => void }) {
   };
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center p-6">
-      <div className="w-full max-w-md">
-        {/* Logo & Branding */}
-        <div className="text-center mb-10">
-          <div className="size-20 rounded-3xl bg-gradient-to-br from-[#00C853] to-[#00E676] flex items-center justify-center mx-auto mb-6 shadow-xl shadow-[#00C853]/20">
-            <Lock className="size-9 text-white" />
-          </div>
-          <h1 className="text-white text-3xl font-extrabold tracking-tight mb-2">SAVI Admin</h1>
-          <p className="text-gray-500 text-sm">Sign in to manage marketplace pricing</p>
-        </div>
-
-        {/* Login Card */}
-        <div className="bg-[#1a1a1a] rounded-3xl p-8 border border-white/5 shadow-2xl">
-          <form onSubmit={handleLogin} className="space-y-5">
-            <div>
-              <label className="text-xs font-bold uppercase tracking-wider text-gray-400 mb-2 block">Email</label>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full h-14 px-5 rounded-2xl bg-[#2d2d2d] text-white text-sm font-medium border border-white/5 focus:border-[#00C853] focus:ring-2 focus:ring-[#00C853]/20 outline-none transition-all placeholder:text-gray-600"
-                placeholder="admin@savi.com"
-                required
-              />
-            </div>
-            <div>
-              <label className="text-xs font-bold uppercase tracking-wider text-gray-400 mb-2 block">Password</label>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full h-14 px-5 rounded-2xl bg-[#2d2d2d] text-white text-sm font-medium border border-white/5 focus:border-[#00C853] focus:ring-2 focus:ring-[#00C853]/20 outline-none transition-all placeholder:text-gray-600"
-                placeholder="••••••••"
-                required
-              />
-            </div>
-
-            {error && (
-              <div className="flex items-center gap-2 text-red-400 text-sm bg-red-500/10 rounded-xl px-4 py-3 border border-red-500/20">
-                <AlertCircle className="size-4 shrink-0" />
-                {error}
-              </div>
-            )}
-
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full h-14 bg-[#00C853] hover:bg-[#00E676] disabled:bg-gray-700 disabled:cursor-not-allowed text-white rounded-2xl font-bold text-base transition-all flex items-center justify-center gap-2 shadow-lg shadow-[#00C853]/20"
-            >
-              {loading ? (
-                <>
-                  <Loader2 className="size-5 animate-spin" />
-                  Signing in…
-                </>
-              ) : (
-                <>
-                  <Lock className="size-4" />
-                  Sign In
-                </>
-              )}
-            </button>
-          </form>
-        </div>
-
-        <p className="text-center text-gray-600 text-xs mt-6">
-          Protected area — authorized personnel only
-        </p>
-      </div>
+    <div className="bg-background text-foreground">
+      <SignInPage
+        title={<span className="font-light text-foreground tracking-tighter">Admin Login</span>}
+        description={error || "Sign in to manage your SAVI products and pricing"}
+        onSignIn={handleSignIn}
+        onResetPassword={() => alert('Please contact the administrator to reset your password.')}
+      />
     </div>
   );
 }
