@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { signInWithEmailAndPassword, signOut, onAuthStateChanged, User } from 'firebase/auth';
 import { collection, getDocs, doc, updateDoc, orderBy, query } from 'firebase/firestore';
 import { auth, db } from '@/lib/firebase';
-import { Lock, LogOut, Save, Loader2, CheckCircle2, AlertCircle, Package, DollarSign } from 'lucide-react';
+import { Lock, LogOut, Save, Loader2, CheckCircle2, AlertCircle, Package, IndianRupee } from 'lucide-react';
 import { SignInPage } from '@/components/ui/sign-in';
 
 interface Product {
@@ -232,7 +232,7 @@ function AdminDashboard({ user }: { user: User }) {
 
                   {/* Price Input */}
                   <div className="relative">
-                    <DollarSign className="absolute left-4 top-1/2 -translate-y-1/2 size-5 text-gray-500" />
+                    <IndianRupee className="absolute left-4 top-1/2 -translate-y-1/2 size-5 text-gray-500" />
                     <span className="absolute left-10 top-1/2 -translate-y-1/2 text-gray-400 font-bold text-lg">₹</span>
                     <input
                       type="number"

@@ -32,12 +32,12 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   // Load cart from localStorage on mount
   useEffect(() => {
-    const savedCart = localStorage.getItem('savi-cart');
+    const savedCart = localStorage.getItem('savi-cart-v2');
     if (savedCart) {
       try {
         setItems(JSON.parse(savedCart));
       } catch {
-        localStorage.removeItem('savi-cart');
+        localStorage.removeItem('savi-cart-v2');
       }
     }
     setIsHydrated(true);
@@ -46,7 +46,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
   // Save cart to localStorage on change
   useEffect(() => {
     if (isHydrated) {
-      localStorage.setItem('savi-cart', JSON.stringify(items));
+      localStorage.setItem('savi-cart-v2', JSON.stringify(items));
     }
   }, [items, isHydrated]);
 
@@ -79,7 +79,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   const clearCart = () => {
     setItems([]);
-    localStorage.removeItem('savi-cart');
+    localStorage.removeItem('savi-cart-v2');
   };
 
   const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);

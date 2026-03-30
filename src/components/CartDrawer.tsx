@@ -3,9 +3,11 @@
 import { useCart } from '@/context/CartContext';
 import { X, Plus, Minus, ShoppingBag, Trash2, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 export default function CartDrawer() {
   const { items, isCartOpen, setIsCartOpen, updateQuantity, removeFromCart, totalPrice, totalItems } = useCart();
+  const router = useRouter();
 
   if (!isCartOpen) return null;
 
@@ -44,7 +46,7 @@ export default function CartDrawer() {
               <p className="text-gray-400 text-lg mb-2">Your cart is empty</p>
               <p className="text-gray-500 text-sm mb-6">Add some premium hydration!</p>
               <button
-                onClick={() => setIsCartOpen(false)}
+                onClick={() => { setIsCartOpen(false); router.push('/marketplace'); }}
                 className="text-[#00C853] font-bold hover:underline"
               >
                 Continue Shopping

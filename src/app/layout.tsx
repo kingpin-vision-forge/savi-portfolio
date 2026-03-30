@@ -5,6 +5,7 @@ import { CartProvider } from "@/context/CartContext";
 import CartDrawer from "@/components/CartDrawer";
 import GlobalBackground from "@/components/GlobalBackground";
 import AppLoadingWrapper from "@/components/AppLoadingWrapper";
+import PageTransitionProvider from "@/components/PageTransitionProvider";
 
 const manrope = Manrope({
   variable: "--font-manrope",
@@ -33,9 +34,11 @@ export default function RootLayout({
         <GlobalBackground />
         <CartProvider>
           <AppLoadingWrapper>
-            <div className="relative z-10">
-              {children}
-            </div>
+            <PageTransitionProvider>
+              <div className="relative z-10">
+                {children}
+              </div>
+            </PageTransitionProvider>
           </AppLoadingWrapper>
           <CartDrawer />
         </CartProvider>

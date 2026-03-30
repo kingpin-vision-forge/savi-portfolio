@@ -110,11 +110,22 @@ export default function ProcessFlow() {
   }
 
   useEffect(() => {
-    const t = setTimeout(updatePaths, 150);
-    window.addEventListener("resize", updatePaths);
+    let rafId: number;
+    const scheduleUpdate = () => {
+      cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(() => requestAnimationFrame(updatePaths));
+    };
+
+    scheduleUpdate();
+
+    const ro = new ResizeObserver(scheduleUpdate);
+    if (containerRef.current) ro.observe(containerRef.current);
+    window.addEventListener("resize", scheduleUpdate);
+
     return () => {
-      clearTimeout(t);
-      window.removeEventListener("resize", updatePaths);
+      cancelAnimationFrame(rafId);
+      ro.disconnect();
+      window.removeEventListener("resize", scheduleUpdate);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isMobile]);
