@@ -4,6 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import { Sparkles } from "lucide-react";
 
 type Point = { x: number; y: number };
+type ConnectionSide = "right" | "left" | "top" | "bottom";
+type FlowPath = { key: string; d: string; accent: string };
 
 const steps = [
   { title: "Raw Water Tank", value: "Source", meta: "intake & pre-treatment" },
@@ -29,7 +31,7 @@ const gridOrder = [
   [6, 7, 8],
 ];
 
-const connections: { from: number; to: number; fromSide: string; toSide: string }[] = [
+const connections: { from: number; to: number; fromSide: ConnectionSide; toSide: ConnectionSide }[] = [
   { from: 0, to: 1, fromSide: "right", toSide: "left" },
   { from: 1, to: 2, fromSide: "right", toSide: "left" },
   { from: 2, to: 3, fromSide: "bottom", toSide: "top" },
@@ -41,9 +43,9 @@ const connections: { from: number; to: number; fromSide: string; toSide: string 
 ];
 
 const rowColors = [
-  { from: "rgba(0,200,83,0.30)", to: "rgba(0,200,83,0.10)", shadow: "rgba(0,200,83,0.18)" },
-  { from: "rgba(255,77,141,0.30)", to: "rgba(255,77,141,0.10)", shadow: "rgba(255,77,141,0.18)" },
-  { from: "rgba(108,99,255,0.28)", to: "rgba(108,99,255,0.10)", shadow: "rgba(108,99,255,0.20)" },
+  { accent: "#00C853", from: "rgba(0,200,83,0.30)", to: "rgba(0,200,83,0.10)", shadow: "rgba(0,200,83,0.18)" },
+  { accent: "#FF4D8D", from: "rgba(255,77,141,0.30)", to: "rgba(255,77,141,0.10)", shadow: "rgba(255,77,141,0.18)" },
+  { accent: "#6C63FF", from: "rgba(108,99,255,0.28)", to: "rgba(108,99,255,0.10)", shadow: "rgba(108,99,255,0.20)" },
 ];
 
 function getRowColor(stepIdx: number) {
@@ -55,7 +57,7 @@ function getRowColor(stepIdx: number) {
 export default function ProcessFlow() {
   const containerRef = useRef<HTMLDivElement>(null);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const [paths, setPaths] = useState<string[]>([]);
+  const [paths, setPaths] = useState<FlowPath[]>([]);
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -65,22 +67,30 @@ export default function ProcessFlow() {
     return () => window.removeEventListener("resize", check);
   }, []);
 
-  function getPoint(el: HTMLElement, parent: HTMLElement, side: string): Point {
+  function getPoint(el: HTMLElement, parent: HTMLElement, side: ConnectionSide): Point {
     const r = el.getBoundingClientRect();
     const p = parent.getBoundingClientRect();
+    const edgeOffset = 14;
+    const centerX = Math.round(r.left - p.left + r.width / 2);
+    const centerY = Math.round(r.top - p.top + r.height / 2);
+
     switch (side) {
-      case "right": return { x: r.right - p.left + 4, y: r.top - p.top + r.height / 2 };
-      case "left": return { x: r.left - p.left - 4, y: r.top - p.top + r.height / 2 };
-      case "top": return { x: r.left - p.left + r.width / 2, y: r.top - p.top - 4 };
-      case "bottom": return { x: r.left - p.left + r.width / 2, y: r.bottom - p.top + 4 };
+      case "right":
+        return { x: Math.round(r.right - p.left + edgeOffset), y: centerY };
+      case "left":
+        return { x: Math.round(r.left - p.left - edgeOffset), y: centerY };
+      case "top":
+        return { x: centerX, y: Math.round(r.top - p.top - edgeOffset) };
+      case "bottom":
+        return { x: centerX, y: Math.round(r.bottom - p.top + edgeOffset) };
       default: return { x: 0, y: 0 };
     }
   }
 
   function curve(a: Point, b: Point, horizontal: boolean) {
     const offset = horizontal
-      ? Math.abs(b.x - a.x) * 0.35
-      : Math.abs(b.y - a.y) * 0.35;
+      ? Math.max(Math.abs(b.x - a.x) * 0.38, 28)
+      : Math.max(Math.abs(b.y - a.y) * 0.38, 28);
     if (horizontal) {
       return `M ${a.x} ${a.y} C ${a.x + (b.x > a.x ? offset : -offset)} ${a.y}, ${b.x - (b.x > a.x ? offset : -offset)} ${b.y}, ${b.x} ${b.y}`;
     }
@@ -93,7 +103,7 @@ export default function ProcessFlow() {
       return;
     }
     const parent = containerRef.current;
-    const segments: string[] = [];
+    const segments: FlowPath[] = [];
 
     for (const conn of connections) {
       const fromEl = cardRefs.current[conn.from];
@@ -103,10 +113,14 @@ export default function ProcessFlow() {
       const a = getPoint(fromEl, parent, conn.fromSide);
       const b = getPoint(toEl, parent, conn.toSide);
       const horizontal = conn.fromSide === "right" || conn.fromSide === "left";
-      segments.push(curve(a, b, horizontal));
+      segments.push({
+        key: `${conn.from}-${conn.to}`,
+        d: curve(a, b, horizontal),
+        accent: getRowColor(conn.from).accent,
+      });
     }
 
-    setPaths([segments.join(" ")]);
+    setPaths(segments);
   }
 
   useEffect(() => {
@@ -120,6 +134,11 @@ export default function ProcessFlow() {
 
     const ro = new ResizeObserver(scheduleUpdate);
     if (containerRef.current) ro.observe(containerRef.current);
+    cardRefs.current.forEach((card) => {
+      if (card) ro.observe(card);
+    });
+
+    document.fonts?.ready.then(scheduleUpdate).catch(() => {});
     window.addEventListener("resize", scheduleUpdate);
 
     return () => {
@@ -156,21 +175,13 @@ export default function ProcessFlow() {
       <div ref={containerRef} className="relative z-10 isolate">
         {/* SVG ribbons — desktop only */}
         {!isMobile && (
-          <svg className="absolute inset-0 w-full h-full pointer-events-none z-0">
+          <svg
+            className="absolute inset-0 h-full w-full pointer-events-none z-0 overflow-visible"
+            shapeRendering="geometricPrecision"
+          >
             <defs>
-              <linearGradient id="flowGrad9" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="#00C853">
-                  <animate attributeName="offset" values="0;1" dur="3s" repeatCount="indefinite" />
-                </stop>
-                <stop offset="50%" stopColor="#ff4d8d">
-                  <animate attributeName="offset" values="0.5;1.5" dur="3s" repeatCount="indefinite" />
-                </stop>
-                <stop offset="100%" stopColor="#6C63FF">
-                  <animate attributeName="offset" values="1;2" dur="3s" repeatCount="indefinite" />
-                </stop>
-              </linearGradient>
-              <filter id="glow9">
-                <feGaussianBlur stdDeviation="4" result="blur" />
+              <filter id="flowGlow" x="-30%" y="-30%" width="160%" height="160%">
+                <feGaussianBlur stdDeviation="3.5" result="blur" />
                 <feMerge>
                   <feMergeNode in="blur" />
                   <feMergeNode in="SourceGraphic" />
@@ -178,13 +189,55 @@ export default function ProcessFlow() {
               </filter>
             </defs>
 
-            {paths.length > 0 && (
-              <g>
-                <path d={paths[0]} stroke="url(#flowGrad9)" strokeWidth="16" fill="none" strokeLinecap="round" opacity="0.22" filter="url(#glow9)" />
-                <path d={paths[0]} stroke="#00C853" strokeWidth="4" fill="none" strokeLinecap="round" strokeDasharray="30 140" />
-                <path d={paths[0]} stroke="#ffffff" strokeWidth="4" fill="none" strokeLinecap="round" strokeDasharray="30 140" opacity="0.8" className="flowPulse" />
+            {paths.map((path, idx) => (
+              <g key={path.key}>
+                <path
+                  d={path.d}
+                  stroke="rgba(255,255,255,0.08)"
+                  strokeWidth="16"
+                  fill="none"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  vectorEffect="non-scaling-stroke"
+                />
+                <path
+                  d={path.d}
+                  stroke={path.accent}
+                  strokeWidth="10"
+                  fill="none"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  vectorEffect="non-scaling-stroke"
+                  opacity="0.22"
+                  filter="url(#flowGlow)"
+                />
+                <path
+                  d={path.d}
+                  stroke={path.accent}
+                  strokeWidth="3"
+                  fill="none"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  vectorEffect="non-scaling-stroke"
+                  opacity="0.72"
+                />
+                <path
+                  d={path.d}
+                  stroke="#F8FAFC"
+                  strokeWidth="3.5"
+                  fill="none"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  vectorEffect="non-scaling-stroke"
+                  strokeDasharray="28 142"
+                  opacity="0.95"
+                  style={{
+                    animation: `flowMove ${1.7 + idx * 0.1}s linear infinite`,
+                    filter: `drop-shadow(0 0 8px ${path.accent})`,
+                  }}
+                />
               </g>
-            )}
+            ))}
           </svg>
         )}
 

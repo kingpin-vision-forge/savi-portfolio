@@ -1,14 +1,115 @@
 'use client';
 
+import { useEffect, useRef, useState } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import PartnerMarquee, { partnerLogos } from '@/components/PartnerMarquee';
+
+const partnerStats = [
+  { value: 500, suffix: '+', label: 'Enterprise Clients', duration: 800, delay: 0 },
+  { value: 50, suffix: '+', label: 'Countries Served', duration: 850, delay: 120 },
+  { value: 99.9, suffix: '%', label: 'Purity Rating', precision: 1, duration: 950, delay: 240 },
+];
 
 const testimonials = [
   { quote: "SAVI has redefined our in-office experience. The design is impeccable, and the purity is noticeable. It aligns perfectly with our sustainability goals.", name: 'Michael Chen', title: 'CEO, TechCore' },
   { quote: "In the luxury hospitality sector, details matter. SAVI delivers a premium hydration experience that our guests constantly compliment. Essential.", name: 'Sarah Jenkins', title: 'Director, GrandHotel' },
   { quote: "Scale was our biggest concern. SAVI rolled out to 45 locations seamlessly. Their service team is as reliable as their water quality.", name: 'David Ross', title: 'Manager, Equinoxx' },
 ];
+
+function formatStatValue(value: number, precision: number) {
+  return value.toLocaleString('en-US', {
+    minimumFractionDigits: precision,
+    maximumFractionDigits: precision,
+  });
+}
+
+function AnimatedStatValue({
+  value,
+  precision = 0,
+  duration = 900,
+  delay = 0,
+}: {
+  value: number;
+  precision?: number;
+  duration?: number;
+  delay?: number;
+}) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const frameRef = useRef<number | null>(null);
+  const timeoutRef = useRef<number | null>(null);
+  const [displayValue, setDisplayValue] = useState(0);
+
+  useEffect(() => {
+    const element = ref.current;
+    if (!element) return;
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      frameRef.current = window.requestAnimationFrame(() => {
+        setDisplayValue(value);
+      });
+      return;
+    }
+
+    let started = false;
+    let startTime = 0;
+
+    const startAnimation = () => {
+      if (started) return;
+      started = true;
+
+      timeoutRef.current = window.setTimeout(() => {
+        const step = (timestamp: number) => {
+          if (!startTime) startTime = timestamp;
+
+          const progress = Math.min((timestamp - startTime) / duration, 1);
+          const easedProgress = 1 - Math.pow(1 - progress, 4);
+          const nextValue = Number((easedProgress * value).toFixed(precision));
+
+          setDisplayValue(nextValue);
+
+          if (progress < 1) {
+            frameRef.current = window.requestAnimationFrame(step);
+            return;
+          }
+
+          setDisplayValue(value);
+        };
+
+        frameRef.current = window.requestAnimationFrame(step);
+      }, delay);
+    };
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        startAnimation();
+        observer.disconnect();
+      },
+      { threshold: 0.6 }
+    );
+
+    observer.observe(element);
+
+    return () => {
+      observer.disconnect();
+
+      if (timeoutRef.current !== null) {
+        window.clearTimeout(timeoutRef.current);
+      }
+
+      if (frameRef.current !== null) {
+        window.cancelAnimationFrame(frameRef.current);
+      }
+    };
+  }, [delay, duration, precision, value]);
+
+  return (
+    <span ref={ref} className="tabular-nums">
+      {formatStatValue(displayValue, precision)}
+    </span>
+  );
+}
 
 export default function PartnersPage() {
   return (
@@ -40,18 +141,20 @@ export default function PartnersPage() {
       <section className="relative z-30 -mt-24 mb-32 px-4">
         <div className="max-w-5xl mx-auto">
           <div className="glass-panel rounded-3xl p-0 grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-white/10 overflow-hidden">
-            <div className="flex flex-col items-center justify-center p-10 hover:bg-white/[0.05] transition-colors duration-500 group">
-              <span className="text-5xl font-extralight text-white mb-3 tracking-tighter group-hover:scale-105 transition-transform duration-500">500<span className="text-[#00C853] text-3xl align-top font-normal">+</span></span>
-              <span className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] group-hover:text-[#00C853] transition-colors">Enterprise Clients</span>
-            </div>
-            <div className="flex flex-col items-center justify-center p-10 hover:bg-white/[0.05] transition-colors duration-500 group">
-              <span className="text-5xl font-extralight text-white mb-3 tracking-tighter group-hover:scale-105 transition-transform duration-500">50<span className="text-[#00C853] text-3xl align-top font-normal">+</span></span>
-              <span className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] group-hover:text-[#00C853] transition-colors">Countries Served</span>
-            </div>
-            <div className="flex flex-col items-center justify-center p-10 hover:bg-white/[0.05] transition-colors duration-500 group">
-              <span className="text-5xl font-extralight text-white mb-3 tracking-tighter group-hover:scale-105 transition-transform duration-500">99.9<span className="text-[#00C853] text-3xl align-top font-normal">%</span></span>
-              <span className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] group-hover:text-[#00C853] transition-colors">Purity Rating</span>
-            </div>
+            {partnerStats.map((stat) => (
+              <div key={stat.label} className="flex flex-col items-center justify-center p-10 hover:bg-white/[0.05] transition-colors duration-500 group">
+                <span className="text-5xl font-extralight text-white mb-3 tracking-tighter group-hover:scale-105 transition-transform duration-500">
+                  <AnimatedStatValue
+                    value={stat.value}
+                    precision={stat.precision}
+                    duration={stat.duration}
+                    delay={stat.delay}
+                  />
+                  <span className="text-[#00C853] text-3xl align-top font-normal">{stat.suffix}</span>
+                </span>
+                <span className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] group-hover:text-[#00C853] transition-colors">{stat.label}</span>
+              </div>
+            ))}
           </div>
         </div>
       </section>
