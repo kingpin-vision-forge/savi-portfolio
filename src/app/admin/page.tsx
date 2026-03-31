@@ -233,7 +233,6 @@ function AdminDashboard({ user }: { user: User }) {
                   {/* Price Input */}
                   <div className="relative">
                     <IndianRupee className="absolute left-4 top-1/2 -translate-y-1/2 size-5 text-gray-500" />
-                    <span className="absolute left-10 top-1/2 -translate-y-1/2 text-gray-400 font-bold text-lg">₹</span>
                     <input
                       type="number"
                       min="0"
