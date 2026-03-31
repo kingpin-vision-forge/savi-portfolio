@@ -15,7 +15,7 @@ export default function LoadingScreen({ onComplete, onTransitionStart }: Loading
 
   // Progress timer
   useEffect(() => {
-    const duration = 5000;
+    const duration = 1500;
     const interval = 50;
     const increment = 100 / (duration / interval);
 
