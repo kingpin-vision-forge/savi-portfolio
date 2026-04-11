@@ -10,28 +10,43 @@ type FlowPath = { key: string; d: string; accent: string };
 const steps = [
   { title: "Raw Water Tank", value: "Source", meta: "intake & pre-treatment" },
   { title: "Sand Filtration", value: "Sediment", meta: "clarifies turbidity" },
-  { title: "Carbon Filter", value: "Odor/Chlorine", meta: "taste & smell control" },
-  { title: "12 Candle Micron", value: "Fine Filter", meta: "micro-sediment removal" },
-  { title: "Reverse Osmosis", value: "TDS Removal", meta: "membrane purification" },
-  { title: "24 Candle Micron", value: "Ultra Filter", meta: "particulate-free purity" },
+  {
+    title: "Carbon Filter",
+    value: "Odor/Chlorine",
+    meta: "taste & smell control",
+  },
+  {
+    title: "12 Candle Micron",
+    value: "Fine Filter",
+    meta: "micro-sediment removal",
+  },
+  {
+    title: "Reverse Osmosis",
+    value: "TDS Removal",
+    meta: "membrane purification",
+  },
+  {
+    title: "24 Candle Micron",
+    value: "Ultra Filter",
+    meta: "particulate-free purity",
+  },
   { title: "U.V. Treatment", value: "99.99%", meta: "microbe neutralization" },
   { title: "Ozonization", value: "Fresh Seal", meta: "long shelf stability" },
   { title: "Bottling", value: "Final Pack", meta: "food-grade filling" },
 ];
 
-// Desktop snake layout:
-// Row 1 (L→R): 0, 1, 2
-//                       |
-// Row 2 (R→L): 5, 4, 3
-//              |
-// Row 3 (L→R): 6, 7, 8
 const gridOrder = [
   [0, 1, 2],
   [5, 4, 3],
   [6, 7, 8],
 ];
 
-const connections: { from: number; to: number; fromSide: ConnectionSide; toSide: ConnectionSide }[] = [
+const connections: {
+  from: number;
+  to: number;
+  fromSide: ConnectionSide;
+  toSide: ConnectionSide;
+}[] = [
   { from: 0, to: 1, fromSide: "right", toSide: "left" },
   { from: 1, to: 2, fromSide: "right", toSide: "left" },
   { from: 2, to: 3, fromSide: "bottom", toSide: "top" },
@@ -43,9 +58,35 @@ const connections: { from: number; to: number; fromSide: ConnectionSide; toSide:
 ];
 
 const rowColors = [
-  { accent: "#00C853", from: "rgba(0,200,83,0.30)", to: "rgba(0,200,83,0.10)", shadow: "rgba(0,200,83,0.18)" },
-  { accent: "#FF4D8D", from: "rgba(255,77,141,0.30)", to: "rgba(255,77,141,0.10)", shadow: "rgba(255,77,141,0.18)" },
-  { accent: "#6C63FF", from: "rgba(108,99,255,0.28)", to: "rgba(108,99,255,0.10)", shadow: "rgba(108,99,255,0.20)" },
+  {
+    accent: "#00C853",
+    from: "rgba(0,200,83,0.30)",
+    to: "rgba(0,200,83,0.10)",
+    shadow: "rgba(0,200,83,0.18)",
+  },
+  {
+    accent: "#FF4D8D",
+    from: "rgba(255,77,141,0.30)",
+    to: "rgba(255,77,141,0.10)",
+    shadow: "rgba(255,77,141,0.18)",
+  },
+  {
+    accent: "#6C63FF",
+    from: "rgba(108,99,255,0.28)",
+    to: "rgba(108,99,255,0.10)",
+    shadow: "rgba(108,99,255,0.20)",
+  },
+];
+
+const connAccents = [
+  "#00C853",
+  "#00C853",
+  "#FF4D8D",
+  "#FF4D8D",
+  "#FF4D8D",
+  "#6C63FF",
+  "#6C63FF",
+  "#6C63FF",
 ];
 
 function getRowColor(stepIdx: number) {
@@ -54,11 +95,66 @@ function getRowColor(stepIdx: number) {
   return rowColors[2];
 }
 
+/**
+ * Walks up the DOM from `el` accumulating offsetLeft/offsetTop
+ * until it hits `ancestor`, giving position relative to ancestor.
+ * This avoids getBoundingClientRect scroll/transform issues.
+ */
+function getOffsetRelativeTo(
+  el: HTMLElement,
+  ancestor: HTMLElement,
+): { x: number; y: number; w: number; h: number } {
+  let x = 0;
+  let y = 0;
+  let cur: HTMLElement | null = el;
+  while (cur && cur !== ancestor) {
+    x += cur.offsetLeft;
+    y += cur.offsetTop;
+    cur = cur.offsetParent as HTMLElement | null;
+  }
+  return { x, y, w: el.offsetWidth, h: el.offsetHeight };
+}
+
+const GAP = 12; // px gap from card edge to path endpoint
+
+function edgePoint(
+  pos: { x: number; y: number; w: number; h: number },
+  side: ConnectionSide,
+): Point {
+  const cx = pos.x + pos.w / 2;
+  const cy = pos.y + pos.h / 2;
+  switch (side) {
+    case "right":
+      return { x: pos.x + pos.w + GAP, y: cy };
+    case "left":
+      return { x: pos.x - GAP, y: cy };
+    case "top":
+      return { x: cx, y: pos.y - GAP };
+    case "bottom":
+      return { x: cx, y: pos.y + pos.h + GAP };
+  }
+}
+
+function cubicBezier(a: Point, b: Point, horizontal: boolean): string {
+  if (horizontal) {
+    const ctrl = Math.max(Math.abs(b.x - a.x) * 0.45, 24);
+    const cx1 = a.x + (b.x >= a.x ? ctrl : -ctrl);
+    const cx2 = b.x + (b.x >= a.x ? -ctrl : ctrl);
+    return `M ${a.x} ${a.y} C ${cx1} ${a.y}, ${cx2} ${b.y}, ${b.x} ${b.y}`;
+  } else {
+    const ctrl = Math.max(Math.abs(b.y - a.y) * 0.45, 24);
+    const cy1 = a.y + (b.y >= a.y ? ctrl : -ctrl);
+    const cy2 = b.y + (b.y >= a.y ? -ctrl : ctrl);
+    return `M ${a.x} ${a.y} C ${a.x} ${cy1}, ${b.x} ${cy2}, ${b.x} ${b.y}`;
+  }
+}
+
 export default function ProcessFlow() {
   const containerRef = useRef<HTMLDivElement>(null);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
   const [paths, setPaths] = useState<FlowPath[]>([]);
   const [isMobile, setIsMobile] = useState(false);
+  const [svgSize, setSvgSize] = useState({ w: 0, h: 0 });
 
   useEffect(() => {
     const check = () => setIsMobile(window.innerWidth < 640);
@@ -67,91 +163,68 @@ export default function ProcessFlow() {
     return () => window.removeEventListener("resize", check);
   }, []);
 
-  function getPoint(el: HTMLElement, parent: HTMLElement, side: ConnectionSide): Point {
-    const r = el.getBoundingClientRect();
-    const p = parent.getBoundingClientRect();
-    const edgeOffset = 14;
-    const centerX = Math.round(r.left - p.left + r.width / 2);
-    const centerY = Math.round(r.top - p.top + r.height / 2);
-
-    switch (side) {
-      case "right":
-        return { x: Math.round(r.right - p.left + edgeOffset), y: centerY };
-      case "left":
-        return { x: Math.round(r.left - p.left - edgeOffset), y: centerY };
-      case "top":
-        return { x: centerX, y: Math.round(r.top - p.top - edgeOffset) };
-      case "bottom":
-        return { x: centerX, y: Math.round(r.bottom - p.top + edgeOffset) };
-      default: return { x: 0, y: 0 };
-    }
-  }
-
-  function curve(a: Point, b: Point, horizontal: boolean) {
-    const offset = horizontal
-      ? Math.max(Math.abs(b.x - a.x) * 0.38, 28)
-      : Math.max(Math.abs(b.y - a.y) * 0.38, 28);
-    if (horizontal) {
-      return `M ${a.x} ${a.y} C ${a.x + (b.x > a.x ? offset : -offset)} ${a.y}, ${b.x - (b.x > a.x ? offset : -offset)} ${b.y}, ${b.x} ${b.y}`;
-    }
-    return `M ${a.x} ${a.y} C ${a.x} ${a.y + offset}, ${b.x} ${b.y - offset}, ${b.x} ${b.y}`;
-  }
-
   function updatePaths() {
-    if (!containerRef.current || isMobile) {
+    const parent = containerRef.current;
+    if (!parent || isMobile) {
       setPaths([]);
       return;
     }
-    const parent = containerRef.current;
+
+    // Use offsetWidth/offsetHeight — no scroll offset contamination
+    setSvgSize({ w: parent.offsetWidth, h: parent.offsetHeight });
+
     const segments: FlowPath[] = [];
 
-    for (const conn of connections) {
+    connections.forEach((conn, idx) => {
       const fromEl = cardRefs.current[conn.from];
       const toEl = cardRefs.current[conn.to];
-      if (!fromEl || !toEl) continue;
+      if (!fromEl || !toEl) return;
 
-      const a = getPoint(fromEl, parent, conn.fromSide);
-      const b = getPoint(toEl, parent, conn.toSide);
+      const fromPos = getOffsetRelativeTo(fromEl, parent);
+      const toPos = getOffsetRelativeTo(toEl, parent);
+
+      const a = edgePoint(fromPos, conn.fromSide);
+      const b = edgePoint(toPos, conn.toSide);
       const horizontal = conn.fromSide === "right" || conn.fromSide === "left";
+
       segments.push({
         key: `${conn.from}-${conn.to}`,
-        d: curve(a, b, horizontal),
-        accent: getRowColor(conn.from).accent,
+        d: cubicBezier(a, b, horizontal),
+        accent: connAccents[idx],
       });
-    }
+    });
 
     setPaths(segments);
   }
 
   useEffect(() => {
     let rafId: number;
-    const scheduleUpdate = () => {
+    const schedule = () => {
       cancelAnimationFrame(rafId);
       rafId = requestAnimationFrame(() => requestAnimationFrame(updatePaths));
     };
 
-    scheduleUpdate();
+    schedule();
+    window.addEventListener("resize", schedule);
 
-    const ro = new ResizeObserver(scheduleUpdate);
+    const ro = new ResizeObserver(schedule);
     if (containerRef.current) ro.observe(containerRef.current);
-    cardRefs.current.forEach((card) => {
-      if (card) ro.observe(card);
+    cardRefs.current.forEach((c) => {
+      if (c) ro.observe(c);
     });
-
-    document.fonts?.ready.then(scheduleUpdate).catch(() => {});
-    window.addEventListener("resize", scheduleUpdate);
+    document.fonts?.ready.then(schedule).catch(() => {});
 
     return () => {
       cancelAnimationFrame(rafId);
       ro.disconnect();
-      window.removeEventListener("resize", scheduleUpdate);
+      window.removeEventListener("resize", schedule);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isMobile]);
 
   return (
     <div className="relative overflow-hidden rounded-[28px] border border-white/10 bg-gradient-to-b from-white/[0.06] to-white/[0.02] p-6 md:p-8 shadow-[0_30px_80px_rgba(0,0,0,0.55)]">
-      {/* Ambient glow */}
+      {/* Ambient glows */}
       <div className="pointer-events-none absolute -top-24 -left-24 h-72 w-72 rounded-full bg-[#00C853]/15 blur-3xl" />
       <div className="pointer-events-none absolute -bottom-28 -right-28 h-80 w-80 rounded-full bg-[#6C63FF]/15 blur-3xl" />
       <div className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-60 w-60 rounded-full bg-[#ff4d8d]/10 blur-3xl" />
@@ -171,17 +244,31 @@ export default function ProcessFlow() {
         </div>
       </div>
 
-      {/* Flow container */}
-      <div ref={containerRef} className="relative z-10 isolate">
-        {/* SVG ribbons — desktop only */}
-        {!isMobile && (
+      {/* Flow container — position:relative so offsetParent chain resolves here */}
+      <div ref={containerRef} style={{ position: "relative" }}>
+        {/* SVG at z-index 1 — behind cards */}
+        {!isMobile && svgSize.w > 0 && (
           <svg
-            className="absolute inset-0 h-full w-full pointer-events-none z-0 overflow-visible"
-            shapeRendering="geometricPrecision"
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: svgSize.w,
+              height: svgSize.h,
+              zIndex: 1,
+              overflow: "visible",
+              pointerEvents: "none",
+            }}
           >
             <defs>
-              <filter id="flowGlow" x="-30%" y="-30%" width="160%" height="160%">
-                <feGaussianBlur stdDeviation="3.5" result="blur" />
+              <filter
+                id="flowGlow"
+                x="-40%"
+                y="-40%"
+                width="180%"
+                height="180%"
+              >
+                <feGaussianBlur stdDeviation="4" result="blur" />
                 <feMerge>
                   <feMergeNode in="blur" />
                   <feMergeNode in="SourceGraphic" />
@@ -191,48 +278,44 @@ export default function ProcessFlow() {
 
             {paths.map((path, idx) => (
               <g key={path.key}>
+                {/* Wide halo */}
                 <path
                   d={path.d}
+                  fill="none"
                   stroke="rgba(255,255,255,0.08)"
                   strokeWidth="16"
-                  fill="none"
                   strokeLinecap="round"
-                  strokeLinejoin="round"
-                  vectorEffect="non-scaling-stroke"
                 />
+                {/* Glow */}
                 <path
                   d={path.d}
+                  fill="none"
                   stroke={path.accent}
                   strokeWidth="10"
-                  fill="none"
                   strokeLinecap="round"
-                  strokeLinejoin="round"
-                  vectorEffect="non-scaling-stroke"
                   opacity="0.22"
                   filter="url(#flowGlow)"
                 />
+                {/* Solid accent */}
                 <path
                   d={path.d}
+                  fill="none"
                   stroke={path.accent}
                   strokeWidth="3"
-                  fill="none"
                   strokeLinecap="round"
-                  strokeLinejoin="round"
-                  vectorEffect="non-scaling-stroke"
-                  opacity="0.72"
+                  opacity="0.75"
                 />
+                {/* Animated moving dash */}
                 <path
                   d={path.d}
-                  stroke="#F8FAFC"
-                  strokeWidth="3.5"
                   fill="none"
+                  stroke="#ffffff"
+                  strokeWidth="3.5"
                   strokeLinecap="round"
-                  strokeLinejoin="round"
-                  vectorEffect="non-scaling-stroke"
                   strokeDasharray="28 142"
                   opacity="0.95"
                   style={{
-                    animation: `flowMove ${1.7 + idx * 0.1}s linear infinite`,
+                    animation: `flowMove ${1.7 + idx * 0.12}s linear infinite`,
                     filter: `drop-shadow(0 0 8px ${path.accent})`,
                   }}
                 />
@@ -241,14 +324,16 @@ export default function ProcessFlow() {
           </svg>
         )}
 
-        {/* Mobile: simple vertical list 1→9 with connecting lines */}
+        {/* Mobile: vertical list */}
         {isMobile ? (
-          <div className="relative z-30 flex flex-col items-center">
+          <div
+            style={{ position: "relative", zIndex: 2 }}
+            className="flex flex-col items-center"
+          >
             {steps.map((step, idx) => {
               const color = getRowColor(idx);
               return (
                 <div key={idx} className="w-full flex flex-col items-center">
-                  {/* Card */}
                   <div
                     className="w-full rounded-2xl border border-white/10 px-5 py-4"
                     style={{
@@ -257,15 +342,20 @@ export default function ProcessFlow() {
                     }}
                   >
                     <div className="flex items-center justify-between">
-                      <div className="text-sm font-medium text-white/70">{step.title}</div>
+                      <div className="text-sm font-medium text-white/70">
+                        {step.title}
+                      </div>
                       <span className="rounded-full border border-white/15 bg-white/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-white/70">
                         Stage {String(idx + 1).padStart(2, "0")}
                       </span>
                     </div>
-                    <div className="mt-2 text-2xl font-extrabold text-white tracking-tight">{step.value}</div>
-                    <div className="mt-1 text-xs text-white/60">{step.meta}</div>
+                    <div className="mt-2 text-2xl font-extrabold text-white tracking-tight">
+                      {step.value}
+                    </div>
+                    <div className="mt-1 text-xs text-white/60">
+                      {step.meta}
+                    </div>
                   </div>
-                  {/* Connector line between cards */}
                   {idx < steps.length - 1 && (
                     <div className="flex flex-col items-center py-1">
                       <div className="w-px h-6 bg-gradient-to-b from-[#00C853]/60 to-[#00C853]/20" />
@@ -277,8 +367,11 @@ export default function ProcessFlow() {
             })}
           </div>
         ) : (
-          /* Desktop: 3×3 snake grid */
-          <div className="relative z-30 flex flex-col gap-6 lg:gap-8">
+          /* Desktop 3×3 snake grid — z-index 2, sits above SVG */
+          <div
+            style={{ position: "relative", zIndex: 2 }}
+            className="flex flex-col gap-6 lg:gap-8"
+          >
             {gridOrder.map((row, rowIdx) => (
               <div key={rowIdx} className="grid grid-cols-3 gap-4 lg:gap-6">
                 {row.map((stepIdx) => {
@@ -287,7 +380,9 @@ export default function ProcessFlow() {
                   return (
                     <div
                       key={stepIdx}
-                      ref={(el) => { cardRefs.current[stepIdx] = el; }}
+                      ref={(el) => {
+                        cardRefs.current[stepIdx] = el;
+                      }}
                       className="rounded-2xl border border-white/10 px-6 py-5"
                       style={{
                         background: `linear-gradient(135deg, ${color.from}, ${color.to})`,
@@ -295,13 +390,19 @@ export default function ProcessFlow() {
                       }}
                     >
                       <div className="flex items-center justify-between">
-                        <div className="text-sm font-medium text-white/70">{step.title}</div>
+                        <div className="text-sm font-medium text-white/70">
+                          {step.title}
+                        </div>
                         <span className="rounded-full border border-white/15 bg-white/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-white/70">
                           Stage {String(stepIdx + 1).padStart(2, "0")}
                         </span>
                       </div>
-                      <div className="mt-2 text-2xl font-extrabold text-white tracking-tight">{step.value}</div>
-                      <div className="mt-1 text-xs text-white/60">{step.meta}</div>
+                      <div className="mt-2 text-2xl font-extrabold text-white tracking-tight">
+                        {step.value}
+                      </div>
+                      <div className="mt-1 text-xs text-white/60">
+                        {step.meta}
+                      </div>
                     </div>
                   );
                 })}
@@ -310,6 +411,8 @@ export default function ProcessFlow() {
           </div>
         )}
       </div>
+
+      <style>{`@keyframes flowMove { to { stroke-dashoffset: -170; } }`}</style>
     </div>
   );
 }
