@@ -296,7 +296,7 @@ export default function CheckoutPage() {
                             value={formData.phone}
                             onChange={handleInputChange}
                             className="w-full bg-white rounded-2xl pl-12 pr-5 py-4 text-gray-900 font-medium placeholder:text-gray-400 outline-none focus:ring-2 focus:ring-[#00C853]"
-                            placeholder="+91 77601 61401"
+                            placeholder="+91 12345 67890"
                             type="tel"
                             required
                           />
