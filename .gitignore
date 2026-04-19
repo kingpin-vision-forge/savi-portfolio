@@ -40,5 +40,26 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-
+.next
+.claude
+.claude-flow
 CLAUDE.md
+
+# Backup files
+*.backup
+
+# Temporary scripts and data
+scripts/*.json
+scripts/*.html
+scripts/*.log
+scripts/UPDATE_COMPLETE.md
+scripts/VERIFICATION_RESULTS.md
+
+# MCP config
+.mcp.json
+
+# Documentation files
+AGENTS.md
+
+# Reports
+*.pdf

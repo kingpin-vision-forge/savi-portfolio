@@ -6,6 +6,8 @@ import CartDrawer from "@/components/CartDrawer";
 import GlobalBackground from "@/components/GlobalBackground";
 import AppLoadingWrapper from "@/components/AppLoadingWrapper";
 import PageTransitionProvider from "@/components/PageTransitionProvider";
+import { MusicPlayerProvider } from "@/context/MusicPlayerContext";
+import GlobalMusicPlayer from "@/components/GlobalMusicPlayer";
 
 const manrope = Manrope({
   variable: "--font-manrope",
@@ -32,16 +34,19 @@ export default function RootLayout({
     <html lang="en" className="dark">
       <body className={`${manrope.variable} font-sans antialiased bg-[#0a0a0a] text-[#f5f5f5] overflow-x-hidden`}>
         <GlobalBackground />
-        <CartProvider>
-          <AppLoadingWrapper>
-            <PageTransitionProvider>
-              <div className="relative z-10">
-                {children}
-              </div>
-            </PageTransitionProvider>
-          </AppLoadingWrapper>
-          <CartDrawer />
-        </CartProvider>
+        <MusicPlayerProvider>
+          <CartProvider>
+            <AppLoadingWrapper>
+              <PageTransitionProvider>
+                <div className="relative z-10">
+                  {children}
+                </div>
+              </PageTransitionProvider>
+            </AppLoadingWrapper>
+            <CartDrawer />
+          </CartProvider>
+          <GlobalMusicPlayer />
+        </MusicPlayerProvider>
       </body>
     </html>
   );
