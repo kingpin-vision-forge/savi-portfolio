@@ -17,4 +17,14 @@
       "service": "savi-portfolio",
     },
   ],
+  "kv_namespaces": [
+    {
+      "binding": "NEXT_INC_CACHE_KV",
+      "id": "<REPLACE_WITH_INC_CACHE_KV_ID>"
+    },
+    {
+      "binding": "NEXT_TAG_CACHE_KV",
+      "id": "<REPLACE_WITH_TAG_CACHE_KV_ID>"
+    }
+  ],
 }
