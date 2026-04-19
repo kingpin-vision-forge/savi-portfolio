@@ -242,7 +242,7 @@ savi-website/
 
 ## 🔐 Environment Variables
 
-Create a `.env.local` file in the project root:
+Create a `.env` file in the project root:
 
 ```env
 NEXT_PUBLIC_UPI_ID=your-upi-id@bank

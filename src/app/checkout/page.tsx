@@ -23,11 +23,11 @@ const LocationMap = dynamic(() => import('@/components/LocationMap'), {
   ),
 });
 
-// UPI payment details — loaded from .env.local
+// UPI payment details — loaded from .env
 const UPI_ID = process.env.NEXT_PUBLIC_UPI_ID || '';
 const UPI_NAME = process.env.NEXT_PUBLIC_UPI_NAME || 'SAVI';
 
-// WhatsApp number — loaded from .env.local
+// WhatsApp number — loaded from .env
 const WHATSAPP_NUMBER = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '';
 
 export default function CheckoutPage() {

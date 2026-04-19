@@ -4,16 +4,25 @@
  * Run with:  npx tsx scripts/seed-products.ts
  */
 
+import 'dotenv/config';
 import { initializeApp } from 'firebase/app';
 import { getFirestore, doc, setDoc } from 'firebase/firestore';
 
+function env(key: string): string {
+  const value = process.env[key];
+  if (!value) {
+    throw new Error(`Missing environment variable: ${key}`);
+  }
+  return value;
+}
+
 const firebaseConfig = {
-  apiKey: 'AIzaSyB0kPJzoY-eaiDLpbwxwNUQuX0gWkcyt9w',
-  authDomain: 'savi-waters.firebaseapp.com',
-  projectId: 'savi-waters',
-  storageBucket: 'savi-waters.firebasestorage.app',
-  messagingSenderId: '1048126135836',
-  appId: '1:1048126135836:web:05d67070e3a98651dd49d9',
+  apiKey: env('NEXT_PUBLIC_FIREBASE_API_KEY'),
+  authDomain: env('NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN'),
+  projectId: env('NEXT_PUBLIC_FIREBASE_PROJECT_ID'),
+  storageBucket: env('NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET'),
+  messagingSenderId: env('NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID'),
+  appId: env('NEXT_PUBLIC_FIREBASE_APP_ID'),
 };
 
 const app = initializeApp(firebaseConfig);

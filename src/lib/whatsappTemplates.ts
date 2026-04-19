@@ -1,4 +1,4 @@
-const DEFAULT_WHATSAPP_NUMBER = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '917760161401';
+const DEFAULT_WHATSAPP_NUMBER = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '';
 
 export interface ClientQueryTemplateData {
   firstName: string;
@@ -47,7 +47,7 @@ const formatFullName = (firstName: string, lastName?: string): string =>
   `${firstName} ${lastName || ''}`.trim();
 
 export const buildWhatsAppUrl = (message: string, phoneNumber = DEFAULT_WHATSAPP_NUMBER): string => {
-  const normalizedPhone = phoneNumber.replace(/\D/g, '') || DEFAULT_WHATSAPP_NUMBER;
+  const normalizedPhone = (phoneNumber || DEFAULT_WHATSAPP_NUMBER).replace(/\D/g, '') || '';
   return `https://wa.me/${normalizedPhone}?text=${encodeURIComponent(message)}`;
 };
 
