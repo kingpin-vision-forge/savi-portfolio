@@ -6,7 +6,8 @@ export interface Track {
     cover: string;
     youtubeId: string;
     language: 'Hindi' | 'Kannada';
-    era: '1980s' | '1990s' | '2000s' | '2010s' | 'Latest';
+    era?: '1980s' | '1990s' | '2000s' | '2010s' | 'Latest';
+    genre?: 'Janapada';
 }
 
 export const eras = ['1980s', '1990s', '2000s', '2010s', 'Latest'] as const;
@@ -141,7 +142,7 @@ export const tracks: Track[] = [
 
     // ── Latest (2020s) Hindi ──
     { id: 60,  title: 'Akhiyaan Gulaab',                artist: 'Teri Baaton Mein Aisa Uljha Jiya', duration: '4:28', cover: '/gallery/promo-elegance.jpg', youtubeId: '0XJVTg3gMCw', language: 'Hindi',   era: 'Latest' },
-    { id: 61,  title: 'Satyanaas',                      artist: 'Chandu Champion',                duration: '3:55', cover: '/bottle2.jpeg',               youtubeId: 'TQ-Zi4rHXoI', language: 'Hindi',   era: 'Latest' },
+    { id: 61,  title: 'Satyanaas',                      artist: 'Chandu Champion',                duration: '3:55', cover: '/bottle2.jpeg',               youtubeId: 'yVpHofE4jD0', language: 'Hindi',   era: 'Latest' },
     { id: 62,  title: 'Tauba Tauba',                    artist: 'Bad Newz',                       duration: '3:42', cover: '/bottle3.jpeg',               youtubeId: 'c5AbMnDz8p4', language: 'Hindi',   era: 'Latest' },
     { id: 63,  title: 'Vaada Hai',                      artist: "O'Romeo",                        duration: '4:15', cover: '/bottle4.jpeg',               youtubeId: 'FLbbf4-eeI4', language: 'Hindi',   era: 'Latest' },
     { id: 64,  title: 'Zinda Banda',                    artist: 'Jawan',                          duration: '3:18', cover: '/gallery/promo-serenity.jpg', youtubeId: 'CaJ22UtBj18', language: 'Hindi',   era: 'Latest' },
@@ -170,6 +171,20 @@ export const tracks: Track[] = [
     { id: 137, title: 'Thoogire Rangana',               artist: 'Dr. Vidyabhushana',              duration: '4:25', cover: '/bottle2.jpeg',               youtubeId: 'p1UBQNVRsGM', language: 'Kannada', era: 'Latest' },
     { id: 138, title: 'Toofan',                         artist: 'KGF Chapter 2',                  duration: '4:12', cover: '/bottle3.jpeg',               youtubeId: '7q4h2RFBF5E', language: 'Kannada', era: 'Latest' },
     { id: 139, title: 'Varaha Roopam',                  artist: 'Kantara',                        duration: '4:42', cover: '/bottle4.jpeg',               youtubeId: 'xt7i1LTQvPs', language: 'Kannada', era: 'Latest' },
+
+    // ── Janapada ──
+    { id: 140, title: 'ಕೈ ಬಿಡಬ್ಯಾಡ ಕೈ ಬಿಡಬ್ಯಾಡ | Kai Bidabaad Kai Bidabaad', artist: 'Jhankar Music Folk Factory', duration: '6:38', cover: '/bottle2.jpeg', youtubeId: 'lAdKiIxHI1o', language: 'Kannada', genre: 'Janapada' },
+    { id: 141, title: 'ಗಂಡಸರ ಪರಿಸ್ಥಿತಿ | Gandasara Paristhiti', artist: 'Lapang Raja', duration: '8:23', cover: '/bottle3.jpeg', youtubeId: 'CotNgQ3hs9A', language: 'Kannada', genre: 'Janapada' },
+    { id: 142, title: 'ನನ್ನ ಮರ್ಜಿ | Nanna Marji', artist: 'Lapang Raja', duration: '5:47', cover: '/bottle4.jpeg', youtubeId: 'KGE9sHL425s', language: 'Kannada', genre: 'Janapada' },
+    { id: 143, title: 'ಇಕಿ ನಮ್ಮ ಅಕ್ಕನ ಮಗಳ | Ikki Namma Akkan Magal', artist: 'Lapang Raja', duration: '5:00', cover: '/gallery/promo-serenity.jpg', youtubeId: 'TyQlZ_ACDck', language: 'Kannada', genre: 'Janapada' },
+    { id: 144, title: 'ನಾ ಡ್ರೈವರ್ ನೀ ನನ್ನ ಲವರ್ | Naa Driver Ni Nann Lover', artist: 'Malu Nipanal Singer', duration: '8:17', cover: '/gallery/promo-elegance.jpg', youtubeId: 'kJcVqDTPSxc', language: 'Kannada', genre: 'Janapada' },
+    { id: 145, title: 'ಕುಣೀತಾಳೋ ಕುಣೀತಾಳ ನೆಲಕ್ ಕಾಲ್ ಹತ್ತದಂಗ್ ಕುಣೀತಾಳೋ | Kunitalo Kunital Nelak Kal Hattadang Kunital', artist: 'Balu Belagundi Singer', duration: '6:59', cover: '/bottle2.jpeg', youtubeId: 'iOMqz4LbiMY', language: 'Kannada', genre: 'Janapada' },
+    { id: 146, title: 'ಲಂಗಾ ದವನ್ಯಾಗ ಮಸ್ತ್ ಕಾಣತಿ ಲಾವಣ್ಯ | Langa Dawanyag Mast Kanati Lavanya', artist: 'Balu Belagundi Singer', duration: '5:10', cover: '/bottle3.jpeg', youtubeId: 'EKaQqmpRDtQ', language: 'Kannada', genre: 'Janapada' },
+    { id: 147, title: 'ಏ ಮಾವಾ ನಿನ್ನ ಮಗಳ | A Mava Ninna Magala', artist: 'Malu Nipanal Singer', duration: '5:13', cover: '/bottle4.jpeg', youtubeId: '99bjndftjGg', language: 'Kannada', genre: 'Janapada' },
+    { id: 148, title: 'ಹುಟ್ಟಿದ ಊರಿಗೆ ಹ್ವಾದರ ಕಟ್ಟಿ ಬಡಿತಾರ | Huttid Urigi Hodar Katti Baditar', artist: 'Balu Belagundi Singer', duration: '5:43', cover: '/gallery/promo-serenity.jpg', youtubeId: 'aIQpgca3EoM', language: 'Kannada', genre: 'Janapada' },
+    { id: 149, title: 'ಮೈ ಲೈಪ್ ಮೈ ವೈಫ್ ನಿನಂತೂ ಆ ಟೈಪ್ | My Life My Wife', artist: 'Balu Belagundi Singer', duration: '5:18', cover: '/gallery/promo-elegance.jpg', youtubeId: 'uZJ4X3u2L8U', language: 'Kannada', genre: 'Janapada' },
+    { id: 150, title: 'RANU BOMBAI KI RANU | Ranu Bombay Ki Ranu', artist: 'RATHOD TUNES', duration: '4:32', cover: '/bottle2.jpeg', youtubeId: '2voCBpYfFI4', language: 'Kannada', genre: 'Janapada' },
+    { id: 151, title: 'ಏನ ಕುಣತ ನಿಂದ ಏನ ಕುಣತ | Yen Kunata Ninda Yen Kunata', artist: 'Balu Belagundi Singer', duration: '6:19', cover: '/bottle3.jpeg', youtubeId: 'J6GXrvLRZr4', language: 'Kannada', genre: 'Janapada' },
 ];
 
 export const getYouTubeTrackUrl = (track: Track) => `https://www.youtube.com/watch?v=${track.youtubeId}`;

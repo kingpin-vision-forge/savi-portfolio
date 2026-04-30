@@ -36,6 +36,18 @@ interface YTPlayerOptions {
     };
 }
 
+interface PersistedPlayerState {
+    trackId: number | null;
+    playbackPosition: number;
+    isPlaying: boolean;
+    volume: number;
+    isShuffled: boolean;
+    isRepeating: boolean;
+    selectedLanguage: 'All' | 'Hindi' | 'Kannada';
+    selectedEra: string;
+    selectedGenre: 'All' | 'Janapada';
+}
+
 interface MusicPlayerContextType {
     currentTrack: Track | null;
     isPlaying: boolean;
@@ -46,11 +58,13 @@ interface MusicPlayerContextType {
     isRepeating: boolean;
     selectedLanguage: 'All' | 'Hindi' | 'Kannada';
     selectedEra: string;
+    selectedGenre: 'All' | 'Janapada';
     ytReady: boolean;
     playerError: string | null;
     filteredTracks: Track[];
     ytPlayerRef: React.MutableRefObject<YTPlayer | null>;
-    
+    isHydrated: boolean;
+
     setCurrentTrack: (track: Track | null) => void;
     setIsPlaying: (playing: boolean) => void;
     setVolume: (volume: number) => void;
@@ -58,7 +72,8 @@ interface MusicPlayerContextType {
     setIsRepeating: (repeating: boolean) => void;
     setSelectedLanguage: (lang: 'All' | 'Hindi' | 'Kannada') => void;
     setSelectedEra: (era: string) => void;
-    
+    setSelectedGenre: (genre: 'All' | 'Janapada') => void;
+
     playTrack: (track: Track) => void;
     togglePlayPause: () => void;
     playNext: () => void;
@@ -68,7 +83,10 @@ interface MusicPlayerContextType {
 
 const MusicPlayerContext = createContext<MusicPlayerContextType | undefined>(undefined);
 
+const STORAGE_KEY = 'savi_music_player_state';
+
 export function MusicPlayerProvider({ children }: { children: ReactNode }) {
+    const [isHydrated, setIsHydrated] = useState(false);
     const [currentTrack, setCurrentTrack] = useState<Track | null>(null);
     const [isPlaying, setIsPlaying] = useState(false);
     const [progress, setProgress] = useState(0);
@@ -78,6 +96,7 @@ export function MusicPlayerProvider({ children }: { children: ReactNode }) {
     const [isRepeating, setIsRepeating] = useState(false);
     const [selectedLanguage, setSelectedLanguage] = useState<'All' | 'Hindi' | 'Kannada'>('All');
     const [selectedEra, setSelectedEra] = useState<string>('All');
+    const [selectedGenre, setSelectedGenre] = useState<'All' | 'Janapada'>('All');
     const [ytReady, setYtReady] = useState(false);
     const [playerError, setPlayerError] = useState<string | null>(null);
 
@@ -88,18 +107,118 @@ export function MusicPlayerProvider({ children }: { children: ReactNode }) {
     const isShuffledRef = useRef(isShuffled);
     const pendingTrackRef = useRef<Track | null>(null);
     const playerTimeoutRef = useRef<number | null>(null);
+    const saveTimeoutRef = useRef<number | null>(null);
+    const restoredStateRef = useRef<PersistedPlayerState | null>(null);
 
-    // Keep refs in sync
+    const savePlayerState = useCallback((position?: number) => {
+        if (typeof window === 'undefined' || !isHydrated) return;
+        const state: PersistedPlayerState = {
+            trackId: currentTrackRef.current?.id ?? null,
+            playbackPosition: position ?? (ytPlayerRef.current?.getCurrentTime() ?? 0),
+            isPlaying: isPlaying,
+            volume: volume,
+            isShuffled: isShuffled,
+            isRepeating: isRepeating,
+            selectedLanguage: selectedLanguage,
+            selectedEra: selectedEra,
+            selectedGenre: selectedGenre,
+        };
+        try {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        } catch (e) {
+            console.warn('Failed to save music player state:', e);
+        }
+    }, [isPlaying, volume, isShuffled, isRepeating, selectedLanguage, selectedEra, selectedGenre, isHydrated]);
+
+    const loadPlayerState = useCallback((): PersistedPlayerState | null => {
+        if (typeof window === 'undefined') return null;
+        try {
+            const stored = localStorage.getItem(STORAGE_KEY);
+            if (!stored) return null;
+            const parsed = JSON.parse(stored);
+            if (typeof parsed.trackId !== 'number' && parsed.trackId !== null) return null;
+            if (typeof parsed.playbackPosition !== 'number') return null;
+            return parsed;
+        } catch (e) {
+            console.warn('Failed to load music player state:', e);
+            return null;
+        }
+    }, []);
+
+    useEffect(() => {
+        const stored = loadPlayerState();
+        if (stored) {
+            restoredStateRef.current = stored;
+            setVolume(stored.volume);
+            setIsShuffled(stored.isShuffled);
+            setIsRepeating(stored.isRepeating);
+            setSelectedLanguage(stored.selectedLanguage);
+            setSelectedEra(stored.selectedEra);
+            setSelectedGenre(stored.selectedGenre);
+        }
+        setIsHydrated(true);
+    }, [loadPlayerState]);
+
+    useEffect(() => {
+        if (!isHydrated) return;
+        const stored = restoredStateRef.current ?? loadPlayerState();
+        if (stored && stored.trackId !== null) {
+            const track = tracks.find(t => t.id === stored.trackId);
+            if (track) {
+                currentTrackRef.current = track;
+                setCurrentTrack(track);
+                if (ytReady && ytPlayerRef.current) {
+                    pendingTrackRef.current = track;
+                    ytPlayerRef.current.loadVideoById(track.youtubeId);
+                }
+            }
+        }
+    }, [isHydrated, ytReady, loadPlayerState]);
+
+    useEffect(() => {
+        if (typeof window === 'undefined' || !isHydrated) return;
+        const handleBeforeUnload = () => {
+            savePlayerState();
+        };
+        window.addEventListener('beforeunload', handleBeforeUnload);
+        return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+    }, [savePlayerState, isHydrated]);
+
+    useEffect(() => {
+        if (!isPlaying || !isHydrated) return;
+        if (saveTimeoutRef.current !== null) {
+            window.clearTimeout(saveTimeoutRef.current);
+        }
+        saveTimeoutRef.current = window.setTimeout(() => {
+            savePlayerState();
+        }, 2000);
+        return () => {
+            if (saveTimeoutRef.current !== null) {
+                window.clearTimeout(saveTimeoutRef.current);
+            }
+        };
+    }, [isPlaying, isHydrated, savePlayerState]);
+
+    useEffect(() => {
+        currentTrackRef.current = currentTrack;
+    }, [currentTrack]);
+
+    useEffect(() => {
+        if (!isHydrated) return;
+        savePlayerState();
+    }, [currentTrack, isPlaying, volume, isShuffled, isRepeating, selectedLanguage, selectedEra, selectedGenre, isHydrated, savePlayerState]);
+
     useEffect(() => { isRepeatingRef.current = isRepeating; }, [isRepeating]);
     useEffect(() => { isShuffledRef.current = isShuffled; }, [isShuffled]);
 
     const filteredTracks = tracks.filter(t => {
         const langMatch = selectedLanguage === 'All' || t.language === selectedLanguage;
         const eraMatch = selectedEra === 'All' || t.era === selectedEra;
-        return langMatch && eraMatch;
+        const genreMatch = selectedGenre === 'All' || t.genre === selectedGenre;
+        return langMatch && eraMatch && genreMatch;
     });
 
-    useEffect(() => { filteredTracksRef.current = filteredTracks; }, [selectedLanguage, selectedEra]);
+    useEffect(() => { filteredTracksRef.current = filteredTracks; }, [filteredTracks]);
 
     const playNextCallback = useCallback(() => {
         const track = currentTrackRef.current;
@@ -155,6 +274,16 @@ export function MusicPlayerProvider({ children }: { children: ReactNode }) {
                     },
                     onStateChange: (event: { data: number }) => {
                         if (event.data === 1) { // PLAYING
+                            const restoredState = restoredStateRef.current;
+                            if (restoredState && restoredState.trackId === currentTrackRef.current?.id) {
+                                if (restoredState.playbackPosition > 0) {
+                                    ytPlayerRef.current?.seekTo(restoredState.playbackPosition, true);
+                                }
+                                if (!restoredState.isPlaying) {
+                                    ytPlayerRef.current?.pauseVideo();
+                                }
+                                restoredStateRef.current = null;
+                            }
                             setIsPlaying(true);
                             setPlayerError(null);
                         } else if (event.data === 2) { // PAUSED
@@ -297,10 +426,12 @@ export function MusicPlayerProvider({ children }: { children: ReactNode }) {
         isRepeating,
         selectedLanguage,
         selectedEra,
+        selectedGenre,
         ytReady,
         playerError,
         filteredTracks,
         ytPlayerRef,
+        isHydrated,
         setCurrentTrack,
         setIsPlaying,
         setVolume,
@@ -308,6 +439,7 @@ export function MusicPlayerProvider({ children }: { children: ReactNode }) {
         setIsRepeating,
         setSelectedLanguage,
         setSelectedEra,
+        setSelectedGenre,
         playTrack,
         togglePlayPause,
         playNext,
