@@ -98,10 +98,11 @@ export default function MarketplacePage() {
           id: d.id,
           ...d.data(),
         })) as Product[];
-        setProducts(prods.length > 0 ? prods : fallbackProducts);
+        const filtered = (prods.length > 0 ? prods : fallbackProducts).filter(p => p.id !== 'savi-20ltr-can');
+        setProducts(filtered);
       } catch {
         // Firestore unavailable — use fallback
-        setProducts(fallbackProducts);
+        setProducts(fallbackProducts.filter(p => p.id !== 'savi-20ltr-can'));
       } finally {
         setLoadingProducts(false);
       }

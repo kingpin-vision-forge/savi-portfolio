@@ -1,10 +1,9 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import { useMusicPlayer } from '@/context/MusicPlayerContext';
 import Link from 'next/link';
-import Image from 'next/image';
 
 export default function GlobalMusicPlayer() {
     const pathname = usePathname();
@@ -18,6 +17,10 @@ export default function GlobalMusicPlayer() {
         playPrevious
     } = useMusicPlayer();
 
+    const [imgError, setImgError] = useState(false);
+
+    useEffect(() => { setImgError(false); }, [currentTrack?.id]);
+
     // Hide if we're on the full music page, or if there's no track playing/selected
     if (pathname === '/music' || !currentTrack) {
         return null;
@@ -29,12 +32,21 @@ export default function GlobalMusicPlayer() {
                 {/* Album Art with Vinyl spin */}
                 <div className="relative w-12 h-12 rounded-full overflow-hidden flex-shrink-0 group cursor-pointer border border-white/10">
                     <Link href="/music" className="block relative w-full h-full">
-                        <img 
-                            src={currentTrack.cover} 
-                            alt={currentTrack.title}
-                            className={`w-full h-full object-cover transition-all duration-700 ${isPlaying ? 'animate-spin' : ''}`}
-                            style={{ animationDuration: '4s' }}
-                        />
+                        {imgError || !currentTrack.cover ? (
+                            <div className={`w-full h-full bg-[#1a1a1a] flex items-center justify-center transition-all duration-700 ${isPlaying ? 'animate-spin' : ''}`} style={{ animationDuration: '4s' }}>
+                                <svg className="w-6 h-6 text-[#00C853]" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12 3v10.55A4 4 0 1 0 14 17V7h4V3h-6z"/>
+                                </svg>
+                            </div>
+                        ) : (
+                            <img
+                                src={currentTrack.cover}
+                                alt={currentTrack.title}
+                                onError={() => setImgError(true)}
+                                className={`w-full h-full object-cover transition-all duration-700 ${isPlaying ? 'animate-spin' : ''}`}
+                                style={{ animationDuration: '4s' }}
+                            />
+                        )}
                         <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                             <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
@@ -45,7 +57,7 @@ export default function GlobalMusicPlayer() {
 
                 {/* Track Info */}
                 <div className="flex-1 min-w-0">
-                    <Link href="/music" className="block w-fit">
+                    <Link href="/music" className="block">
                         <h4 className="text-white text-sm font-medium truncate hover:text-[#00C853] transition-colors">{currentTrack.title}</h4>
                     </Link>
                     <p className="text-gray-400 text-xs truncate">{currentTrack.artist}</p>
