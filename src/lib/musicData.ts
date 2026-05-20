@@ -8,11 +8,17 @@ export interface Track {
     language: 'Hindi' | 'Kannada';
     era?: '1980s' | '1990s' | '2000s' | '2010s' | 'Latest';
     genre?: 'Janapada';
+    moods?: Mood[];
+    isKaraoke?: boolean;
 }
+
+export type Mood = 'Party' | 'Sad' | 'Happy' | 'Driving';
 
 export const eras = ['1980s', '1990s', '2000s', '2010s', 'Latest'] as const;
 
-export const tracks: Track[] = [
+export const moods: Mood[] = ['Party', 'Sad', 'Happy', 'Driving'];
+
+const baseTracks: Track[] = [
     // ── 1980s Hindi ──
     { id: 1,   title: 'Ek Do Teen',                     artist: 'Tezaab',                         duration: '4:30', cover: '/gallery/promo-serenity.jpg', youtubeId: 'A7x-ZzozsMg', language: 'Hindi',   era: '1980s' },
     { id: 2,   title: 'Papa Kehte Hain',                artist: 'Qayamat Se Qayamat Tak',         duration: '5:02', cover: '/gallery/promo-elegance.jpg', youtubeId: 'E8ytXrzkTNs', language: 'Hindi',   era: '1980s' },
@@ -186,6 +192,178 @@ export const tracks: Track[] = [
     { id: 150, title: 'RANU BOMBAI KI RANU | Ranu Bombay Ki Ranu', artist: 'RATHOD TUNES', duration: '4:32', cover: '/bottle2.jpeg', youtubeId: '2voCBpYfFI4', language: 'Kannada', genre: 'Janapada' },
     { id: 151, title: 'ಏನ ಕುಣತ ನಿಂದ ಏನ ಕುಣತ | Yen Kunata Ninda Yen Kunata', artist: 'Balu Belagundi Singer', duration: '6:19', cover: '/bottle3.jpeg', youtubeId: 'J6GXrvLRZr4', language: 'Kannada', genre: 'Janapada' },
 ];
+
+const karaokeTrackIds = new Set(
+    baseTracks
+        .filter((track) => track.era === '1980s' || track.era === '1990s')
+        .map((track) => track.id)
+);
+
+const trackMoodsById: Record<number, Mood[]> = {
+    1: ['Party', 'Happy'],
+    2: ['Happy', 'Driving'],
+    3: ['Party', 'Happy'],
+    4: ['Party', 'Driving'],
+    5: ['Sad', 'Driving'],
+    6: ['Happy', 'Driving'],
+    7: ['Happy', 'Driving'],
+    8: ['Happy', 'Driving'],
+    9: ['Happy', 'Driving'],
+    10: ['Sad', 'Driving'],
+    11: ['Happy', 'Driving'],
+    12: ['Happy', 'Driving'],
+    13: ['Happy', 'Driving'],
+    14: ['Sad', 'Driving'],
+    15: ['Happy', 'Driving'],
+    16: ['Party', 'Driving'],
+    17: ['Happy', 'Driving'],
+    18: ['Sad', 'Driving'],
+    19: ['Party', 'Happy'],
+    20: ['Party', 'Driving'],
+    21: ['Happy', 'Party'],
+    22: ['Party', 'Driving'],
+    23: ['Happy', 'Driving'],
+    24: ['Sad', 'Driving'],
+    25: ['Sad', 'Driving'],
+    26: ['Happy', 'Driving'],
+    27: ['Happy', 'Driving'],
+    28: ['Party', 'Happy'],
+    29: ['Sad', 'Driving'],
+    30: ['Party', 'Driving'],
+    31: ['Sad', 'Driving'],
+    32: ['Party', 'Happy'],
+    33: ['Party', 'Happy'],
+    34: ['Happy', 'Driving'],
+    35: ['Sad', 'Driving'],
+    36: ['Happy', 'Driving'],
+    37: ['Happy', 'Driving'],
+    38: ['Sad', 'Driving'],
+    39: ['Sad', 'Driving'],
+    40: ['Happy', 'Driving'],
+    41: ['Party', 'Happy'],
+    42: ['Happy', 'Driving'],
+    43: ['Sad', 'Driving'],
+    44: ['Sad', 'Driving'],
+    45: ['Sad', 'Driving'],
+    46: ['Party', 'Happy'],
+    47: ['Happy', 'Driving'],
+    48: ['Happy', 'Driving'],
+    49: ['Party', 'Driving'],
+    50: ['Party', 'Driving'],
+    51: ['Happy', 'Driving'],
+    52: ['Party', 'Happy'],
+    53: ['Happy', 'Driving'],
+    54: ['Sad', 'Driving'],
+    55: ['Happy', 'Driving'],
+    56: ['Sad', 'Driving'],
+    57: ['Sad', 'Driving'],
+    58: ['Party', 'Driving'],
+    59: ['Party', 'Driving'],
+    60: ['Happy', 'Driving'],
+    61: ['Party', 'Driving'],
+    62: ['Party', 'Happy'],
+    63: ['Sad', 'Driving'],
+    64: ['Party', 'Driving'],
+    65: ['Driving', 'Happy'],
+    66: ['Driving', 'Happy'],
+    67: ['Party', 'Happy'],
+    68: ['Party', 'Driving'],
+    69: ['Party', 'Driving'],
+    70: ['Happy', 'Party'],
+    71: ['Sad', 'Driving'],
+    72: ['Sad', 'Driving'],
+    73: ['Happy', 'Driving'],
+    74: ['Sad', 'Driving'],
+    75: ['Sad', 'Driving'],
+    76: ['Sad', 'Driving'],
+    77: ['Happy', 'Driving'],
+    78: ['Sad', 'Driving'],
+    79: ['Sad', 'Driving'],
+    80: ['Party', 'Driving'],
+    81: ['Party', 'Happy'],
+    82: ['Sad', 'Driving'],
+    83: ['Party', 'Driving'],
+    84: ['Sad', 'Driving'],
+    85: ['Happy', 'Driving'],
+    86: ['Sad', 'Driving'],
+    87: ['Sad', 'Driving'],
+    88: ['Happy', 'Driving'],
+    89: ['Sad', 'Driving'],
+    90: ['Sad', 'Driving'],
+    91: ['Sad', 'Driving'],
+    92: ['Happy', 'Driving'],
+    93: ['Happy', 'Driving'],
+    94: ['Driving', 'Happy'],
+    95: ['Happy', 'Driving'],
+    96: ['Happy', 'Driving'],
+    97: ['Party', 'Driving'],
+    98: ['Party', 'Happy'],
+    99: ['Happy', 'Driving'],
+    100: ['Happy', 'Driving'],
+    101: ['Sad', 'Driving'],
+    102: ['Happy', 'Driving'],
+    103: ['Sad', 'Driving'],
+    104: ['Sad', 'Driving'],
+    105: ['Happy', 'Driving'],
+    106: ['Sad', 'Driving'],
+    107: ['Happy', 'Driving'],
+    108: ['Happy', 'Driving'],
+    109: ['Sad', 'Driving'],
+    110: ['Happy', 'Driving'],
+    111: ['Driving', 'Happy'],
+    112: ['Sad', 'Driving'],
+    113: ['Happy', 'Driving'],
+    114: ['Party', 'Driving'],
+    115: ['Sad', 'Driving'],
+    116: ['Sad', 'Driving'],
+    117: ['Happy', 'Driving'],
+    118: ['Party', 'Driving'],
+    119: ['Happy', 'Driving'],
+    120: ['Party', 'Happy'],
+    121: ['Sad', 'Driving'],
+    122: ['Sad', 'Driving'],
+    123: ['Sad', 'Driving'],
+    124: ['Driving', 'Happy'],
+    125: ['Sad', 'Driving'],
+    126: ['Happy', 'Driving'],
+    127: ['Party', 'Happy'],
+    128: ['Sad', 'Driving'],
+    129: ['Happy', 'Driving'],
+    130: ['Driving', 'Happy'],
+    131: ['Party', 'Driving'],
+    132: ['Driving', 'Happy'],
+    133: ['Sad', 'Driving'],
+    134: ['Happy', 'Driving'],
+    135: ['Happy', 'Driving'],
+    136: ['Party', 'Driving'],
+    137: ['Happy', 'Driving'],
+    138: ['Party', 'Driving'],
+    139: ['Sad', 'Driving'],
+    140: ['Happy', 'Driving'],
+    141: ['Sad', 'Driving'],
+    142: ['Happy', 'Driving'],
+    143: ['Happy', 'Driving'],
+    144: ['Driving', 'Happy'],
+    145: ['Party', 'Happy'],
+    146: ['Happy', 'Driving'],
+    147: ['Happy', 'Driving'],
+    148: ['Sad', 'Driving'],
+    149: ['Happy', 'Driving'],
+    150: ['Party', 'Driving'],
+    151: ['Happy', 'Driving'],
+};
+
+export const tracks: Track[] = baseTracks.map((track) => ({
+    ...track,
+    moods: trackMoodsById[track.id] ?? ['Happy'],
+    isKaraoke: karaokeTrackIds.has(track.id),
+}));
+
+export const mainTracks = tracks.filter((track) => !track.genre && !track.isKaraoke);
+
+export const janapadaTracks = tracks.filter((track) => track.genre === 'Janapada');
+
+export const karaokeTracks = tracks.filter((track) => track.isKaraoke && !track.genre);
 
 export const getYouTubeTrackUrl = (track: Track) => `https://www.youtube.com/watch?v=${track.youtubeId}`;
 

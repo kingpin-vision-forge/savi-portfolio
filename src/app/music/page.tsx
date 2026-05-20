@@ -1,9 +1,9 @@
 'use client';
 
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useRef } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import { eras, getYouTubeTrackUrl, tracks } from '@/lib/musicData';
+import { eras, moods, getYouTubeTrackUrl, mainTracks } from '@/lib/musicData';
 import { useMusicPlayer } from '@/context/MusicPlayerContext';
 
 export default function MusicPage() {
@@ -17,7 +17,8 @@ export default function MusicPage() {
         isRepeating,
         selectedLanguage,
         selectedEra,
-        selectedGenre,
+        selectedMood,
+        viewMode,
         ytReady,
         playerError,
         filteredTracks,
@@ -27,6 +28,8 @@ export default function MusicPage() {
         setSelectedLanguage,
         setSelectedEra,
         setSelectedGenre,
+        setSelectedMood,
+        setViewMode,
         playTrack,
         togglePlayPause,
         playNext,
@@ -35,17 +38,15 @@ export default function MusicPage() {
     } = useMusicPlayer();
 
     const progressBarRef = useRef<HTMLDivElement>(null);
-    const [shuffledTrackList, setShuffledTrackList] = useState<typeof tracks>([]);
+    const isMainView = viewMode === 'all';
+    const isUnfiltered = isMainView && selectedLanguage === 'All' && selectedEra === 'All' && selectedMood === 'All';
 
-    const isUnfiltered = selectedLanguage === 'All' && selectedEra === 'All' && selectedGenre === 'All';
-
-    useEffect(() => {
-        if (isUnfiltered) {
-            setShuffledTrackList([...tracks].sort(() => Math.random() - 0.5));
-            return;
+    const shuffledTrackList = useMemo(() => {
+        if (!isUnfiltered) {
+            return [];
         }
 
-        setShuffledTrackList([]);
+        return [...mainTracks].sort((a, b) => ((a.id * 37) % 101) - ((b.id * 37) % 101));
     }, [isUnfiltered]);
 
     const displayTracks = useMemo(() => {
@@ -58,6 +59,8 @@ export default function MusicPage() {
         const percent = (e.clientX - rect.left) / rect.width;
         seekToPercent(percent);
     };
+
+    const playlistTitle = viewMode === 'janapada' ? 'Janapada' : viewMode === 'karaoke' ? 'Karaoke' : 'Playlist';
 
     return (
         <div className="relative flex min-h-screen w-full flex-col">
@@ -83,65 +86,112 @@ export default function MusicPage() {
                 </section>
 
                 <section className="w-full max-w-[1200px] px-4 md:px-8 pb-8">
-                    <div className="glass-panel rounded-2xl p-5 flex flex-col sm:flex-row items-start sm:items-center gap-4">
-                        <div className="flex items-center gap-2">
-                            <span className="text-gray-500 text-xs font-bold uppercase tracking-wider mr-1">Language</span>
-                            {(['All', 'Hindi', 'Kannada'] as const).map((lang) => (
+                    <div className="glass-panel rounded-2xl p-5 flex flex-col gap-5">
+                        <div className="flex flex-wrap items-center gap-2">
+                            {([
+                                { label: 'All Songs', value: 'all' },
+                                { label: 'Janapada', value: 'janapada' },
+                                { label: 'Karaoke', value: 'karaoke' },
+                            ] as const).map((tab) => (
                                 <button
-                                    key={lang}
+                                    key={tab.value}
                                     onClick={() => {
-                                        setSelectedLanguage(lang);
+                                        setViewMode(tab.value);
+                                        setSelectedLanguage('All');
                                         setSelectedEra('All');
                                         setSelectedGenre('All');
+                                        setSelectedMood('All');
                                     }}
-                                    className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${selectedLanguage === lang
+                                    className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${viewMode === tab.value
                                         ? 'bg-[#00C853] text-white shadow-[0_0_15px_rgba(0,200,83,0.4)]'
                                         : 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white border border-white/10'
                                         }`}
                                 >
-                                    {lang}
+                                    {tab.label}
                                 </button>
                             ))}
+                            <div className="sm:ml-auto">
+                                <span className="text-gray-500 text-xs font-mono">{displayTracks.length} tracks</span>
+                            </div>
                         </div>
 
-                        <div className="hidden sm:block w-px h-8 bg-white/10" />
+                        {isMainView ? (
+                            <div className="flex flex-col gap-4">
+                                <div className="flex flex-col lg:flex-row lg:items-center gap-4">
+                                    <div className="flex items-center gap-2 flex-wrap">
+                                        <span className="text-gray-500 text-xs font-bold uppercase tracking-wider mr-1">Language</span>
+                                        {(['All', 'Hindi', 'Kannada'] as const).map((lang) => (
+                                            <button
+                                                key={lang}
+                                                onClick={() => {
+                                                    setSelectedLanguage(lang);
+                                                    setSelectedEra('All');
+                                                    setSelectedGenre('All');
+                                                    setSelectedMood('All');
+                                                }}
+                                                className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${selectedLanguage === lang
+                                                    ? 'bg-[#00C853] text-white shadow-[0_0_15px_rgba(0,200,83,0.4)]'
+                                                    : 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white border border-white/10'
+                                                    }`}
+                                            >
+                                                {lang}
+                                            </button>
+                                        ))}
+                                    </div>
 
-                        <div className="flex items-center gap-2">
-                            <span className="text-gray-500 text-xs font-bold uppercase tracking-wider mr-1">Era</span>
-                            <select
-                                value={selectedEra}
-                                onChange={(e) => {
-                                    setSelectedEra(e.target.value);
-                                    setSelectedGenre('All');
-                                }}
-                                className="bg-white/5 border border-white/10 rounded-full px-4 py-2 text-sm text-white font-medium appearance-none cursor-pointer outline-none focus:ring-2 focus:ring-[#00C853] transition-all pr-8"
-                                style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23999' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10z'/%3E%3C/svg%3E")`, backgroundRepeat: 'no-repeat', backgroundPosition: 'right 12px center' }}
-                            >
-                                <option value="All" className="bg-[#2d2d2d]">All Decades</option>
-                                {eras.map((era) => (
-                                    <option key={era} value={era} className="bg-[#2d2d2d]">{era}</option>
-                                ))}
-                            </select>
-                        </div>
+                                    <div className="hidden lg:block w-px h-8 bg-white/10" />
 
-                        <div className="hidden sm:block w-px h-8 bg-white/10" />
+                                    <div className="flex items-center gap-2">
+                                        <span className="text-gray-500 text-xs font-bold uppercase tracking-wider mr-1">Era</span>
+                                        <select
+                                            value={selectedEra}
+                                            onChange={(e) => {
+                                                setSelectedEra(e.target.value);
+                                                setSelectedGenre('All');
+                                            }}
+                                            className="bg-white/5 border border-white/10 rounded-full px-4 py-2 text-sm text-white font-medium appearance-none cursor-pointer outline-none focus:ring-2 focus:ring-[#00C853] transition-all pr-8"
+                                            style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23999' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10z'/%3E%3C/svg%3E")`, backgroundRepeat: 'no-repeat', backgroundPosition: 'right 12px center' }}
+                                        >
+                                            <option value="All" className="bg-[#2d2d2d]">All Decades</option>
+                                            {eras.map((era) => (
+                                                <option key={era} value={era} className="bg-[#2d2d2d]">{era}</option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                </div>
 
-                        <div className="flex items-center gap-2">
-                            <span className="text-gray-500 text-xs font-bold uppercase tracking-wider mr-1">Genre</span>
-                            <select
-                                value={selectedGenre}
-                                onChange={(e) => setSelectedGenre(e.target.value as 'All' | 'Janapada')}
-                                className="bg-white/5 border border-white/10 rounded-full px-4 py-2 text-sm text-white font-medium appearance-none cursor-pointer outline-none focus:ring-2 focus:ring-[#00C853] transition-all pr-8"
-                                style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23999' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10z'/%3E%3C/svg%3E")`, backgroundRepeat: 'no-repeat', backgroundPosition: 'right 12px center' }}
-                            >
-                                <option value="All" className="bg-[#2d2d2d]">All Genres</option>
-                                <option value="Janapada" className="bg-[#2d2d2d]">Janapada</option>
-                            </select>
-                        </div>
-
-                        <div className="sm:ml-auto">
-                            <span className="text-gray-500 text-xs font-mono">{displayTracks.length} tracks</span>
-                        </div>
+                                <div className="flex flex-wrap items-center gap-2">
+                                    <span className="text-gray-500 text-xs font-bold uppercase tracking-wider mr-1">Mood</span>
+                                    <button
+                                        onClick={() => setSelectedMood('All')}
+                                        className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${selectedMood === 'All'
+                                            ? 'bg-[#00C853] text-white shadow-[0_0_15px_rgba(0,200,83,0.4)]'
+                                            : 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white border border-white/10'
+                                            }`}
+                                    >
+                                        All
+                                    </button>
+                                    {moods.map((mood) => (
+                                        <button
+                                            key={mood}
+                                            onClick={() => setSelectedMood(mood)}
+                                            className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${selectedMood === mood
+                                                ? 'bg-[#00C853] text-white shadow-[0_0_15px_rgba(0,200,83,0.4)]'
+                                                : 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white border border-white/10'
+                                                }`}
+                                        >
+                                            {mood}
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+                        ) : (
+                            <p className="text-sm text-gray-400">
+                                {viewMode === 'janapada'
+                                    ? 'Janapada songs stay in their own section and are hidden from the main playlist.'
+                                    : 'Karaoke songs are old favorites kept in a separate sing-along section.'}
+                            </p>
+                        )}
                     </div>
                 </section>
 
@@ -172,6 +222,7 @@ export default function MusicPage() {
                                                 {currentTrack.language}
                                                 {currentTrack.era ? ` · ${currentTrack.era}` : ''}
                                                 {currentTrack.genre ? ` · ${currentTrack.genre}` : ''}
+                                                {currentTrack.isKaraoke ? ' · Karaoke' : ''}
                                             </div>
                                         </div>
 
@@ -305,7 +356,7 @@ export default function MusicPage() {
 
                         <div className="lg:col-span-2">
                             <div className="flex items-center justify-between mb-6">
-                                <h2 className="text-white text-2xl font-light">Playlist</h2>
+                                <h2 className="text-white text-2xl font-light">{playlistTitle}</h2>
                                 <span className="text-gray-500 text-sm">{displayTracks.length} tracks</span>
                             </div>
 
@@ -352,6 +403,7 @@ export default function MusicPage() {
                                         <span className="hidden sm:inline-block text-[10px] font-bold uppercase tracking-wider text-gray-500 bg-white/5 px-2 py-1 rounded-full">
                                             {track.language}
                                             {track.genre ? ` · ${track.genre}` : ''}
+                                            {track.isKaraoke ? ' · Karaoke' : ''}
                                             {track.era ? ` · ${track.era}` : ''}
                                         </span>
 

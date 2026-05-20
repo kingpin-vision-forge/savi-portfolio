@@ -1,7 +1,9 @@
 'use client';
 
 import React, { createContext, useContext, useState, useRef, useEffect, useCallback, ReactNode } from 'react';
-import { Track, tracks, getYouTubeErrorMessage } from '@/lib/musicData';
+import { Mood, Track, tracks, mainTracks, janapadaTracks, karaokeTracks, getYouTubeErrorMessage } from '@/lib/musicData';
+
+type SongViewMode = 'all' | 'janapada' | 'karaoke';
 
 declare global {
     interface Window {
@@ -46,6 +48,8 @@ interface PersistedPlayerState {
     selectedLanguage: 'All' | 'Hindi' | 'Kannada';
     selectedEra: string;
     selectedGenre: 'All' | 'Janapada';
+    selectedMood: 'All' | Mood;
+    viewMode: SongViewMode;
 }
 
 interface MusicPlayerContextType {
@@ -59,6 +63,8 @@ interface MusicPlayerContextType {
     selectedLanguage: 'All' | 'Hindi' | 'Kannada';
     selectedEra: string;
     selectedGenre: 'All' | 'Janapada';
+    selectedMood: 'All' | Mood;
+    viewMode: SongViewMode;
     ytReady: boolean;
     playerError: string | null;
     filteredTracks: Track[];
@@ -73,6 +79,8 @@ interface MusicPlayerContextType {
     setSelectedLanguage: (lang: 'All' | 'Hindi' | 'Kannada') => void;
     setSelectedEra: (era: string) => void;
     setSelectedGenre: (genre: 'All' | 'Janapada') => void;
+    setSelectedMood: (mood: 'All' | Mood) => void;
+    setViewMode: (mode: SongViewMode) => void;
 
     playTrack: (track: Track) => void;
     togglePlayPause: () => void;
@@ -97,6 +105,8 @@ export function MusicPlayerProvider({ children }: { children: ReactNode }) {
     const [selectedLanguage, setSelectedLanguage] = useState<'All' | 'Hindi' | 'Kannada'>('All');
     const [selectedEra, setSelectedEra] = useState<string>('All');
     const [selectedGenre, setSelectedGenre] = useState<'All' | 'Janapada'>('All');
+    const [selectedMood, setSelectedMood] = useState<'All' | Mood>('All');
+    const [viewMode, setViewMode] = useState<SongViewMode>('all');
     const [ytReady, setYtReady] = useState(false);
     const [playerError, setPlayerError] = useState<string | null>(null);
 
@@ -122,13 +132,15 @@ export function MusicPlayerProvider({ children }: { children: ReactNode }) {
             selectedLanguage: selectedLanguage,
             selectedEra: selectedEra,
             selectedGenre: selectedGenre,
+            selectedMood: selectedMood,
+            viewMode: viewMode,
         };
         try {
             localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
         } catch (e) {
             console.warn('Failed to save music player state:', e);
         }
-    }, [isPlaying, volume, isShuffled, isRepeating, selectedLanguage, selectedEra, selectedGenre, isHydrated]);
+    }, [isPlaying, volume, isShuffled, isRepeating, selectedLanguage, selectedEra, selectedGenre, selectedMood, viewMode, isHydrated]);
 
     const loadPlayerState = useCallback((): PersistedPlayerState | null => {
         if (typeof window === 'undefined') return null;
@@ -148,13 +160,16 @@ export function MusicPlayerProvider({ children }: { children: ReactNode }) {
     useEffect(() => {
         const stored = loadPlayerState();
         if (stored) {
+            const nextViewMode = stored.viewMode ?? (stored.selectedGenre === 'Janapada' ? 'janapada' : 'all');
             restoredStateRef.current = stored;
             setVolume(stored.volume);
             setIsShuffled(stored.isShuffled);
             setIsRepeating(stored.isRepeating);
             setSelectedLanguage(stored.selectedLanguage);
             setSelectedEra(stored.selectedEra);
-            setSelectedGenre(stored.selectedGenre);
+            setSelectedGenre(nextViewMode === 'all' ? stored.selectedGenre : 'All');
+            setSelectedMood(stored.selectedMood ?? 'All');
+            setViewMode(nextViewMode);
         }
         setIsHydrated(true);
     }, [loadPlayerState]);
@@ -206,16 +221,28 @@ export function MusicPlayerProvider({ children }: { children: ReactNode }) {
     useEffect(() => {
         if (!isHydrated) return;
         savePlayerState();
-    }, [currentTrack, isPlaying, volume, isShuffled, isRepeating, selectedLanguage, selectedEra, selectedGenre, isHydrated, savePlayerState]);
+    }, [currentTrack, isPlaying, volume, isShuffled, isRepeating, selectedLanguage, selectedEra, selectedGenre, selectedMood, viewMode, isHydrated, savePlayerState]);
 
     useEffect(() => { isRepeatingRef.current = isRepeating; }, [isRepeating]);
     useEffect(() => { isShuffledRef.current = isShuffled; }, [isShuffled]);
 
-    const filteredTracks = tracks.filter(t => {
+    const sourceTracks = viewMode === 'janapada'
+        ? janapadaTracks
+        : viewMode === 'karaoke'
+            ? karaokeTracks
+            : mainTracks;
+
+    const filteredTracks = sourceTracks.filter(t => {
         const langMatch = selectedLanguage === 'All' || t.language === selectedLanguage;
         const eraMatch = selectedEra === 'All' || t.era === selectedEra;
         const genreMatch = selectedGenre === 'All' || t.genre === selectedGenre;
-        return langMatch && eraMatch && genreMatch;
+        const moodMatch = selectedMood === 'All' || t.moods?.includes(selectedMood);
+
+        if (viewMode !== 'all') {
+            return true;
+        }
+
+        return langMatch && eraMatch && genreMatch && moodMatch;
     });
 
     useEffect(() => { filteredTracksRef.current = filteredTracks; }, [filteredTracks]);
@@ -356,6 +383,21 @@ export function MusicPlayerProvider({ children }: { children: ReactNode }) {
         return () => clearInterval(id);
     }, [isPlaying]);
 
+    const togglePlayPause = useCallback(() => {
+        if (!currentTrackRef.current) return;
+        if (!ytPlayerRef.current || !ytReady) {
+            pendingTrackRef.current = currentTrackRef.current;
+            return;
+        }
+        if (isPlaying) {
+            ytPlayerRef.current.pauseVideo();
+            setIsPlaying(false);
+            return;
+        }
+        setPlayerError(null);
+        ytPlayerRef.current.playVideo();
+    }, [isPlaying, ytReady]);
+
     const playTrack = useCallback((track: Track) => {
         if (currentTrackRef.current?.id === track.id && ytReady) {
             togglePlayPause();
@@ -371,22 +413,7 @@ export function MusicPlayerProvider({ children }: { children: ReactNode }) {
         if (!ytReady || !ytPlayerRef.current) return;
         pendingTrackRef.current = null;
         ytPlayerRef.current?.loadVideoById(track.youtubeId);
-    }, [ytReady]);
-
-    const togglePlayPause = useCallback(() => {
-        if (!currentTrackRef.current) return;
-        if (!ytPlayerRef.current || !ytReady) {
-            pendingTrackRef.current = currentTrackRef.current;
-            return;
-        }
-        if (isPlaying) {
-            ytPlayerRef.current.pauseVideo();
-            setIsPlaying(false);
-            return;
-        }
-        setPlayerError(null);
-        ytPlayerRef.current.playVideo();
-    }, [isPlaying, ytReady]);
+    }, [togglePlayPause, ytReady]);
 
     const playNext = useCallback(() => {
         if (!currentTrackRef.current) return;
@@ -427,6 +454,8 @@ export function MusicPlayerProvider({ children }: { children: ReactNode }) {
         selectedLanguage,
         selectedEra,
         selectedGenre,
+        selectedMood,
+        viewMode,
         ytReady,
         playerError,
         filteredTracks,
@@ -440,6 +469,8 @@ export function MusicPlayerProvider({ children }: { children: ReactNode }) {
         setSelectedLanguage,
         setSelectedEra,
         setSelectedGenre,
+        setSelectedMood,
+        setViewMode,
         playTrack,
         togglePlayPause,
         playNext,
