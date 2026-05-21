@@ -178,6 +178,30 @@ const baseTracks: Track[] = [
     { id: 138, title: 'Toofan',                         artist: 'KGF Chapter 2',                  duration: '4:12', cover: '/bottle3.jpeg',               youtubeId: '7q4h2RFBF5E', language: 'Kannada', era: 'Latest' },
     { id: 139, title: 'Varaha Roopam',                  artist: 'Kantara',                        duration: '4:42', cover: '/bottle4.jpeg',               youtubeId: 'xt7i1LTQvPs', language: 'Kannada', era: 'Latest' },
 
+    // ── Karaoke: Hindi (1980s-1990s) ──
+    { id: 200, title: 'Ek Do Teen (Karaoke)',                     artist: 'Tezaab',                         duration: '4:30', cover: '/gallery/promo-serenity.jpg', youtubeId: 'bN1W6h2zimE', language: 'Hindi',   era: '1980s' },
+    { id: 201, title: 'Papa Kehte Hain (Karaoke)',                artist: 'Qayamat Se Qayamat Tak',         duration: '5:02', cover: '/gallery/promo-elegance.jpg', youtubeId: '6K5z_B-ESeI', language: 'Hindi',   era: '1980s' },
+    { id: 202, title: 'Hawa Hawai (Karaoke)',                     artist: 'Mr. India',                      duration: '4:45', cover: '/bottle2.jpeg',               youtubeId: 'xZKKRAIrJv8', language: 'Hindi',   era: '1980s' },
+    { id: 203, title: 'Neele Neele Ambar Par (Karaoke)',          artist: 'Kalaakaar',                      duration: '5:38', cover: '/bottle4.jpeg',               youtubeId: 'lOx4uyttIw', language: 'Hindi',   era: '1980s' },
+    { id: 204, title: 'Gazab Ka Hai Din (Karaoke)',               artist: 'Qayamat Se Qayamat Tak',         duration: '4:55', cover: '/gallery/promo-serenity.jpg', youtubeId: 'iiACaCpwbv0', language: 'Hindi',   era: '1980s' },
+    { id: 205, title: 'Chaiyya Chaiyya (Karaoke)',                artist: 'Dil Se',                         duration: '6:23', cover: '/bottle4.jpeg',               youtubeId: 'UnLm6MqtvyI', language: 'Hindi',   era: '1990s' },
+    { id: 206, title: 'Pehla Nasha (Karaoke)',                    artist: 'Jo Jeeta Wohi Sikandar',         duration: '5:12', cover: '/gallery/promo-serenity.jpg', youtubeId: '41C_asLw0gQ', language: 'Hindi',   era: '1990s' },
+    { id: 207, title: 'Tujhe Dekha To (Karaoke)',                 artist: 'DDLJ',                           duration: '5:45', cover: '/gallery/promo-elegance.jpg', youtubeId: 'EApzbYjCOig', language: 'Hindi',   era: '1990s' },
+    { id: 208, title: 'Didi Tera Devar Deewana (Karaoke)',        artist: 'Hum Aapke Hain Koun',            duration: '4:55', cover: '/bottle4.jpeg',               youtubeId: 'CS3B473fzsc', language: 'Hindi',   era: '1990s' },
+    { id: 209, title: 'Jumma Chumma De De (Karaoke)',             artist: 'Hum',                            duration: '6:10', cover: '/gallery/promo-serenity.jpg', youtubeId: 'ZQ_AxsLFpDQ', language: 'Hindi',   era: '1990s' },
+
+    // ── Karaoke: Kannada (1980s-1990s) ──
+    { id: 210, title: 'Jotheyali Jothe Jotheyali (Karaoke)',      artist: 'Geetha',                         duration: '4:20', cover: '/bottle2.jpeg',               youtubeId: 'UAP-thiK8ZE', language: 'Kannada', era: '1980s' },
+    { id: 211, title: 'Baalu Belakayithu (Karaoke)',              artist: 'Haalu Jenu',                     duration: '4:35', cover: '/bottle3.jpeg',               youtubeId: 'ZyWk5GhwoVg', language: 'Kannada', era: '1980s' },
+    { id: 212, title: 'Ganga Yamuna Sangama (Karaoke)',           artist: 'Anuraga Aralithu',               duration: '3:58', cover: '/bottle4.jpeg',               youtubeId: 'C_XbzG8qHCo', language: 'Kannada', era: '1980s' },
+    { id: 213, title: 'Anupama Cheluvu (Karaoke)',                artist: 'Anupama',                        duration: '4:15', cover: '/bottle3.jpeg',               youtubeId: '9eObQw7Shv4', language: 'Kannada', era: '1980s' },
+    { id: 214, title: 'Nammoora Mandara Hoove (Karaoke)',         artist: 'Aalemane',                       duration: '5:10', cover: '/gallery/promo-elegance.jpg', youtubeId: 'MUbYGWXgLWA', language: 'Kannada', era: '1980s' },
+    { id: 215, title: 'Huttidare Kannada (Karaoke)',              artist: 'Akasmika',                       duration: '4:48', cover: '/bottle2.jpeg',               youtubeId: '8EQazuBu198', language: 'Kannada', era: '1980s' },
+    { id: 216, title: 'Janumada Jodi (Karaoke)',                  artist: 'Janumada Jodi',                  duration: '4:22', cover: '/bottle3.jpeg',               youtubeId: 'cQhxNYVynuc', language: 'Kannada', era: '1990s' },
+    { id: 217, title: 'Nooru Janmaku (Karaoke)',                  artist: 'America America',                duration: '4:05', cover: '/bottle4.jpeg',               youtubeId: 'CYKZ3wjUKhE', language: 'Kannada', era: '1990s' },
+    { id: 218, title: 'Ninna Nodalentho (Karaoke)',               artist: 'Mussanje Maathu',                duration: '4:38', cover: '/gallery/promo-serenity.jpg', youtubeId: 'doc8BBsWLII', language: 'Kannada', era: '1990s' },
+    { id: 219, title: 'Prema Chandrama (Karaoke)',                artist: 'Yajamana',                       duration: '4:30', cover: '/bottle2.jpeg',               youtubeId: 'JpDDD5UWVVQ', language: 'Kannada', era: '1990s' },
+
     // ── Janapada ──
     { id: 140, title: 'ಕೈ ಬಿಡಬ್ಯಾಡ ಕೈ ಬಿಡಬ್ಯಾಡ | Kai Bidabaad Kai Bidabaad', artist: 'Jhankar Music Folk Factory', duration: '6:38', cover: '/bottle2.jpeg', youtubeId: 'lAdKiIxHI1o', language: 'Kannada', genre: 'Janapada' },
     { id: 141, title: 'ಗಂಡಸರ ಪರಿಸ್ಥಿತಿ | Gandasara Paristhiti', artist: 'Lapang Raja', duration: '8:23', cover: '/bottle3.jpeg', youtubeId: 'CotNgQ3hs9A', language: 'Kannada', genre: 'Janapada' },
@@ -193,11 +217,7 @@ const baseTracks: Track[] = [
     { id: 151, title: 'ಏನ ಕುಣತ ನಿಂದ ಏನ ಕುಣತ | Yen Kunata Ninda Yen Kunata', artist: 'Balu Belagundi Singer', duration: '6:19', cover: '/bottle3.jpeg', youtubeId: 'J6GXrvLRZr4', language: 'Kannada', genre: 'Janapada' },
 ];
 
-const karaokeTrackIds = new Set(
-    baseTracks
-        .filter((track) => track.era === '1980s' || track.era === '1990s')
-        .map((track) => track.id)
-);
+const karaokeTrackIds = new Set([200, 201, 202, 203, 204, 205, 206, 207, 208, 209, 210, 211, 212, 213, 214, 215, 216, 217, 218, 219]);
 
 const trackMoodsById: Record<number, Mood[]> = {
     1: ['Party', 'Happy'],
@@ -351,6 +371,26 @@ const trackMoodsById: Record<number, Mood[]> = {
     149: ['Happy', 'Driving'],
     150: ['Party', 'Driving'],
     151: ['Happy', 'Driving'],
+    200: ['Party', 'Happy'],
+    201: ['Happy', 'Driving'],
+    202: ['Party', 'Happy'],
+    203: ['Sad', 'Driving'],
+    204: ['Happy', 'Driving'],
+    205: ['Party', 'Driving'],
+    206: ['Happy', 'Driving'],
+    207: ['Sad', 'Driving'],
+    208: ['Happy', 'Party'],
+    209: ['Party', 'Driving'],
+    210: ['Happy', 'Driving'],
+    211: ['Happy', 'Driving'],
+    212: ['Happy', 'Driving'],
+    213: ['Happy', 'Driving'],
+    214: ['Happy', 'Driving'],
+    215: ['Happy', 'Driving'],
+    216: ['Happy', 'Driving'],
+    217: ['Sad', 'Driving'],
+    218: ['Sad', 'Driving'],
+    219: ['Happy', 'Driving'],
 };
 
 export const tracks: Track[] = baseTracks.map((track) => ({
