@@ -55,18 +55,28 @@ export default function Footer() {
           <div>
             <h4 className="text-white font-bold text-sm uppercase tracking-wider mb-5">Menu</h4>
             <ul className="space-y-3">
-              {['Home', 'About', 'Quality', 'Gallery', 'Contact'].map((item) => (
-                <li key={item}>
-                  <Link
-                    href={isHomePage ? `#${item.toLowerCase()}` : `/#${item.toLowerCase()}`}
-                    onClick={(e) => handleNavClick(e, `#${item.toLowerCase()}`)}
-                    className="text-gray-400 hover:text-white text-sm transition-colors duration-300 flex items-center gap-2 group"
-                  >
-                    <span className="w-0 group-hover:w-2 h-px bg-[#00C853] transition-all duration-300" />
-                    {item}
-                  </Link>
-                </li>
-              ))}
+              {['Home', 'About', 'Quality', 'Gallery', 'Contact'].map((item) => {
+                const isQuality = item === 'Quality';
+                const href = isQuality
+                  ? '/quality'
+                  : (isHomePage ? `#${item.toLowerCase()}` : `/#${item.toLowerCase()}`);
+                return (
+                  <li key={item}>
+                    <Link
+                      href={href}
+                      onClick={(e) => {
+                        if (!isQuality) {
+                          handleNavClick(e, `#${item.toLowerCase()}`);
+                        }
+                      }}
+                      className="text-gray-400 hover:text-white text-sm transition-colors duration-300 flex items-center gap-2 group"
+                    >
+                      <span className="w-0 group-hover:w-2 h-px bg-[#00C853] transition-all duration-300" />
+                      {item}
+                    </Link>
+                  </li>
+                );
+              })}
             </ul>
           </div>
 

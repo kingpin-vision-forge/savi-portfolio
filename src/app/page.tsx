@@ -401,6 +401,17 @@ export default function Home() {
                   validated by world-class certification bodies.
                 </p>
               </AnimateOnScroll>
+              <AnimateOnScroll animation="fadeUp" delay={0.5}>
+                <div className="mt-8 flex justify-center">
+                  <Link
+                    href="/quality"
+                    className="group flex h-12 items-center justify-center rounded-3xl bg-[#2d2d2d] border border-white/10 hover:border-[#00C853] text-white hover:text-[#00C853] text-sm font-bold shadow-lg hover:shadow-[#00C853]/20 transition-all duration-300 hover:-translate-y-0.5 px-8 gap-2"
+                  >
+                    View ZED Gold Certificate
+                    <ArrowRight className="size-4 group-hover:translate-x-1 transition-transform" />
+                  </Link>
+                </div>
+              </AnimateOnScroll>
             </div>
 
             {/* Live Analysis Panel */}
@@ -546,30 +557,46 @@ export default function Home() {
                   },
                   {
                     icon: Award,
-                    title: "ZED Certified",
-                    desc: "Zero Defect Zero Effect certification with Bronze & Silver achieved, Gold certification under process.",
+                    title: "ZED Gold Certified",
+                    desc: "Zero Defect Zero Effect Gold certification achieved — the highest tier under MSME Sustainable ZED Certification Scheme.",
+                    gold: true,
                   },
                   {
                     icon: Beaker,
-                    title: "First ZED Gold",
-                    desc: "Proud to be the First ZED Gold Company of the District, setting benchmarks in quality excellence.",
+                    title: "First in the District",
+                    desc: "Proud to be the first company in the district to achieve ZED Gold, setting the benchmark in quality & sustainability.",
+                    gold: true,
                   },
                   {
                     icon: FlaskConical,
                     title: "In-House Labs",
                     desc: "State-of-the-art Physical/Chemical Lab and Microbiological Lab for continuous quality testing and assurance.",
                   },
-                ].map((cert, i) => (
+                ].map((cert: any, i) => (
                   <div
                     key={i}
-                    className="bg-[#2d2d2d] p-8 rounded-3xl border border-white/5 card-hover-effect group h-full flex flex-col"
+                    className={`p-8 rounded-3xl border card-hover-effect group h-full flex flex-col relative overflow-hidden ${
+                      cert.gold
+                        ? 'bg-gradient-to-br from-[#1f1b13] via-[#1c1810] to-[#1a1a1a] border-[#FFD700]/30 hover:border-[#FFD700]/60 shadow-lg shadow-[#FFD700]/5'
+                        : 'bg-[#2d2d2d] border-white/5'
+                    }`}
                   >
-                    <div className="size-14 rounded-2xl bg-[#222] border border-white/10 flex items-center justify-center mb-6 shadow-lg shadow-black/50 group-hover:border-[#00C853]/30 transition-colors">
-                      <cert.icon className="size-7 text-[#00C853]" />
+                    {cert.gold && (
+                      <div className="absolute top-0 left-0 right-0 h-[1.5px] bg-gradient-to-r from-transparent via-[#FFD700]/70 to-transparent" />
+                    )}
+                    {cert.gold && (
+                      <span className="absolute top-4 right-4 text-[9px] font-black uppercase tracking-widest text-[#FFD700] bg-[#FFD700]/10 border border-[#FFD700]/25 px-2 py-0.5 rounded-full">
+                        New
+                      </span>
+                    )}
+                    <div className={`size-14 rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-black/50 transition-colors ${
+                      cert.gold
+                        ? 'bg-[#FFD700]/10 border border-[#FFD700]/25 group-hover:border-[#FFD700]/50'
+                        : 'bg-[#222] border border-white/10 group-hover:border-[#00C853]/30'
+                    }`}>
+                      <cert.icon className={`size-7 ${cert.gold ? 'text-[#FFD700]' : 'text-[#00C853]'}`} />
                     </div>
-                    <h4 className="text-white font-bold text-lg mb-3">
-                      {cert.title}
-                    </h4>
+                    <h4 className={`font-bold text-lg mb-3 ${cert.gold ? 'text-[#FFD700]' : 'text-white'}`}>{cert.title}</h4>
                     <p className="text-gray-400 text-sm leading-relaxed">
                       {cert.desc}
                     </p>

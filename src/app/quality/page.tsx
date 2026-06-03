@@ -1,5 +1,8 @@
+'use client';
+
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import ZedGoldCertificate from '@/components/ZedGoldCertificate';
 
 export default function QualityPage() {
   return (
@@ -28,6 +31,9 @@ export default function QualityPage() {
               SAVI exceeds industry benchmarks through rigorous independent testing. Our 12-stage filtration and mineralization process is validated by world-class certification bodies.
             </p>
           </div>
+
+          {/* ZED Gold Certificate Showcase */}
+          <ZedGoldCertificate />
 
           {/* Live Analysis Panel */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-32">
@@ -115,19 +121,38 @@ export default function QualityPage() {
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
               {[
+                { icon: '🥇', title: 'ZED Gold Certified', desc: 'Zero Defect Zero Effect Gold certification achieved — the highest tier under MSME Sustainable ZED Certification Scheme.', gold: true },
+                { icon: '🏆', title: 'First in the District', desc: 'Proud to be the first company in the district to achieve ZED Gold, setting the benchmark in quality & sustainability.', gold: true },
                 { icon: '🏛️', title: 'BIS License (ISI)', desc: 'ISI Certification from Central Government Authority ensuring highest quality standards for packaged drinking water.' },
                 { icon: '🍽️', title: 'FSSAI', desc: 'Food Safety and Standards Authority of India certification from State Government Authority.' },
                 { icon: '🛡️', title: 'ISO Certified', desc: 'International Organization for Standardization certification confirming our rigorous quality management systems.' },
                 { icon: '🏭', title: 'MSME Registered', desc: 'Registered under Micro, Small and Medium Enterprises promoting quality manufacturing standards.' },
-                { icon: '🥇', title: 'ZED Certified', desc: 'Zero Defect Zero Effect certification with Bronze & Silver achieved, Gold certification under process.' },
-                { icon: '🏆', title: 'First ZED Gold', desc: 'Proud to be the First ZED Gold Company of the District, setting benchmarks in quality excellence.' },
                 { icon: '🔬', title: 'In-House Labs', desc: 'State-of-the-art Physical/Chemical Lab and Microbiological Lab for continuous quality testing and assurance.' },
               ].map((cert, i) => (
-                <div key={i} className="bg-[#2d2d2d] p-5 sm:p-8 rounded-2xl sm:rounded-3xl border border-white/5 card-hover-effect group h-full flex flex-col">
-                  <div className="size-14 rounded-2xl bg-[#222] border border-white/10 flex items-center justify-center mb-6 shadow-lg shadow-black/50 group-hover:border-[#00C853]/30 transition-colors">
-                    <span className="text-[#00C853] text-2xl">{cert.icon}</span>
+                <div
+                  key={i}
+                  className={`p-5 sm:p-8 rounded-2xl sm:rounded-3xl border card-hover-effect group h-full flex flex-col relative overflow-hidden ${
+                    cert.gold
+                      ? 'bg-gradient-to-br from-[#1f1b13] via-[#1c1810] to-[#1a1a1a] border-[#FFD700]/30 hover:border-[#FFD700]/60 shadow-lg shadow-[#FFD700]/5'
+                      : 'bg-[#2d2d2d] border-white/5'
+                  }`}
+                >
+                  {cert.gold && (
+                    <div className="absolute top-0 left-0 right-0 h-[1.5px] bg-gradient-to-r from-transparent via-[#FFD700]/70 to-transparent" />
+                  )}
+                  {cert.gold && (
+                    <span className="absolute top-4 right-4 text-[9px] font-black uppercase tracking-widest text-[#FFD700] bg-[#FFD700]/10 border border-[#FFD700]/25 px-2 py-0.5 rounded-full">
+                      New
+                    </span>
+                  )}
+                  <div className={`size-14 rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-black/50 transition-colors ${
+                    cert.gold
+                      ? 'bg-[#FFD700]/10 border border-[#FFD700]/25 group-hover:border-[#FFD700]/50'
+                      : 'bg-[#222] border border-white/10 group-hover:border-[#00C853]/30'
+                  }`}>
+                    <span className={`text-2xl ${cert.gold ? 'text-[#FFD700]' : 'text-[#00C853]'}`}>{cert.icon}</span>
                   </div>
-                  <h4 className="text-white font-bold text-lg mb-3">{cert.title}</h4>
+                  <h4 className={`font-bold text-lg mb-3 ${cert.gold ? 'text-[#FFD700]' : 'text-white'}`}>{cert.title}</h4>
                   <p className="text-gray-400 text-sm leading-relaxed">{cert.desc}</p>
                 </div>
               ))}
