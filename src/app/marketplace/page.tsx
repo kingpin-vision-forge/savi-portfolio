@@ -22,13 +22,13 @@ interface Product {
 
 // Fallback defaults in case Firestore is unavailable
 const fallbackProducts: Product[] = [
-  { id: 'savi-200ml-case', name: 'SAVI 200ML', size: '200ml × 48', price: 240, pack: 'Case (48 Bottles)', image: '/images/200ml.png', images: ['/images/200ml.png'], sortOrder: 1 },
-  { id: 'savi-250ml-case', name: 'SAVI 250ML', size: '250ml × 36', price: 190, pack: 'Case (36 Bottles)', image: '/images/250ml.png', images: ['/images/250ml.png'], sortOrder: 2 },
-  { id: 'savi-300ml-case', name: 'SAVI 300ML', size: '300ml × 30', price: 170, pack: 'Case (30 Bottles)', image: '/images/250ml.png', images: ['/images/250ml.png'], sortOrder: 3 },
-  { id: 'savi-500ml-case', name: 'SAVI 500ML', size: '500ml × 24', price: 160, pack: 'Case (24 Bottles)', image: '/images/500ml-1.png', images: ['/images/500ml-1.png'], sortOrder: 4 },
-  { id: 'savi-1000ml-case', name: 'SAVI 1000ML', size: '1000ml × 12', price: 110, pack: 'Case (12 Bottles)', image: '/images/1lrwhite.png', images: ['/images/1lrwhite.png', '/images/1lrblack.png'], sortOrder: 5 },
-  { id: 'savi-2000ml-case', name: 'SAVI 2000ML', size: '2000ml × 6', price: 110, pack: 'Case (6 Bottles)', image: '/images/1lrwhite.png', images: ['/images/1lrwhite.png'], sortOrder: 6 },
-  { id: 'savi-20ltr-can', name: 'SAVI 20LTR', size: '20 Litre', price: 40, pack: 'Can', image: '/images/20ltr.png', images: ['/images/20ltr.png'], sortOrder: 7 },
+  { id: 'savi-200ml-case', name: 'SAVI 200ML', size: '200ml × 48', price: 250, pack: 'Case (48 Bottles)', image: '/images/200ml.png', images: ['/images/200ml.png'], sortOrder: 1 },
+  { id: 'savi-250ml-case', name: 'SAVI 250ML', size: '250ml × 36', price: 140, pack: 'Case (36 Bottles)', image: '/images/250ml.png', images: ['/images/250ml.png'], sortOrder: 2 },
+  { id: 'savi-300ml-case', name: 'SAVI 300ML', size: '300ml × 30', price: 150, pack: 'Case (30 Bottles)', image: '/images/250ml.png', images: ['/images/250ml.png'], sortOrder: 3 },
+  { id: 'savi-500ml-case', name: 'SAVI 500ML', size: '500ml × 24', price: 170, pack: 'Case (24 Bottles)', image: '/images/500ml-1.png', images: ['/images/500ml-1.png'], sortOrder: 4 },
+  { id: 'savi-1000ml-case', name: 'SAVI 1000ML', size: '1000ml × 12', price: 120, pack: 'Case (12 Bottles)', image: '/images/1lrwhite.png', images: ['/images/1lrwhite.png', '/images/1lrblack.png'], sortOrder: 5 },
+  { id: 'savi-2000ml-case', name: 'SAVI 2000ML', size: '2000ml × 6', price: 120, pack: 'Case (6 Bottles)', image: '/images/1lrwhite.png', images: ['/images/1lrwhite.png'], sortOrder: 6 },
+  { id: 'savi-20ltr-can', name: 'SAVI 20LTR', size: '20 Litre', price: 50, pack: 'Can', image: '/images/20ltr.png', images: ['/images/20ltr.png'], sortOrder: 7 },
   { id: 'savi-20ltr-ph8-can', name: 'SAVI 20LTR pH 8+ Balance Water', size: '20 Litre', price: 120, pack: 'Can', image: '/images/20ltr.png', images: ['/images/20ltr.png'], sortOrder: 8 },
 ];
 
