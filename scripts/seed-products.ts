@@ -7,6 +7,7 @@
 import 'dotenv/config';
 import { initializeApp } from 'firebase/app';
 import { getFirestore, doc, setDoc } from 'firebase/firestore';
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 
 function env(key: string): string {
   const value = process.env[key];
@@ -27,6 +28,7 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+const auth = getAuth(app);
 
 const products = [
   {
@@ -99,10 +101,36 @@ const products = [
     images: ['/images/20ltr.png'],
     sortOrder: 7,
   },
+  {
+    id: 'savi-20ltr-ph8-can',
+    name: 'SAVI 20LTR pH 8+ Balance Water',
+    size: '20 Litre',
+    price: 60,
+    pack: 'Can',
+    image: '/images/20ltr.png',
+    images: ['/images/20ltr.png'],
+    sortOrder: 8,
+  },
 ];
 
 async function seed() {
-  console.log('🌱 Seeding products into Firestore...\n');
+  const email = process.argv[2] || process.env.FIREBASE_ADMIN_EMAIL;
+  const password = process.argv[3] || process.env.FIREBASE_ADMIN_PASSWORD;
+
+  if (!email || !password) {
+    console.error('🔐 Admin authentication required to seed Firestore.');
+    console.error('Please run with your admin credentials:\n');
+    console.error('  npx tsx scripts/seed-products.ts <admin-email> <admin-password>\n');
+    console.error('OR set environment variables:');
+    console.error('  FIREBASE_ADMIN_EMAIL=admin@example.com FIREBASE_ADMIN_PASSWORD=yourpassword npx tsx scripts/seed-products.ts\n');
+    process.exit(1);
+  }
+
+  console.log(`🔐 Signing in as ${email}...`);
+  await signInWithEmailAndPassword(auth, email, password);
+  console.log('✅ Authenticated successfully.');
+
+  console.log('\n🌱 Seeding products into Firestore...\n');
 
   for (const product of products) {
     const { id, ...data } = product;

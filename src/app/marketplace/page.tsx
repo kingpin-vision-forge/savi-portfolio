@@ -29,6 +29,7 @@ const fallbackProducts: Product[] = [
   { id: 'savi-1000ml-case', name: 'SAVI 1000ML', size: '1000ml × 12', price: 110, pack: 'Case (12 Bottles)', image: '/images/1lrwhite.png', images: ['/images/1lrwhite.png', '/images/1lrblack.png'], sortOrder: 5 },
   { id: 'savi-2000ml-case', name: 'SAVI 2000ML', size: '2000ml × 6', price: 110, pack: 'Case (6 Bottles)', image: '/images/1lrwhite.png', images: ['/images/1lrwhite.png'], sortOrder: 6 },
   { id: 'savi-20ltr-can', name: 'SAVI 20LTR', size: '20 Litre', price: 40, pack: 'Can', image: '/images/20ltr.png', images: ['/images/20ltr.png'], sortOrder: 7 },
+  { id: 'savi-20ltr-ph8-can', name: 'SAVI 20LTR pH 8+ Balance Water', size: '20 Litre', price: 60, pack: 'Can', image: '/images/20ltr.png', images: ['/images/20ltr.png'], sortOrder: 8 },
 ];
 
 function ProductImageCarousel({ images, name }: { images: string[]; name: string }) {
@@ -98,11 +99,11 @@ export default function MarketplacePage() {
           id: d.id,
           ...d.data(),
         })) as Product[];
-        const filtered = (prods.length > 0 ? prods : fallbackProducts).filter(p => p.id !== 'savi-20ltr-can');
+        const filtered = prods.length > 0 ? prods : fallbackProducts;
         setProducts(filtered);
       } catch {
         // Firestore unavailable — use fallback
-        setProducts(fallbackProducts.filter(p => p.id !== 'savi-20ltr-can'));
+        setProducts(fallbackProducts);
       } finally {
         setLoadingProducts(false);
       }
