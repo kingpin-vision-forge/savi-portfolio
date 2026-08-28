@@ -54,8 +54,8 @@ export default function QualityPage() {
                       <span className="text-[#00C853] text-sm">✓</span>
                     </div>
                     <div className="flex items-end gap-1">
-                      <span className="text-4xl sm:text-6xl font-extrabold text-white tracking-tighter">7.4</span>
-                      <span className="text-[#00C853] font-bold text-lg mb-2">+</span>
+                      <span className="text-3xl sm:text-5xl font-extrabold text-white tracking-tighter">6.5 - 7.2</span>
+                      <span className="text-[#00C853] font-bold text-lg mb-1">pH</span>
                     </div>
                     <div className="w-full h-1.5 bg-white/10 rounded-full mt-2 overflow-hidden">
                       <div className="h-full w-[85%] bg-[#00C853] shadow-[0_0_10px_rgba(0,200,83,0.5)] rounded-full" />
@@ -68,13 +68,13 @@ export default function QualityPage() {
                       <span className="text-[#00C853] text-sm">✓</span>
                     </div>
                     <div className="flex items-end gap-1">
-                      <span className="text-4xl sm:text-6xl font-extrabold text-white tracking-tighter">280</span>
-                      <span className="text-gray-500 text-sm font-bold mb-2 ml-1">ppm</span>
+                      <span className="text-3xl sm:text-5xl font-extrabold text-white tracking-tighter">60 ± 10</span>
+                      <span className="text-gray-500 text-sm font-bold mb-1 ml-1">ppm</span>
                     </div>
                     <div className="w-full h-1.5 bg-white/10 rounded-full mt-2 overflow-hidden">
                       <div className="h-full w-[40%] bg-[#00C853] rounded-full" />
                     </div>
-                    <p className="text-gray-400 text-xs mt-1">Electrolyte Rich</p>
+                    <p className="text-gray-400 text-xs mt-1">Pure & Balanced</p>
                   </div>
                   <div className="flex flex-col gap-3">
                     <div className="flex justify-between items-baseline">
@@ -122,7 +122,7 @@ export default function QualityPage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
               {[
                 { icon: '🥇', title: 'ZED Gold Certified', desc: 'Zero Defect Zero Effect Gold certification achieved — the highest tier under MSME Sustainable ZED Certification Scheme.', gold: true },
-                { icon: '🏆', title: 'First in the District', desc: 'Proud to be the first company in the district to achieve ZED Gold, setting the benchmark in quality & sustainability.', gold: true },
+                { icon: '🏆', title: 'First in the North Karnataka', desc: 'Proud to be the first company in the district to achieve ZED Gold, setting the benchmark in quality & sustainability.', gold: true },
                 { icon: '🏛️', title: 'BIS License (ISI)', desc: 'ISI Certification from Central Government Authority ensuring highest quality standards for packaged drinking water.' },
                 { icon: '🍽️', title: 'FSSAI', desc: 'Food Safety and Standards Authority of India certification from State Government Authority.' },
                 { icon: '🛡️', title: 'ISO Certified', desc: 'International Organization for Standardization certification confirming our rigorous quality management systems.' },

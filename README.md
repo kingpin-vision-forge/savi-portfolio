@@ -69,7 +69,7 @@ The app runs at **http://localhost:3000** by default.
 
 The main landing page — a single-page experience combining multiple scrollable sections:
 
-- **Hero Section** — Full-screen hero with an animated 3D bottle, floating info cards (BIS Certified, 7.4 pH), and CTAs to order or request bulk supply. Features the 22-year anniversary badge.
+- **Hero Section** — Full-screen hero with an animated 3D bottle, floating info cards (BIS Certified, 6.5–7.2 pH), and CTAs to order or request bulk supply. Features the 22-year anniversary badge.
 - **About Section** — Brand story panel ("Purity in Slate") with stats bar (99.9% Purity, 50+ Natural Springs, 0 Carbon Footprint) and a certification logo strip (BIS, FSSAI, ISO, MSME, ZED Gold, In-House Labs).
 - **Quality Section** — Live water analysis panel showing pH level, TDS, contaminants, UV sterilization, and ozonization metrics. Includes a lab report download card and full certification grid (7 certifications). Features the 9-stage **Purity Protocol** process flow.
 - **Gallery Section** — Filterable image gallery with categories: All, Events, Products, and Outlets.
@@ -109,7 +109,7 @@ Includes a **"Our Promise"** section and a CTA to order SAVI. Uses `AnimateOnScr
 
 Dedicated quality and compliance page showcasing:
 
-- **Live Water Analysis Panel** — Alkalinity (7.4 pH), TDS (280 ppm), Contaminants (0.00) with visual progress bars.
+- **Live Water Analysis Panel** — Alkalinity (6.5–7.2 pH), TDS (60±10 ppm), Contaminants (0.00) with visual progress bars.
 - **Lab Report Card** — Link to view the full ISO 17025 accredited lab report PDF.
 - **Global Certifications** — 7 cards: BIS License (ISI), FSSAI, ISO Certified, MSME Registered, ZED Certified, First ZED Gold (District-level), In-House Labs.
 - **The Purity Protocol** — 3-step purification process: Molecular Reverse Osmosis → Mineral Infusion → Ozone Sanitization.

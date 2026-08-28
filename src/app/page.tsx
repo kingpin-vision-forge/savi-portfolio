@@ -239,12 +239,12 @@ export default function Home() {
                     <div className="flex items-center gap-1 mb-0.5 sm:mb-1">
                       <FlaskConical className="size-4 sm:size-5 text-[#00C853]" />
                       <span className="text-[8px] sm:text-[10px] font-bold uppercase tracking-widest text-gray-400">
-                        Alkaline
+                        Balanced
                       </span>
                     </div>
                     <div className="flex items-baseline gap-1">
-                      <p className="text-2xl sm:text-3xl font-black text-white leading-none">
-                        7.4
+                      <p className="text-xl sm:text-2xl font-black text-white leading-none">
+                        6.5 - 7.2
                       </p>
                       <span className="text-xs sm:text-sm font-bold text-[#00C853]">
                         pH
@@ -431,14 +431,14 @@ export default function Home() {
                     {[
                       {
                         label: "pH Level",
-                        value: "+6.0 to +8.5",
+                        value: "6.5 to 7.2",
                         suffix: "",
                         bar: 85,
                         note: "Optimal Balance",
                       },
                       {
                         label: "TDS Level",
-                        value: "55±10",
+                        value: "60±10",
                         suffix: "ppm",
                         bar: 40,
                         note: "Pure & Balanced",
@@ -563,8 +563,8 @@ export default function Home() {
                   },
                   {
                     icon: Beaker,
-                    title: "First in the District",
-                    desc: "Proud to be the first company in the district to achieve ZED Gold, setting the benchmark in quality & sustainability.",
+                    title: "First in the North Karnataka Region",
+                    desc: "Proud to be the first company in the region to achieve ZED Gold, setting the benchmark in quality & sustainability.",
                     gold: true,
                   },
                   {
