@@ -9,9 +9,11 @@ import { useCart } from '@/context/CartContext';
 import { buildOrderConfirmationMessage, buildWhatsAppUrl } from '@/lib/whatsappTemplates';
 import {
   ShieldCheck, ArrowRight, Package, MapPin, Phone, User, Mail,
-  CheckCircle2, MessageCircle, QrCode, Smartphone, AlertCircle, Navigation, Loader2
+  CheckCircle2, MessageCircle, Smartphone, AlertCircle, Navigation, Loader2,
+  Truck, Clock
 } from 'lucide-react';
 import Link from 'next/link';
+import { validatePincode, isDeliverablePincode, PRIMARY_DELIVERY_PINCODE } from '@/lib/delivery';
 
 // Leaflet requires window — must be dynamically imported
 const LocationMap = dynamic(() => import('@/components/LocationMap'), {
@@ -66,12 +68,21 @@ export default function CheckoutPage() {
     }
   }, [step, totalPrice]);
 
+  const pincodeValidation = validatePincode(formData.pincode);
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const proceedToPayment = () => {
-    if (formData.firstName && formData.phone && formData.address && formData.city && formData.pincode) {
+    if (
+      formData.firstName &&
+      formData.phone &&
+      formData.address &&
+      formData.city &&
+      formData.pincode &&
+      pincodeValidation.isDeliverable
+    ) {
       setStep(2);
     }
   };
@@ -167,6 +178,10 @@ export default function CheckoutPage() {
     });
 
   const confirmPaymentAndRedirect = () => {
+    if (!isDeliverablePincode(formData.pincode)) {
+      setStep(1);
+      return;
+    }
     const message = generateWhatsAppMessage();
     const whatsappUrl = buildWhatsAppUrl(message, WHATSAPP_NUMBER);
 
@@ -252,10 +267,21 @@ export default function CheckoutPage() {
                 {step === 1 ? (
                   // Shipping Form
                   <div className="bg-[#2d2d2d] rounded-3xl p-8 border border-white/5">
-                    <h2 className="text-white text-2xl font-bold mb-8 flex items-center gap-3">
+                    <h2 className="text-white text-2xl font-bold mb-6 flex items-center gap-3">
                       <MapPin className="size-6 text-[#00C853]" />
                       Shipping Details
                     </h2>
+
+                    {/* Delivery Area Notice */}
+                    <div className="bg-[#1a281e] border border-[#00C853]/30 rounded-2xl p-4 mb-6 flex items-start gap-3">
+                      <Truck className="size-5 text-[#00C853] shrink-0 mt-0.5" />
+                      <div>
+                        <p className="text-white text-sm font-semibold">Service Area Coverage</p>
+                        <p className="text-gray-300 text-xs mt-0.5 leading-relaxed">
+                          We currently deliver exclusively to area pincode <strong className="text-[#00C853]">{PRIMARY_DELIVERY_PINCODE}*</strong> (Vijayapura). Service for other pincodes is coming soon!
+                        </p>
+                      </div>
+                    </div>
 
                     <div className="space-y-5">
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -339,24 +365,62 @@ export default function CheckoutPage() {
                             value={formData.city}
                             onChange={handleInputChange}
                             className="w-full bg-white rounded-2xl px-5 py-4 text-gray-900 font-medium placeholder:text-gray-400 outline-none focus:ring-2 focus:ring-[#00C853]"
-                            placeholder="Mumbai"
+                            placeholder="Vijayapura"
                             type="text"
                             required
                           />
                         </div>
                         <div>
-                          <label className="text-sm font-semibold text-gray-300 mb-2 block">Pincode *</label>
+                          <div className="flex items-center justify-between mb-2">
+                            <label className="text-sm font-semibold text-gray-300 block">Pincode *</label>
+                            <span className="text-[11px] text-[#00C853] font-medium bg-[#00C853]/10 px-2 py-0.5 rounded-full border border-[#00C853]/20">
+                              Service area: {PRIMARY_DELIVERY_PINCODE}
+                            </span>
+                          </div>
                           <input
                             name="pincode"
                             value={formData.pincode}
                             onChange={handleInputChange}
-                            className="w-full bg-white rounded-2xl px-5 py-4 text-gray-900 font-medium placeholder:text-gray-400 outline-none focus:ring-2 focus:ring-[#00C853]"
-                            placeholder="400001"
+                            maxLength={6}
+                            className={`w-full bg-white rounded-2xl px-5 py-4 text-gray-900 font-medium placeholder:text-gray-400 outline-none transition-all ${
+                              pincodeValidation.status === 'unavailable'
+                                ? 'ring-2 ring-amber-500 border-amber-500'
+                                : pincodeValidation.status === 'available'
+                                ? 'ring-2 ring-[#00C853] border-[#00C853]'
+                                : 'focus:ring-2 focus:ring-[#00C853]'
+                            }`}
+                            placeholder="586109"
                             type="text"
                             required
                           />
                         </div>
                       </div>
+
+                      {/* Pincode Feedback Badge */}
+                      {pincodeValidation.status === 'available' && (
+                        <div className="flex items-center gap-2 text-xs font-semibold text-[#00C853] bg-[#00C853]/10 border border-[#00C853]/25 rounded-2xl px-4 py-3">
+                          <CheckCircle2 className="size-4 shrink-0" />
+                          <span>{pincodeValidation.message}</span>
+                        </div>
+                      )}
+
+                      {pincodeValidation.status === 'unavailable' && (
+                        <div className="flex items-start gap-3 text-xs text-amber-200 bg-amber-500/10 border border-amber-500/30 rounded-2xl p-4">
+                          <Clock className="size-5 text-amber-400 shrink-0 mt-0.5" />
+                          <div className="space-y-1">
+                            <p className="font-semibold text-amber-300 text-sm">Service Unavailable in this area</p>
+                            <p className="text-amber-200/90 leading-relaxed">
+                              {pincodeValidation.message}
+                            </p>
+                          </div>
+                        </div>
+                      )}
+
+                      {pincodeValidation.status === 'incomplete' && formData.pincode.length > 0 && (
+                        <p className="text-gray-400 text-xs pl-1">
+                          Please enter full 6-digit pincode (e.g. 586109)
+                        </p>
+                      )}
 
                       {/* Location Coordinates */}
                       <div className="pt-2">
@@ -449,12 +513,33 @@ export default function CheckoutPage() {
                       </div>
                     </div>
 
+                    {pincodeValidation.status === 'unavailable' && (
+                      <div className="mt-6 flex items-start gap-3 bg-amber-500/10 border border-amber-500/25 rounded-2xl p-4 text-amber-300 text-xs">
+                        <AlertCircle className="size-5 shrink-0 text-amber-400 mt-0.5" />
+                        <div>
+                          <p className="font-semibold text-amber-300 text-sm mb-1">Cannot proceed with this pincode</p>
+                          <p className="leading-relaxed">
+                            Online orders are currently limited to pincode <strong>{PRIMARY_DELIVERY_PINCODE}</strong>. Service to pincode <strong>{pincodeValidation.cleanPincode}</strong> is coming soon!
+                          </p>
+                        </div>
+                      </div>
+                    )}
+
                     <button
                       onClick={proceedToPayment}
-                      disabled={!formData.firstName || !formData.phone || !formData.address || !formData.city || !formData.pincode}
-                      className="w-full mt-8 bg-[#00C853] hover:bg-[#00e676] disabled:bg-gray-600 disabled:cursor-not-allowed text-white font-bold rounded-2xl py-4 transition-all flex items-center justify-center gap-2 group"
+                      disabled={
+                        !formData.firstName ||
+                        !formData.phone ||
+                        !formData.address ||
+                        !formData.city ||
+                        !formData.pincode ||
+                        !pincodeValidation.isDeliverable
+                      }
+                      className="w-full mt-6 bg-[#00C853] hover:bg-[#00e676] disabled:bg-gray-600 disabled:cursor-not-allowed text-white font-bold rounded-2xl py-4 transition-all flex items-center justify-center gap-2 group"
                     >
-                      Continue to Payment
+                      {pincodeValidation.status === 'unavailable'
+                        ? 'Service Unavailable for this Pincode'
+                        : 'Continue to Payment'}
                       <ArrowRight className="size-4 group-hover:translate-x-1 transition-transform" />
                     </button>
                   </div>

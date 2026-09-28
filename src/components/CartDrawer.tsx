@@ -1,9 +1,10 @@
 'use client';
 
 import { useCart } from '@/context/CartContext';
-import { X, Plus, Minus, ShoppingBag, Trash2, ArrowRight } from 'lucide-react';
+import { X, Plus, Minus, ShoppingBag, Trash2, ArrowRight, Truck } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { PRIMARY_DELIVERY_PINCODE } from '@/lib/delivery';
 
 export default function CartDrawer() {
   const { items, isCartOpen, setIsCartOpen, updateQuantity, removeFromCart, totalPrice, totalItems } = useCart();
@@ -108,6 +109,10 @@ export default function CartDrawer() {
             <div className="flex justify-between items-center mb-6">
               <span className="text-gray-400">Subtotal</span>
               <span className="text-white text-2xl font-bold">₹{totalPrice.toLocaleString()}</span>
+            </div>
+            <div className="flex items-center gap-2 text-xs text-gray-300 mb-4 bg-white/5 rounded-xl px-3.5 py-2.5 border border-white/5">
+              <Truck className="size-4 text-[#00C853] shrink-0" />
+              <span>Delivering exclusively to pincode <strong className="text-[#00C853]">{PRIMARY_DELIVERY_PINCODE}*</strong></span>
             </div>
             <Link
               href="/checkout"

@@ -8,6 +8,7 @@ import { useRef, useState, useEffect } from 'react';
 import { buildBulkOrderRequestMessage, buildWhatsAppUrl } from '@/lib/whatsappTemplates';
 import { collection, getDocs, orderBy, query } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
+import { PRIMARY_DELIVERY_PINCODE } from '@/lib/delivery';
 
 interface Product {
   id: string;
@@ -129,9 +130,13 @@ export default function MarketplacePage() {
               <h1 className="text-white text-5xl md:text-7xl font-extrabold tracking-tight mb-6">
                 The Marketplace
               </h1>
-              <p className="text-gray-400 text-lg md:text-xl">
+              <p className="text-gray-400 text-lg md:text-xl mb-4">
                 Select your preferred format. From single bottles to corporate dispenser solutions.
               </p>
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#00C853]/10 border border-[#00C853]/25 text-[#00C853] text-xs font-semibold">
+                <Truck className="size-3.5" />
+                <span>Delivery currently available exclusively in pincode {PRIMARY_DELIVERY_PINCODE}* (Vijayapura)</span>
+              </div>
             </div>
 
             {/* Products Grid */}
