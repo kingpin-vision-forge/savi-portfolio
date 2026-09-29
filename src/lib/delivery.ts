@@ -1,11 +1,11 @@
 /**
  * Delivery Zone Configuration & Validation
- * Currently serving areas with pincode 586109*
+ * Currently serving areas with pincode 586103*
  */
 
-export const ALLOWED_PINCODE_PREFIXES = ['586109'] as const;
-export const PRIMARY_DELIVERY_PINCODE = '586109';
-export const SERVICE_AREA_NAME = 'Vijayapura (586109)';
+export const ALLOWED_PINCODE_PREFIXES = ['586103'] as const;
+export const PRIMARY_DELIVERY_PINCODE = '586103';
+export const SERVICE_AREA_NAME = 'Vijayapura (586103)';
 
 export interface PincodeValidationResult {
   isValidFormat: boolean;

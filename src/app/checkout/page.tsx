@@ -382,14 +382,13 @@ export default function CheckoutPage() {
                             value={formData.pincode}
                             onChange={handleInputChange}
                             maxLength={6}
-                            className={`w-full bg-white rounded-2xl px-5 py-4 text-gray-900 font-medium placeholder:text-gray-400 outline-none transition-all ${
-                              pincodeValidation.status === 'unavailable'
+                            className={`w-full bg-white rounded-2xl px-5 py-4 text-gray-900 font-medium placeholder:text-gray-400 outline-none transition-all ${pincodeValidation.status === 'unavailable'
                                 ? 'ring-2 ring-amber-500 border-amber-500'
                                 : pincodeValidation.status === 'available'
-                                ? 'ring-2 ring-[#00C853] border-[#00C853]'
-                                : 'focus:ring-2 focus:ring-[#00C853]'
-                            }`}
-                            placeholder="586109"
+                                  ? 'ring-2 ring-[#00C853] border-[#00C853]'
+                                  : 'focus:ring-2 focus:ring-[#00C853]'
+                              }`}
+                            placeholder="586103"
                             type="text"
                             required
                           />
@@ -418,7 +417,7 @@ export default function CheckoutPage() {
 
                       {pincodeValidation.status === 'incomplete' && formData.pincode.length > 0 && (
                         <p className="text-gray-400 text-xs pl-1">
-                          Please enter full 6-digit pincode (e.g. 586109)
+                          Please enter full 6-digit pincode (e.g. 586103)
                         </p>
                       )}
 
