@@ -480,8 +480,11 @@ export function MusicPlayerProvider({ children }: { children: ReactNode }) {
 
     return (
         <MusicPlayerContext.Provider value={contextValue}>
-            {/* Hidden YouTube player div */}
-            <div id="global-yt-player" style={{ position: 'absolute', width: 1, height: 1, opacity: 0, pointerEvents: 'none' }} />
+            {/* Keep the node replaced by YouTube inside a React-owned wrapper so
+                route/error teardown never tries to remove an already-replaced node. */}
+            <div aria-hidden="true" style={{ position: 'absolute', width: 1, height: 1, opacity: 0, pointerEvents: 'none' }}>
+                <div id="global-yt-player" />
+            </div>
             {children}
         </MusicPlayerContext.Provider>
     );

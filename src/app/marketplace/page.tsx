@@ -7,7 +7,6 @@ import { ShoppingCart, Plus, Minus, Package, Truck, Building, Check, Droplets } 
 import { useRef, useState, useEffect } from 'react';
 import { buildBulkOrderRequestMessage, buildWhatsAppUrl } from '@/lib/whatsappTemplates';
 import { collection, getDocs, orderBy, query } from 'firebase/firestore';
-import { db } from '@/lib/firebase';
 import { PRIMARY_DELIVERY_PINCODE } from '@/lib/delivery';
 
 interface Product {
@@ -94,6 +93,9 @@ export default function MarketplacePage() {
   useEffect(() => {
     async function fetchProducts() {
       try {
+        // Load Firebase inside the fallback boundary. A missing or invalid
+        // deployment configuration must not prevent the marketplace from loading.
+        const { db } = await import('@/lib/firebase');
         const q = query(collection(db, 'products'), orderBy('sortOrder'));
         const snapshot = await getDocs(q);
         const prods: Product[] = snapshot.docs.map((d) => ({

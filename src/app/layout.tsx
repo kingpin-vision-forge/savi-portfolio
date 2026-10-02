@@ -16,12 +16,35 @@ const manrope = Manrope({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://www.saviwaters.com"),
   title: "SAVI - Premium Packaged Water",
   description: "SAVI delivers pristine molecular hydration with unmatched logistical precision. A darker, deeper commitment to purity.",
   keywords: ["packaged water", "premium water", "SAVI", "hydration", "pure water"],
   icons: {
-    icon: "/images/logo-white.jpeg",
-    apple: "/images/logo-black.jpeg",
+    icon: [{ url: "/images/favicon.jpeg?v=2", type: "image/jpeg" }],
+    shortcut: "/images/favicon.jpeg?v=2",
+    apple: [{ url: "/images/favicon.jpeg?v=2", type: "image/jpeg" }],
+  },
+  openGraph: {
+    title: "SAVI - Premium Packaged Water",
+    description: "SAVI delivers pristine molecular hydration with unmatched logistical precision.",
+    url: "/",
+    siteName: "SAVI",
+    type: "website",
+    images: [
+      {
+        url: "/images/logo.jpeg?v=2",
+        width: 1051,
+        height: 601,
+        alt: "SAVI Packaged Drinking Water",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "SAVI - Premium Packaged Water",
+    description: "SAVI delivers pristine molecular hydration with unmatched logistical precision.",
+    images: ["/images/logo.jpeg?v=2"],
   },
 };
 
@@ -51,4 +74,3 @@ export default function RootLayout({
     </html>
   );
 }
-

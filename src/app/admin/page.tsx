@@ -3,7 +3,8 @@
 import { useState, useEffect } from 'react';
 import { signInWithEmailAndPassword, signOut, onAuthStateChanged, User } from 'firebase/auth';
 import { collection, getDocs, doc, updateDoc, orderBy, query } from 'firebase/firestore';
-import { auth, db } from '@/lib/firebase';
+import { db } from '@/lib/firebase';
+import { auth } from '@/lib/firebase-auth';
 import { Lock, LogOut, Save, Loader2, CheckCircle2, AlertCircle, Package, IndianRupee } from 'lucide-react';
 import { SignInPage } from '@/components/ui/sign-in';
 
